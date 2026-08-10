@@ -204,10 +204,21 @@ ambiguïté détectée mais non levée reste une ambiguïté : elle va au §8.
 
 Formulées, pas juste évoquées. Priorisées : le prochain passage est court.
 
-| Priorité | Question | Pourquoi elle compte |
+| N° | Question | Réponse |
 |---|---|---|
-| | 1 | Comment doit s'effectuer la répartition des passagers entre les deux bateaux (Tikap 12 pl. et Grand Bleu 24 pl.) sur un même créneau ? Le client choisit-il son bateau, ou le système attribue-t-il les places automatiquement (ex. remplissage séquentiel ou selon la taille des groupes) avec ajustement manuel possible par l'admin ? | Conditionne directement la modélisation des capacités (jauge globale par créneau vs gestion de stock par bateau), l'algorithme d'affectation automatique et le parcours de réservation client. |
-| 2 | Pour les remboursements liés à une annulation (client ou météo) : le système doit-il émettre un remboursement bancaire automatique, ou préférez-vous proposer un avoir/bon d'achat au client ? Si un avoir est proposé, est-ce au choix du client ou imposé selon le cas (ex. avoir pour annulation météo, remboursement pour annulation client) ? Et si avoir : quelle durée de validité, réutilisable pour n'importe quelle activité, et transférable à un tiers ? | Conditionne la génération de facture d'avoir (Q49) et le flux de remboursement bancaire à développer ; impacte aussi la logique du barème RM-07 à RM-10 selon le mode retenu. |
+| 1 | Comment la répartition des passagers entre les deux bateaux d'un même créneau est-elle gérée, et quels sont les seuils de participants (min / max) ? | Gérée par l'entreprise selon le nombre de réservations par créneau et le type de sortie réservé. Minimum 6 réservations pour maintenir un créneau ; blocage des nouvelles réservations au-delà du maximum de 36 places (12 + 24). |
+| 2 | En cas d'annulation valide, le remboursement est-il automatique ou géré manuellement ? | Pas de remboursement automatique : géré directement par l'entreprise avec le client. |
+| 3 | Combien de profils accèdent au back-office et lesquels ? | Un seul profil administrateur : l'entreprise. |
+| 4 | Comment est structuré le tarif enfant (tranche d'âge) ? | Tarif enfant de 4 à 11 ans ; à partir de 12 ans, tarif adulte. |
+| 5 | Le système doit-il générer / gérer le manifeste des passagers ? | Non : le manifeste de bord reste hors système, rien d'informatique. |
+| 6 | Quel type d'application est attendu ? | Un site web. |
+| 7 | Faut-il notifier l'administrateur à chaque nouvelle réservation ? | Non, pas nécessaire pour les nouvelles réservations. |
+| 8 | Quel est le délai limite de réservation avant le départ ? | Réservation possible jusqu'à 2 h avant le départ au maximum. |
+| 9 | Peut-on proposer plusieurs types de sortie sur un même créneau ? | Non : les types de sortie sont séparés par créneau. |
+| 10 | Combien de naturalistes sont disponibles pour encadrer les sorties ? | Un seul naturaliste (contrainte de ressource). |
+| 11 | Un même bateau peut-il accueillir des sorties de types différents ? | Contrainte liée à la mixité des types de sortie sur un même bateau. *(à clarifier : autorisée ou à éviter ?)* |
+| 12 | L'entreprise doit-elle pouvoir modifier les créneaux depuis le back-office ? | Oui, modification des créneaux possible. |
+| 13 | Par quels canaux les réservations sont-elles prises ? | Uniquement via le site. |
 
 ## 9. Ce que nous n'avons pas abordé
 
