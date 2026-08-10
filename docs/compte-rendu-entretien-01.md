@@ -126,11 +126,10 @@ En cas d'annulation par le client, le barème annoncé est le suivant :
 | Délai avant départ | Remboursement |
 |---|---|
 | Plus de 7 jours | 100 % |
-| Entre 48 h et 7 jours | 25 % *(à confirmer — semble inversé)* |
+| Entre 48 h et 7 jours | 75 % |
 | Moins de 48 h | 50 % *(à confirmer — semble inversé)* |
 | Annulation par l'entreprise | 100 % |
 
-> ⚠️ L'ordre des taux à +48 h (25 %) et -48 h (50 %) paraît incohérent : plus on annule tard, plus on serait remboursé. Ce point **doit être clarifié** au prochain entretien.
 
 En cas d'annulation météo (décidée au plus tard **2 h avant le départ**), le client est prévenu par téléphone. L'annulation reste **entièrement manuelle** (mail, SMS ou appel) : aucun flux automatique n'est prévu côté système pour l'instant.
 
