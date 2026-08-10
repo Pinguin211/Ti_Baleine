@@ -43,10 +43,10 @@ décoratif : c'est ce qui permet de distinguer un arbitrage d'un acquiescement.
 
 ---
 
-## J1 — <date>
+## J1 — <10/08/2026>
 
 **Présents.**
-
+Loic, Thomas, Benjamin et Ivan.
 **Décisions.**
 
 **Critiques de l'IA acceptées.**
