@@ -96,6 +96,52 @@ Une question posée et **restée sans réponse** figure quand même ici, avec
 Reformulation en langage métier. À relire au client au prochain passage : s'il
 répond « non, pas tout à fait », la compréhension n'est pas acquise.
 
+### Activités et planning
+
+Le commanditaire exploite deux bateaux — le **Tikap** (12 places) et le **Grand Bleu** (24 places) — pour proposer des sorties en mer à la journée : observation de baleines ou de dauphins, et sorties « coucher de soleil ». Une même sortie peut changer de nature (ex. baleine → coucher de soleil) selon les conditions, ce qui devra être géré dans le système.
+
+Le planning est **fixe toute l'année** : trois créneaux quotidiens à **7 h, 10 h et 14 h**, du mardi au dimanche. Les seules fermetures annuelles sont le lundi, le 25 décembre et le 1er janvier.
+
+### Tarification
+
+Les tarifs sont fixes, sans variation saisonnière connue à ce stade :
+
+| Activité | Adulte | Enfant |
+|---|---|---|
+| Sortie baleines | 65 € | 40 € |
+| Sortie dauphins | 50 € | 30 € |
+| Privatisation (Tikap) | 600 € | — |
+| Privatisation (Grand Bleu) | 1 100 € | — |
+
+### Réservation et paiement
+
+La réservation se fait **exclusivement en ligne**, avec un paiement intégral au moment de la commande (pas d'acompte). Le système doit générer automatiquement une **facture PDF** à la confirmation.
+
+Le choix du prestataire de paiement (Stripe, PayPal, etc.) n'est pas encore arrêté — il dépend des contraintes bancaires et fiscales du client.
+
+### Annulation et remboursement
+
+En cas d'annulation par le client, le barème annoncé est le suivant :
+
+| Délai avant départ | Remboursement |
+|---|---|
+| Plus de 7 jours | 100 % |
+| Entre 48 h et 7 jours | 25 % *(à confirmer — semble inversé)* |
+| Moins de 48 h | 50 % *(à confirmer — semble inversé)* |
+| Annulation par l'entreprise | 100 % |
+
+> ⚠️ L'ordre des taux à +48 h (25 %) et -48 h (50 %) paraît incohérent : plus on annule tard, plus on serait remboursé. Ce point **doit être clarifié** au prochain entretien.
+
+En cas d'annulation météo (décidée au plus tard **2 h avant le départ**), le client est prévenu par téléphone. L'annulation reste **entièrement manuelle** (mail, SMS ou appel) : aucun flux automatique n'est prévu côté système pour l'instant.
+
+### Interface et multilinguisme
+
+Le commanditaire souhaite une **solution web sur-mesure**, avec une interface disponible en **plusieurs langues** (environ 60 % de la clientèle est étrangère). Les langues cibles et le fournisseur des traductions restent à définir.
+
+### Notifications
+
+Le commanditaire souhaite être informé des annulations par **SMS et/ou email**, au plus simple.
+
 ## 4. Parties prenantes identifiées
 
 | Personne / rôle | Ce qu'elle fait | Comment on l'a découverte |
