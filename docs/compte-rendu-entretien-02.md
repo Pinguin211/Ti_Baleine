@@ -207,3 +207,4 @@ pas touchés. C'est là que se cachent les découvertes tardives et coûteuses.
 - Conformité RGPD (durée de conservation des données collectées)
 - Détail opérationnel du statut « moins de 4 ans » (gratuité vs demande préalable)
 - Budget, délais de mise en service et contrat de maintenance (déjà ouverts au CR n° 1)
+- Créneaux horaires de la privatisation : elle a lieu le plus souvent l'après-midi pour le sunset, mais la question de savoir si des privatisations sont également prises le matin n'a pas été abordée
