@@ -206,7 +206,7 @@ Formulées, pas juste évoquées. Priorisées : le prochain passage est court.
 
 | Priorité | Question | Pourquoi elle compte |
 |---|---|---|
-| 1 | … | … |
+| 1 | Comment doit s'effectuer la répartition des passagers entre les deux bateaux (Tikap 12 pl. et Grand Bleu 24 pl.) sur un même créneau ? Le client choisit-il son bateau, ou le système attribue-t-il les places automatiquement (ex. remplissage séquentiel ou selon la taille des groupes) avec ajustement manuel possible par l'admin ? | Conditionne directement la modélisation des capacités (jauge globale par créneau vs gestion de stock par bateau), l'algorithme d'affectation automatique et le parcours de réservation client. |
 
 ## 9. Ce que nous n'avons pas abordé
 
