@@ -194,6 +194,8 @@ Formulées, pas juste évoquées. Priorisées : le prochain passage est court.
 | Priorité | Question | Pourquoi elle compte |
 |---|---|---|
 | 1 | … | … |
+| 2 | Pour les remboursements liés à une annulation (client ou météo) : le système doit-il émettre un remboursement bancaire automatique, ou préférez-vous proposer un avoir/bon d'achat au client ? Si un avoir est proposé, est-ce au choix du client ou imposé selon le cas (ex. avoir pour annulation météo, remboursement pour annulation client) ? Et si avoir : quelle durée de validité, réutilisable pour n'importe quelle activité, et transférable à un tiers ? | Conditionne la génération de facture d'avoir (Q49) et le flux de remboursement bancaire à développer ; impacte aussi la logique du barème RM-07 à RM-10 selon le mode retenu. |
+
 
 ## 9. Ce que nous n'avons pas abordé
 
