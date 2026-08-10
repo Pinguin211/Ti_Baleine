@@ -148,9 +148,25 @@ Le commanditaire souhaite être informé des annulations par **SMS et/ou email**
 
 ## 5. Règles métier découvertes
 
-| # | Règle | Formulation exacte du client | Sûre ? |
-|---|---|---|---|
-| 1 | … | « … » | oui / à confirmer |
+| # | Règle | Formulation exacte du client | Source | Sûre ? |
+|---|---|---|---|---|
+| RM-01 | Le planning est fixe toute l'année : trois créneaux par jour à 7 h, 10 h et 14 h. | — | Q09 / Q10 | ✅ oui |
+| RM-02 | Le service est fermé le lundi, le 25 décembre et le 1er janvier. | — | Q09 | ✅ oui |
+| RM-03 | La flotte comprend deux bateaux : Tikap (12 places) et Grand Bleu (24 places). | — | Q12 / Q15 | ✅ oui |
+| RM-04 | Les tarifs sont fixes : baleines 65 € / 40 €, dauphins 50 € / 30 €, privatisation 600 € / 1 100 €. | — | Q18 | ✅ oui |
+| RM-05 | Le paiement est intégral et exclusivement en ligne au moment de la réservation. | — | Q24 / Q25 | ✅ oui |
+| RM-06 | Une facture PDF est générée automatiquement à la confirmation de commande. | — | Q47 | ✅ oui |
+| RM-07 | Annulation client > 7 jours avant le départ → remboursement à 100 %. | — | Q31 | ✅ oui |
+| RM-08 | Annulation client > 48 h et ≤ 7 jours avant le départ → remboursement de 25 %. | — | Q31 | ⚠️ à confirmer (cohérence du barème douteuse) |
+| RM-09 | Annulation client < 48 h avant le départ → remboursement de 50 %. | — | Q31 | ⚠️ à confirmer (cohérence du barème douteuse) |
+| RM-10 | Annulation à l'initiative de l'entreprise (météo, panne) → remboursement à 100 %. | — | Q31 | ✅ oui |
+| RM-11 | La décision d'annulation météo est prise au plus tard 2 h avant le départ. | — | Q35 | ✅ oui |
+| RM-12 | Les annulations côté entreprise sont gérées manuellement (mail, SMS ou appel) ; aucun flux automatique n'est déclenché par le système. | — | Q36 | ✅ oui |
+| RM-13 | L'interface doit être multilingue (environ 60 % de la clientèle est étrangère). | — | Q07 | ✅ oui |
+| RM-14 | L'admin reçoit une notification (SMS et/ou email) à chaque annulation. | « Je préféres recevoir les infos d'annulation par sms/ email, au plus simple. » | Citation §1 | ✅ oui |
+| RM-15 | En cas de sur-réservation ou de groupe de 25+, l'exploitant tente de combler ou de répartir les participants entre les créneaux / bateaux disponibles. | « Si j'ai 25 réservations, j'essais de combler ou diviser les groupes. » | Citation §1 | ⚠️ à confirmer (logique exacte non précisée) |
+| RM-16 | Une sortie peut changer de nature en cours de route (ex. baleine → coucher de soleil) selon les conditions. | « Je fais un mix des activités une sortie baleine peut se transformer en sunset. » | Citation §1 | ⚠️ à confirmer (impact sur facturation et manifeste ?) |
+| RM-17 | La synchronisation avec des agendas externes (Google Calendar, Apple, Outlook) n'est pas requise. | — | Q17 | ✅ oui |
 
 ## 6. Ambiguïtés détectées
 
