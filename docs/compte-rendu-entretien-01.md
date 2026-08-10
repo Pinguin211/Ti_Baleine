@@ -184,8 +184,21 @@ ambiguïté détectée mais non levée reste une ambiguïté : elle va au §8.
 
 ## 7. Contraintes évoquées
 
-| # | Contrainte | Nature |
-|---|---|---|
+| # | Contrainte | Source | Nature |
+|---|---|---|---|
+| C-01 | La solution doit être **sur-mesure** — aucune solution SaaS (Bokun, Resagenda…) n'est acceptée. | Q01 | Stratégique |
+| C-02 | Le service est **fermé le lundi**, le 25 décembre et le 1er janvier : aucune réservation ni sortie ces jours-là. | Q09 | Métier |
+| C-03 | Les créneaux sont **figés** (7 h, 10 h, 14 h) ; le système ne doit pas permettre de créer des horaires ad hoc. | Q09 / Q10 | Métier |
+| C-04 | La capacité par sortie est bornée par le bateau affecté : **12 places** (Tikap) ou **24 places** (Grand Bleu) — aucune sur-réservation possible au-delà. | Q12 / Q15 | Métier / Physique |
+| C-05 | Le paiement est **intégral et 100 % en ligne** au moment de la réservation : aucun règlement partiel, différé ou en espèces n'est accepté via le système. | Q24 / Q25 | Métier |
+| C-06 | La décision d'annulation météo doit être prise et communiquée **au plus tard 2 h avant le départ**. | Q35 | Opérationnelle |
+| C-07 | Les annulations côté entreprise sont **entièrement manuelles** : le système ne pilote aucun flux automatique d'annulation de masse. | Q36 | Opérationnelle |
+| C-08 | Aucune **synchronisation avec des agendas externes** (Google Calendar, Apple, Outlook) n'est requise. | Q17 | Technique |
+| C-09 | L'interface doit être **multilingue dès le lancement** (≈ 60 % de clientèle étrangère). | Q07 | Métier |
+| C-10 | Une **facture PDF** doit être émise automatiquement à chaque confirmation de commande. | Q47 | Métier / Légale |
+| C-11 | L'activité est soumise aux obligations de la **capitainerie / Affaires Maritimes** (manifeste passagers — Q51 sans réponse) : contrainte réglementaire à confirmer mais déjà structurante pour la conception. | Q51 | Réglementaire |
+| C-12 | Le régime de **TVA** applicable (potentiellement 8,5 % Réunion) conditionne la configuration du prestataire de paiement et la génération des factures — non confirmé à ce stade. | Q46 / Q28 | Fiscale / Réglementaire |
+
 
 ## 8. Questions à poser au prochain entretien
 
