@@ -4,8 +4,9 @@
 
 ## 0️⃣ Question Filtre Majeure – Stratégie & Budget
 > **QUESTION ÉLIMINATOIRE** : Préfères‑tu une **solution SaaS clé‑en‑main** (ex. Bokun, Resagenda) avec abonnement/commission, ou un **développement sur‑mesure** qui t’appartient ?
-- └─► **Si SaaS** : Ignore les questions de la Section 8 (développement). Concentre‑toi sur la configuration de l’outil.
+- └─► **Si SaaS** : Ignore les questions de la Section 8 (développement). Concentre‑toi sur la configuration de l’outil. 
 - └─► **Si Sur‑Mesure** : Traite l’ensemble du questionnaire.
+sur mesure
 
 ---
 
@@ -13,10 +14,11 @@
 
 ### 1.1 Activités & Produits
 - Quels types d’activités proposes‑tu ? (excursions, observation baleines, plongée, privatisation, etc.)
+  sortie bateau, sur reservation pour voir baleines , dauphin , coucher soleil heure précise, toujours les meme tarifs , durée
 - Quelles formules/produits existent (découverte, premium, groupe) ? Durées associées ?
 
 ### 1.2 Intégration Web
-- Le système doit‑il être **intégré** à un site web existant ou **développé** comme une plateforme autonome ?
+- Le système doit‑il être **intégré** à un site web existant ou **développé** comme une plateforme autonome ? :web
   - **Si site existant** : Quel CMS/technologie (WordPress, Wix, Shopify…) ? As‑tu les accès admin ?
   - **Si autonome** : Dispose‑tu d’un nom de domaine, d’un logo et d’une charte graphique ?
 
@@ -24,6 +26,7 @@
 - L’interface doit‑elle être **multilingue dès le lancement** ?
   - **Si NON** : Passe à la section 2.
   - **Si OUI** : Quelles langues (FR, EN, DE, …) ? Qui fournit les traductions ?
+    6/10 clients étranger  donc oui
 
 ---
 
@@ -33,7 +36,9 @@
 - Nombre de départs **par jour / semaine** ?
 - Horaires fixes ou variables selon la saison ?
 - **Délai minimum** de réservation avant le départ (ex. 2 h, 24 h, 48 h) ?
-
+planning fixes , sortie a des heures précises, tous les jours , 7h 10H 14H
+25 decembre/1janvier off
+lundi off
 ### 2.2 Gestion des Capacités
 - Capacité **minimale** et **maximale** par sortie (places, bateau, véhicule) ?
 - Existe‑t‑il un **seuil de rentabilité** (nombre minimum de participants) ?
@@ -44,16 +49,20 @@
 - Combien de bateaux / ressources à gérer ?
   - **Si 1 seul** : Passe à 2.4.
   - **Si plusieurs** : Faut‑il affecter un bateau/capitaine précis à chaque créneau ?
-
+2 bateau tikap 12place
+grand bleu 24 places
 ### 2.4 Synchronisation Agenda
 - Le calendrier doit‑il être **synchronisé** avec des agendas externes (Google Calendar, Apple, Outlook) ?
-
+non
 ---
 
 ## 3️⃣ Tarification & Groupes
 
 ### 3.1 Structure Tarifaire
 - Quels tarifs proposes‑tu ? (adulte, enfant, bébé, résident, privatisation) ?
+  sortie baleine 65adule 40efnant
+  dauphin 50 adulte 30 enfants
+  600 /1100
 - La tarification varie‑t‑elle selon la **saison** ou le **jour de la semaine** ?
 
 ### 3.2 Réductions & Promotions
@@ -72,7 +81,7 @@
 > **QUESTION ÉLIMINATOIRE** : Les clients doivent‑ils **payer en ligne** lors de la réservation ?
 - └─► **Si NON** : Ignore le reste de la Section 4 et passe à la Section 5.
 - └─► **Si OUI** : Réponds aux sous‑questions suivantes :
-
+100% en ligne
 ### 4.1 Modalités de Paiement
 - Exiges‑tu **100 % du paiement** à la réservation ou un **acompte** ?
   - **Si acompte** : Quel pourcentage ou montant fixe ?
@@ -80,6 +89,7 @@
 
 ### 4.2 Moyens de Paiement & Passerelle
 - Quels moyens accepter en ligne ? (CB, Stripe, PayPal, Apple Pay, Google Pay, chèques vacances) ?
+  depend des taxes appliquer  banque CA du clients
 - As‑tu déjà un compte Stripe / PayPal professionnel vérifié ?
 
 ### 4.3 Paiement à Distance (Pay‑by‑Link)
@@ -91,6 +101,10 @@
 
 ### 5.1 Politique d’Annulation Client
 - Quel est le **délai** et le **pourcentage** de remboursement selon le moment de l’annulation ?
+  +7 jour = total
+  +48h  25%
+  _48h 50%
+   si par l'entreprise = remboursement
   - Exemple : 100 % si > 48 h, 50 % entre 48 h et 24 h, 0 % si < 24 h.
 
 ### 5.2 Gestion du No‑Show
@@ -99,19 +113,22 @@
 ### 5.3 Mode de Remboursement
 - En cas d’annulation valide, le système doit‑il **émettre un remboursement bancaire automatique** ou privilégier un **avoir / bon d’achat** ?
 
----
+--- toutes passe par l'appli 
 
 ## 6️⃣ Météo & Gestion des Incidents (Critique)
 
 ### 6.1 Prise de Décision
 - Qui décide de l’annulation météo et selon quels **critères** ? (seuils, source météo) ?
 - Combien de temps **avant le départ** (veille, H‑2) ?
-
+ 2heures avant au maximum - contact le client par telephone
+  
 ### 6.2 Workflow d’Annulation Météo (Organisateur)
 - En cas d’annulation par le prestataire (météo/panne), comment gérer les clients **en masse** ?
   - **Option A** : Envoi d’un SMS/Email avec **lien de re‑choix** de date.
   - **Option B** : Génération automatique d’un **avoir / bon d’achat**.
   - **Option C** : Remboursement automatique global.
+pas d'annulation en ligne
+annulation par mail,sms, appel
 
 ### 6.3 Incident Technique (Panne Bâteau)
 - En cas d’indisponibilité d’un navire, faut‑il **basculer automatiquement** la liste de passagers sur un autre bateau/créneau ?
@@ -158,7 +175,7 @@
   - **Si OUI** : Quels taux ? (Réunion 8,5 % / Métropole 20 % / 10 %)
 
 ### 9.2 Édition de Factures
-- Le site doit‑il **générer automatiquement** une **facture PDF** à la validation de la commande ?
+- Le site doit‑il **générer automatiquement** une **facture PDF** à la validation de la commande ? oui
 - Faut‑il pouvoir **modifier manuellement** une facture depuis le back‑office (ajustement prix, changement de nom) ?
 - En cas d’annulation/remboursement, le système doit‑il créer une **facture d’avoir** conforme ?
 
