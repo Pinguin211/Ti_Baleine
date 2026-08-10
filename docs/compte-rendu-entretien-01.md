@@ -127,7 +127,7 @@ En cas d'annulation par le client, le barème annoncé est le suivant :
 |---|---|
 | Plus de 7 jours | 100 % |
 | Entre 48 h et 7 jours | 75 % |
-| Moins de 48 h | 50 % *(à confirmer — semble inversé)* |
+| Moins de 48 h | 50 % |
 | Annulation par l'entreprise | 100 % |
 
 
@@ -157,8 +157,8 @@ Le commanditaire souhaite être informé des annulations par **SMS et/ou email**
 | RM-05 | Le paiement est intégral et exclusivement en ligne au moment de la réservation. | — | Q24 / Q25 | ✅ oui |
 | RM-06 | Une facture PDF est générée automatiquement à la confirmation de commande. | — | Q47 | ✅ oui |
 | RM-07 | Annulation client > 7 jours avant le départ → remboursement à 100 %. | — | Q31 | ✅ oui |
-| RM-08 | Annulation client > 48 h et ≤ 7 jours avant le départ → remboursement de 25 %. | — | Q31 | ⚠️ à confirmer (cohérence du barème douteuse) |
-| RM-09 | Annulation client < 48 h avant le départ → remboursement de 50 %. | — | Q31 | ⚠️ à confirmer (cohérence du barème douteuse) |
+| RM-08 | Annulation client > 48 h et ≤ 7 jours avant le départ → remboursement de 75 %. | — | Q31 | ✅ oui |
+| RM-09 | Annulation client < 48 h avant le départ → remboursement de 50 %. | — | Q31 | ✅ oui |
 | RM-10 | Annulation à l'initiative de l'entreprise (météo, panne) → remboursement à 100 %. | — | Q31 | ✅ oui |
 | RM-11 | La décision d'annulation météo est prise au plus tard 2 h avant le départ. | — | Q35 | ✅ oui |
 | RM-12 | Les annulations côté entreprise sont gérées manuellement (mail, SMS ou appel) ; aucun flux automatique n'est déclenché par le système. | — | Q36 | ✅ oui |
@@ -173,9 +173,14 @@ Le commanditaire souhaite être informé des annulations par **SMS et/ou email**
 Ce que le client a dit et qui peut se comprendre de plusieurs façons. Une
 ambiguïté détectée mais non levée reste une ambiguïté : elle va au §8.
 
-| # | Formulation | Lectures possibles | Levée ? |
-|---|---|---|---|
-| 1 | « … » | (a) … (b) … | non |
+| # | Formulation | Source | Lectures possibles | Levée ? |
+|---|---|---|---|---|
+| AMB-01 | « Web » | Q04 | (a) Module embarqué dans un site existant (WordPress, Wix…) — Q05 s'appliquerait ; (b) Plateforme autonome créée de zéro avec son propre domaine — Q06 s'appliquerait. | ❌ non |
+| AMB-02 | « Dépend des taxes appliquées / de la banque (CA) du client » | Q28 | (a) Le prestataire de paiement sera choisi selon le régime fiscal de *l'entreprise* (TVA Réunion 8,5 % ?) ; (b) Le choix dépend du moyen de paiement habituel de *chaque client* (CB étrangère, PayPal, Apple Pay…). | ❌ non |
+| AMB-03 | « Je préféres recevoir les infos d'annulation par sms/email » | Citation §1 | (a) Notification uniquement lors d'une annulation client ; (b) Notification à chaque événement : nouvelle réservation *et* annulation (ce que Q41 laisse aussi entendre). | ❌ non |
+| AMB-04 | « Si j'ai 25 réservations, j'essais de combler ou diviser les groupes » | Citation §1 | (a) Il répartit manuellement les clients entre créneaux ou bateaux disponibles ; (b) Il attend que chaque créneau soit plein avant d'en ouvrir un autre (logique de remplissage séquentiel) ; (c) Il divise le groupe sur plusieurs bateaux simultanément. La capacité max du Grand Bleu étant 24 places, « 25 réservations » implique obligatoirement un deuxième bateau ou un deuxième créneau. | ❌ non |
+| AMB-05 | « Je fais un mix des activités, une sortie baleine peut se transformer en sunset » | Citation §1 | (a) Changement de nature décidé *avant* le départ (impact sur réservation, prix et facture) ; (b) Changement décidé *en mer* selon les conditions (décision purement opérationnelle, sans impact sur le système). | ❌ non |
+| AMB-06 | Langues cibles et responsabilité des traductions | Q07 / Q08 | (a) Le client fournit les textes dans chaque langue ; (b) L'équipe prend en charge la traduction (coût à intégrer) ; (c) Recours à un traducteur ou outil tiers (DeepL, prestataire). | ❌ non |
 
 ## 7. Contraintes évoquées
 
