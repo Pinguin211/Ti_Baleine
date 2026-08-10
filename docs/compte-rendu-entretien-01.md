@@ -1,9 +1,9 @@
 # Compte rendu d'entretien n° 1
 
-**Date :** …
-**Durée :** …
+**Date :** 10/08/206
+**Durée :** 10 minutes
 **Interlocuteur :** le commanditaire
-**Présents pour l'équipe :** …
+**Présents pour l'équipe :** Thomas, Loic, Benjamin et Ivan
 
 Rédigé le jour même. C'est la première trace du projet et la source du cahier des
 charges.
@@ -15,7 +15,9 @@ charges.
 Ses mots, pas les vôtres. Citer quand la formulation est ambiguë — c'est
 précisément l'ambiguïté qu'il faudra lever.
 
-> « … »
+> « Je préféres recevoir les infos d'annulation par sms/ email, au plus simple.»
+> « Si j'ai 25 réservations, j'essais de combler ou diviser les groupes.»
+> « Je fais un mix des activités une sortie baleine peut se transformer en sunset.»
 
 ## 2. Questions posées et réponses obtenues
 
