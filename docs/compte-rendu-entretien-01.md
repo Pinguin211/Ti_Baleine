@@ -61,7 +61,7 @@ suite.
 | Q28 | Quels moyens de paiement accepter en ligne (CB, Stripe, PayPal, Apple Pay, Google Pay, Chèques Vacances Connect) ? | Dépend des taxes appliquées / de la banque (CA) du client. *(à préciser)* |
 | Q29 | Avez-vous déjà un compte Stripe / PayPal professionnel vérifié ? | |
 | Q30 | Souhaitez-vous pouvoir envoyer un lien de paiement sécurisé par SMS/WhatsApp (Pay-by-Link) pour valider une réservation prise par téléphone ? | |
-| Q31 | Quel est le barème / délai et le pourcentage de remboursement selon le moment de l’annulation par le client (ex. 100 % si > 48 h, 50 % entre 48 h et 24 h, 0 % si < 24 h) ? | Plus de 7 jours avant : remboursement total. Plus de 48 h : 25 %. Moins de 48 h : 50 %. Annulation par l’entreprise : remboursement. *(barème à clarifier : 25 % à +48 h vs 50 % à −48 h semble incohérent)* |
+| Q31 | Quel est le barème / délai et le pourcentage de remboursement selon le moment de l’annulation par le client (ex. 100 % si > 48 h, 50 % entre 48 h et 24 h, 0 % si < 24 h) ? | Plus de 7 jours avant : remboursement total. Plus de 48 h : 75 %. Moins de 48 h : 50 %. Annulation par l’entreprise : remboursement. *(barème à clarifier : 25 % à +48 h vs 50 % à −48 h semble incohérent)* |
 | Q32 | Que faire si le client ne se présente pas le jour J (No-Show) ? | |
 | Q33 | En cas d’annulation valide, le système doit-il émettre un remboursement bancaire automatique ou privilégier un avoir / bon d’achat ? | |
 | Q34 | Qui décide de l’annulation météo et selon quels critères (seuils, source météo) ? | |
