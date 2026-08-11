@@ -193,7 +193,6 @@ Points de cadrage restants avant validation finale du cahier des charges :
 | 3 | Qui fournit et valide les textes des CGV et mentions légales à afficher au checkout ? | |
 | 4 | Quelles cases à cocher obligatoires doivent apparaître lors de la réservation en ligne (CGV, décharge, newsletter…) ? | |
 | 5 | Quelle durée de conservation des données personnelles (nom, e-mail, téléphone) doit être appliquée au titre du RGPD ? | |
-| 6 | Les enfants de moins de 4 ans sont-ils toujours gratuits, ou soumis à une demande préalable systématique selon les conditions de sécurité ? | |
 
 Étape suivante prévue : rédaction et signature du Cahier des Charges
 Fonctionnel et Technique (CCFT) définitif basé sur les CR n° 1 et n° 2.
@@ -208,3 +207,4 @@ pas touchés. C'est là que se cachent les découvertes tardives et coûteuses.
 - Conformité RGPD (durée de conservation des données collectées)
 - Détail opérationnel du statut « moins de 4 ans » (gratuité vs demande préalable)
 - Budget, délais de mise en service et contrat de maintenance (déjà ouverts au CR n° 1)
+- Créneaux horaires de la privatisation : elle a lieu le plus souvent l'après-midi pour le sunset, mais la question de savoir si des privatisations sont également prises le matin n'a pas été abordée
