@@ -1,37 +1,35 @@
 /**
  * @file layouts/PdfLayout.tsx
- * @description Layout Prestige du Cahier des Charges Fonctionnel — Ti'Baleine.
+ * @description Layout Pro du Cahier des Charges Fonctionnel — Ti'Baleine.
  *
- * Structure en flux continu & naturel :
- *   - Page 1 : Page de Couverture Prestige
- *   - Pages suivantes : Flux continu naturel avec en-tête récurrent et pagination dynamique
+ * Reproduit fidèlement le style professionnel et épuré du document de référence :
+ * - Hero header corporate Navy avec badge et métadonnées en 3 colonnes
+ * - Sections numérotées avec titres soulignés en bleu
+ * - Blocs KPIs, In-Scope / Out-of-Scope comparatifs
+ * - Grille tarifaire avec pills de prix et header navy
+ * - Stepper parcours client numéroté
+ * - Section Maquettes UI (Desktop & Mobile)
+ * - Footer corporate avec numérotation Page X / Y
  */
 import { Document, Page, View, StyleSheet } from '../shims/react-pdf'
-import { PageFooter } from '../components/shared/PageFooter'
-import { PageHeaderBanner } from '../components/shared/PageHeaderBanner'
-import { EnhancedCoverSection } from '../components/sections/cdc/EnhancedCoverSection'
-import { ObjectiveCards } from '../components/sections/cdc/ObjectiveCards'
-import { ScopeMatrixSection } from '../components/sections/cdc/ScopeMatrixSection'
-import { FleetShowcaseSection } from '../components/sections/cdc/FleetShowcaseSection'
-import { TarifCardsSection } from '../components/sections/cdc/TarifCardsSection'
-import { BookingStepperSection } from '../components/sections/cdc/BookingStepperSection'
-import { AdminAndDeliverablesSection } from '../components/sections/cdc/AdminAndDeliverablesSection'
-import { MockupsSection } from '../components/sections/cdc/MockupsSection'
-import { dimensions } from '../styles/tokens'
+import { ProHeroHeader } from '../components/sections/cdc/ProHeroHeader'
+import { ProSection1 } from '../components/sections/cdc/ProSection1'
+import { ProSection2 } from '../components/sections/cdc/ProSection2'
+import { ProSection3 } from '../components/sections/cdc/ProSection3'
+import { ProSection4 } from '../components/sections/cdc/ProSection4'
+import { ProSection5_6 } from '../components/sections/cdc/ProSection5_6'
+import { ProSection7_Mockups } from '../components/sections/cdc/ProSection7_Mockups'
+import { ProPageFooter } from '../components/shared/ProPageFooter'
 
 const styles = StyleSheet.create({
-  coverPage: {
+  page: {
     backgroundColor: '#ffffff',
-    padding: 0,
-  },
-  contentPage: {
-    backgroundColor: '#ffffff',
-    paddingTop: dimensions.pagePaddingCompact,
-    paddingBottom: dimensions.pagePaddingV,
-    paddingHorizontal: dimensions.pagePaddingH,
+    paddingHorizontal: 40,
+    paddingTop: 36,
+    paddingBottom: 48,
     fontFamily: 'Helvetica',
   },
-  bodyContainer: {
+  body: {
     flexDirection: 'column',
   },
 })
@@ -40,45 +38,35 @@ export function PdfLayout() {
   return (
     <Document
       title="Cahier des Charges Fonctionnel — Ti'Baleine"
-      author="Thomas, Loïc, Benjamin et Ivan"
-      subject="Plateforme Web de Réservation et Gestion d'Excursions Maritimes"
+      author="Thomas, Loïc, Benjamin & Ivan"
+      subject="Plateforme Web de Réservation en Ligne — Ti'Baleine"
     >
-      {/* ── Page 1 : Couverture Prestige ──────────────────────────────────── */}
-      <Page size="A4" style={styles.coverPage}>
-        <EnhancedCoverSection />
-      </Page>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.body}>
+          {/* En-tête Hero Navy (Page 1) */}
+          <ProHeroHeader />
 
-      {/* ── Pages de Contenu en Flux Continu ──────────────────────────────── */}
-      <Page size="A4" style={styles.contentPage}>
-        {/* En-tête de page répété sur chaque page générée */}
-        <PageHeaderBanner currentSection="Cahier des Charges Fonctionnel" />
+          {/* 1. Contexte & Objectifs */}
+          <ProSection1 />
 
-        {/* Flux de contenu structuré en composants riches */}
-        <View style={styles.bodyContainer}>
-          {/* Section 1 : Contexte & Objectifs */}
-          <ObjectiveCards />
+          {/* 2. Périmètre du Projet (In-Scope / Out-of-Scope) */}
+          <ProSection2 />
 
-          {/* Section 2 : Périmètre In-Scope vs Out-of-Scope */}
-          <ScopeMatrixSection />
+          {/* 3. Règles Métier, Flotte & Grille Tarifaire */}
+          <ProSection3 />
 
-          {/* Section 3.1 : Flotte, Règles Métier & Planning */}
-          <FleetShowcaseSection />
+          {/* 4. Description des Fonctionnalités (Client & Admin) */}
+          <ProSection4 />
 
-          {/* Section 3.2 : Grille Tarifaire par Activité */}
-          <TarifCardsSection />
+          {/* 5. Exigences & 6. Livrables */}
+          <ProSection5_6 />
 
-          {/* Section 4.1 : Stepper Parcours Client */}
-          <BookingStepperSection />
-
-          {/* Sections 4.2, 5 & 6 : Espace Admin, Exigences & Livrables */}
-          <AdminAndDeliverablesSection />
-
-          {/* Section 7 : Maquettes UI Desktop & Mobile */}
-          <MockupsSection />
+          {/* 7. Maquettes UI (Desktop & Mobile) */}
+          <ProSection7_Mockups />
         </View>
 
-        {/* Numérotation continue au pied de chaque page */}
-        <PageFooter format={(page, total) => `Ti'Baleine · Cahier des Charges — Page ${page} sur ${total}`} />
+        {/* Footer récurrent Page X / Y */}
+        <ProPageFooter />
       </Page>
     </Document>
   )
