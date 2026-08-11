@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ti'Baleine — Sorties en Mer · Martinique</title>
+  <meta name="description" content="Ti'Baleine — Réservez vos sorties d'observation des baleines et des dauphins en Martinique. 3 départs par jour, 7j/7." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .playfair { font-family: 'Playfair Display', serif; }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Hero overlay */
+    .hero-overlay {
+      background: linear-gradient(to bottom,
+        rgba(2,15,36,0.55) 0%,
+        rgba(2,62,138,0.35) 50%,
+        rgba(2,15,36,0.90) 100%);
+    }
+
+    /* Glassmorphism nav */
+    .glass-nav {
+      background: rgba(2, 20, 50, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* Card hover lift */
+    .card-lift {
+      transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .card-lift:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(0,119,182,0.25);
+    }
+
+    /* Gradient text */
+    .grad-text {
+      background: linear-gradient(90deg, #00B4D8, #90E0EF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Step connector */
+    .step-line::after {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #0077B6, #00B4D8);
+      opacity: 0.3;
+    }
+
+    /* Language dropdown */
+    .lang-dropdown { display: none; }
+    .lang-btn:focus + .lang-dropdown,
+    .lang-dropdown:hover,
+    .lang-wrapper:focus-within .lang-dropdown { display: block; }
+
+    /* Animate in */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.7s ease forwards; }
+    .delay-1 { animation-delay: 0.15s; opacity: 0; }
+    .delay-2 { animation-delay: 0.30s; opacity: 0; }
+    .delay-3 { animation-delay: 0.45s; opacity: 0; }
+
+    /* Wave divider */
+    .wave-divider { display: block; }
+
+    /* Tarif table */
+    table { border-collapse: separate; border-spacing: 0; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<!-- ═══════════════════════════════════════
+  HEADER / NAV
+════════════════════════════════════════ -->
+<header id="header" class="fixed top-0 left-0 right-0 z-50 glass-nav">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+
+      <!-- Logo -->
+      <a href="../index.html" class="flex items-center gap-3">
+        <span class="text-2xl">🐋</span>
+        <span class="playfair text-xl font-bold text-white">Ti'Baleine</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="#prestations" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Prestations</a>
+        <a href="#horaires" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Horaires</a>
+        <a href="#tarifs" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Tarifs</a>
+        <a href="#comment" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Comment réserver</a>
+      </nav>
+
+      <!-- Right: Lang + CTA -->
+      <div class="flex items-center gap-3">
+
+        <!-- Language Selector Widget -->
+        <div class="lang-wrapper relative" id="langWrapper">
+          <button id="langBtn" onclick="toggleLang()" class="lang-btn flex items-center gap-1.5 glass-nav border border-white/20 rounded-full px-3 py-1.5 text-white/80 hover:text-white text-sm font-medium transition-all hover:border-white/40 focus:outline-none">
+            <span id="langFlag">🇫🇷</span>
+            <span id="langCode">FR</span>
+            <svg class="w-3 h-3 ml-0.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div id="langDropdown" class="lang-dropdown hidden absolute right-0 mt-2 w-36 bg-slate-900 border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50">
+            <button onclick="setLang('fr','🇫🇷','FR')" class="flex items-center gap-3 w-full px-4 py-3 text-sm text-white hover:bg-white/10 transition-colors">
+              <span>🇫🇷</span><span>Français</span>
+            </button>
+            <button onclick="setLang('en','🇬🇧','EN')" class="flex items-center gap-3 w-full px-4 py-3 text-sm text-white hover:bg-white/10 transition-colors">
+              <span>🇬🇧</span><span>English</span>
+            </button>
+            <button onclick="setLang('es','🇪🇸','ES')" class="flex items-center gap-3 w-full px-4 py-3 text-sm text-white hover:bg-white/10 transition-colors">
+              <span>🇪🇸</span><span>Español</span>
+            </button>
+            <button onclick="setLang('zh','🇨🇳','中文')" class="flex items-center gap-3 w-full px-4 py-3 text-sm text-white hover:bg-white/10 transition-colors">
+              <span>🇨🇳</span><span>中文</span>
+            </button>
+          </div>
+        </div>
+
+        <a href="reservation.html" class="hidden md:inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm px-5 py-2.5 rounded-full shadow-lg transition-all duration-300 hover:shadow-cyan-500/30 hover:scale-105">
+          Réserver
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+
+        <!-- Mobile menu button -->
+        <button onclick="toggleMobileMenu()" class="md:hidden text-white p-1">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-white/10 py-4 space-y-3">
+      <a href="#prestations" class="block text-white/70 hover:text-white text-sm py-2">Prestations</a>
+      <a href="#horaires" class="block text-white/70 hover:text-white text-sm py-2">Horaires</a>
+      <a href="#tarifs" class="block text-white/70 hover:text-white text-sm py-2">Tarifs</a>
+      <a href="reservation.html" class="block bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold text-sm px-4 py-3 rounded-xl text-center mt-2">Réserver maintenant →</a>
+    </div>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════
+  HERO SECTION
+════════════════════════════════════════ -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+
+  <!-- Background image -->
+  <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('../assets/hero.png')"></div>
+  <div class="hero-overlay absolute inset-0"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 text-center px-4 max-w-4xl mx-auto pt-16">
+    <div class="fade-up">
+      <span class="inline-flex items-center gap-2 bg-white/10 border border-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 text-cyan-300 text-xs font-semibold tracking-widest uppercase mb-8">
+        🐬 Martinique · 7j/7
+      </span>
+    </div>
+    <h1 class="playfair text-5xl sm:text-6xl md:text-8xl font-black text-white leading-tight mb-6 fade-up delay-1">
+      L'Océan<br/><em class="italic grad-text">vous appelle</em>
+    </h1>
+    <p class="text-blue-100/80 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-10 fade-up delay-2">
+      Partez à la rencontre des baleines et des dauphins des Caraïbes. Des expériences inoubliables, encadrées par un naturaliste expert.
+    </p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 fade-up delay-3">
+      <a href="reservation.html" id="cta-reserver" class="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-base px-8 py-4 rounded-2xl shadow-2xl shadow-cyan-500/30 transition-all duration-300 hover:scale-105 hover:shadow-cyan-500/50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Réserver une sortie
+      </a>
+      <a href="#prestations" class="inline-flex items-center gap-2 text-white/70 hover:text-white font-medium text-sm transition-colors border border-white/20 rounded-2xl px-6 py-4 hover:border-white/40 backdrop-blur-sm">
+        Découvrir nos sorties
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      </a>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12">
+      <div class="text-center">
+        <div class="playfair text-3xl font-bold text-white">36</div>
+        <div class="text-white/50 text-xs tracking-widest uppercase mt-1">Places / créneau</div>
+      </div>
+      <div class="hidden sm:block w-px h-10 bg-white/20"></div>
+      <div class="text-center">
+        <div class="playfair text-3xl font-bold text-white">3</div>
+        <div class="text-white/50 text-xs tracking-widest uppercase mt-1">Départs / jour</div>
+      </div>
+      <div class="hidden sm:block w-px h-10 bg-white/20"></div>
+      <div class="text-center">
+        <div class="playfair text-3xl font-bold text-white">7j/7</div>
+        <div class="text-white/50 text-xs tracking-widest uppercase mt-1">Toute l'année</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/40">
+    <span class="text-xs tracking-widest uppercase">Scroll</span>
+    <div class="w-px h-10 bg-gradient-to-b from-white/40 to-transparent"></div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+  PRESTATIONS
+════════════════════════════════════════ -->
+<section id="prestations" class="py-24 px-4 bg-white">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="text-center mb-16">
+      <span class="text-cyan-600 text-sm font-semibold tracking-widest uppercase">Nos Sorties</span>
+      <h2 class="playfair text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">Choisissez votre aventure</h2>
+      <p class="text-slate-500 max-w-xl mx-auto">Trois types d'expériences maritimes uniques, adaptées à tous les explorateurs.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <!-- Baleines -->
+      <div class="card-lift group relative rounded-3xl overflow-hidden border border-slate-100 bg-white shadow-lg">
+        <div class="h-56 bg-gradient-to-br from-blue-900 to-cyan-700 flex items-center justify-center relative overflow-hidden">
+          <span class="text-8xl group-hover:scale-110 transition-transform duration-500">🐋</span>
+          <div class="absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent"></div>
+          <div class="absolute bottom-4 left-4">
+            <span class="bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full">Sortie Phare</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="playfair text-xl font-bold text-slate-900 mb-2">Observation des Baleines</h3>
+          <p class="text-slate-500 text-sm leading-relaxed mb-4">Partez à la rencontre des majestueuses baleines à bosse des Caraïbes, guidés par un naturaliste expert.</p>
+          <div class="flex items-end justify-between">
+            <div>
+              <div class="text-2xl font-bold text-blue-700">65 €<span class="text-sm text-slate-400 font-normal">/adulte</span></div>
+              <div class="text-xs text-slate-400 mt-0.5">40 € / enfant (4–11 ans)</div>
+            </div>
+            <a href="reservation.html?type=baleines" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
+              Réserver →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dauphins -->
+      <div class="card-lift group relative rounded-3xl overflow-hidden border border-slate-100 bg-white shadow-lg">
+        <div class="h-56 bg-gradient-to-br from-teal-800 to-emerald-500 flex items-center justify-center relative overflow-hidden">
+          <span class="text-8xl group-hover:scale-110 transition-transform duration-500">🐬</span>
+          <div class="absolute inset-0 bg-gradient-to-t from-teal-900/80 to-transparent"></div>
+          <div class="absolute bottom-4 left-4">
+            <span class="bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full">Populaire</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="playfair text-xl font-bold text-slate-900 mb-2">Observation des Dauphins</h3>
+          <p class="text-slate-500 text-sm leading-relaxed mb-4">Nagez avec les dauphins sauvages dans les eaux cristallines de la Martinique. Une expérience magique pour toute la famille.</p>
+          <div class="flex items-end justify-between">
+            <div>
+              <div class="text-2xl font-bold text-teal-700">50 €<span class="text-sm text-slate-400 font-normal">/adulte</span></div>
+              <div class="text-xs text-slate-400 mt-0.5">30 € / enfant (4–11 ans)</div>
+            </div>
+            <a href="reservation.html?type=dauphins" class="bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
+              Réserver →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Privatisation -->
+      <div class="card-lift group relative rounded-3xl overflow-hidden border border-amber-100 bg-gradient-to-b from-amber-50 to-orange-50 shadow-lg">
+        <div class="h-56 bg-gradient-to-br from-amber-800 to-orange-500 flex items-center justify-center relative overflow-hidden">
+          <span class="text-8xl group-hover:scale-110 transition-transform duration-500">⛵</span>
+          <div class="absolute inset-0 bg-gradient-to-t from-amber-900/80 to-transparent"></div>
+          <div class="absolute bottom-4 left-4">
+            <span class="bg-amber-400/30 backdrop-blur-sm text-amber-200 text-xs font-bold px-3 py-1 rounded-full border border-amber-400/30">✦ Premium</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="playfair text-xl font-bold text-slate-900 mb-2">Privatisation · Sunset</h3>
+          <p class="text-slate-500 text-sm leading-relaxed mb-4">Réservez l'un de nos navires pour un coucher de soleil privatif inoubliable. Idéal pour événements ou groupes.</p>
+          <div class="flex items-end justify-between">
+            <div>
+              <div class="text-2xl font-bold text-amber-700">600 €<span class="text-sm text-slate-400 font-normal"> Tikap</span></div>
+              <div class="text-xs text-slate-400 mt-0.5">1 100 € — Grand Bleu (24p)</div>
+            </div>
+            <a href="reservation.html?type=privatisation" class="bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
+              Réserver →
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+  HORAIRES
+════════════════════════════════════════ -->
+<section id="horaires" class="py-24 px-4 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="text-center mb-16">
+      <span class="text-cyan-400 text-sm font-semibold tracking-widest uppercase">Planning</span>
+      <h2 class="playfair text-4xl md:text-5xl font-bold text-white mt-3 mb-4">Nos créneaux de départ</h2>
+      <p class="text-blue-200/60 max-w-xl mx-auto">Trois départs quotidiens, disponibles 7 jours sur 7, toute l'année.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <!-- 7h -->
+      <div class="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-8 text-center group hover:border-cyan-500/50 transition-colors">
+        <div class="text-5xl mb-4">🌅</div>
+        <div class="playfair text-4xl font-bold text-white mb-1">07h00</div>
+        <div class="text-cyan-400 font-semibold text-sm mb-3">Départ Matin</div>
+        <p class="text-blue-200/50 text-sm">Profitez de la sérénité des premières heures et des meilleures conditions de mer.</p>
+      </div>
+      <!-- 10h -->
+      <div class="relative rounded-2xl border border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm p-8 text-center scale-105">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-cyan-500 text-white text-xs font-bold px-4 py-1 rounded-full">Populaire</div>
+        <div class="text-5xl mb-4">☀️</div>
+        <div class="playfair text-4xl font-bold text-white mb-1">10h00</div>
+        <div class="text-cyan-400 font-semibold text-sm mb-3">Départ Milieu de Matinée</div>
+        <p class="text-blue-200/50 text-sm">Le créneau idéal pour les familles, avec le soleil à son zénith et la faune marine très active.</p>
+      </div>
+      <!-- 14h -->
+      <div class="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-8 text-center group hover:border-cyan-500/50 transition-colors">
+        <div class="text-5xl mb-4">🌇</div>
+        <div class="playfair text-4xl font-bold text-white mb-1">14h00</div>
+        <div class="text-cyan-400 font-semibold text-sm mb-3">Départ Après-midi</div>
+        <p class="text-blue-200/50 text-sm">Une sortie en lumière dorée pour des photos sublimes et une atmosphère apaisante.</p>
+      </div>
+    </div>
+
+    <!-- Note fermetures -->
+    <div class="flex items-start gap-3 bg-white/5 border border-white/10 rounded-xl px-6 py-4 max-w-2xl mx-auto">
+      <svg class="w-5 h-5 text-amber-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <p class="text-blue-200/60 text-sm">Fermetures annuelles uniquement les <strong class="text-white">25 décembre</strong> et <strong class="text-white">1er janvier</strong>. Les réservations en ligne se clôturent automatiquement <strong class="text-white">2 heures avant le départ</strong>.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+  TARIFS
+════════════════════════════════════════ -->
+<section id="tarifs" class="py-24 px-4 bg-white">
+  <div class="max-w-4xl mx-auto">
+
+    <div class="text-center mb-16">
+      <span class="text-cyan-600 text-sm font-semibold tracking-widest uppercase">Prix</span>
+      <h2 class="playfair text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">Grille tarifaire</h2>
+      <p class="text-slate-500 max-w-xl mx-auto">Tarifs fixes, sans variation saisonnière. Paiement 100 % en ligne par carte bancaire.</p>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 overflow-hidden shadow-xl">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+            <th class="text-left px-6 py-4 font-semibold">Prestation</th>
+            <th class="text-center px-6 py-4 font-semibold">Tranche d'âge</th>
+            <th class="text-right px-6 py-4 font-semibold">Tarif</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-100 hover:bg-blue-50/50 transition-colors">
+            <td class="px-6 py-4 font-semibold text-slate-800 flex items-center gap-3"><span class="text-xl">🐋</span>Sortie Baleines — Adulte</td>
+            <td class="px-6 py-4 text-center text-slate-500">12 ans et plus</td>
+            <td class="px-6 py-4 text-right font-bold text-blue-700 text-base">65 €</td>
+          </tr>
+          <tr class="border-b border-slate-100 hover:bg-blue-50/50 transition-colors bg-slate-50/50">
+            <td class="px-6 py-4 font-semibold text-slate-800 flex items-center gap-3"><span class="text-xl">🐋</span>Sortie Baleines — Enfant</td>
+            <td class="px-6 py-4 text-center text-slate-500">4 à 11 ans</td>
+            <td class="px-6 py-4 text-right font-bold text-blue-700 text-base">40 €</td>
+          </tr>
+          <tr class="border-b border-slate-100 hover:bg-teal-50/50 transition-colors">
+            <td class="px-6 py-4 font-semibold text-slate-800 flex items-center gap-3"><span class="text-xl">🐬</span>Sortie Dauphins — Adulte</td>
+            <td class="px-6 py-4 text-center text-slate-500">12 ans et plus</td>
+            <td class="px-6 py-4 text-right font-bold text-teal-700 text-base">50 €</td>
+          </tr>
+          <tr class="border-b border-slate-100 hover:bg-teal-50/50 transition-colors bg-slate-50/50">
+            <td class="px-6 py-4 font-semibold text-slate-800 flex items-center gap-3"><span class="text-xl">🐬</span>Sortie Dauphins — Enfant</td>
+            <td class="px-6 py-4 text-center text-slate-500">4 à 11 ans</td>
+            <td class="px-6 py-4 text-right font-bold text-teal-700 text-base">30 €</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="px-6 py-4 font-semibold text-slate-500 italic flex items-center gap-3"><span class="text-xl">👶</span>Moins de 4 ans</td>
+            <td class="px-6 py-4 text-center text-slate-400">Moins de 4 ans</td>
+            <td class="px-6 py-4 text-right font-bold text-emerald-600 text-base">Gratuit*</td>
+          </tr>
+          <tr class="border-b border-slate-100 hover:bg-amber-50/50 transition-colors">
+            <td class="px-6 py-4 font-semibold text-slate-800 flex items-center gap-3"><span class="text-xl">⛵</span>Privatisation Tikap</td>
+            <td class="px-6 py-4 text-center text-slate-500">Demi-journée Sunset</td>
+            <td class="px-6 py-4 text-right font-bold text-amber-700 text-base">600 €</td>
+          </tr>
+          <tr class="hover:bg-amber-50/50 transition-colors bg-slate-50/50">
+            <td class="px-6 py-4 font-semibold text-slate-800 flex items-center gap-3"><span class="text-xl">🚢</span>Privatisation Grand Bleu</td>
+            <td class="px-6 py-4 text-center text-slate-500">Demi-journée Sunset</td>
+            <td class="px-6 py-4 text-right font-bold text-amber-700 text-base">1 100 €</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="bg-slate-50 px-6 py-3 text-xs text-slate-400 border-t border-slate-200">
+        * Les enfants de moins de 4 ans sont accueillis gratuitement sur demande, sous réserve des conditions de sécurité à bord.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+  COMMENT RÉSERVER (Stepper)
+════════════════════════════════════════ -->
+<section id="comment" class="py-24 px-4 bg-gradient-to-b from-slate-50 to-blue-50">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="text-center mb-16">
+      <span class="text-cyan-600 text-sm font-semibold tracking-widest uppercase">Réservation</span>
+      <h2 class="playfair text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">Comment réserver ?</h2>
+      <p class="text-slate-500 max-w-xl mx-auto">Un processus simple en 4 étapes, sans création de compte.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <!-- Step 1 -->
+      <div class="text-center">
+        <div class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg shadow-blue-500/25">🎯</div>
+        <div class="text-xs font-bold tracking-widest text-cyan-600 uppercase mb-2">Étape 1</div>
+        <h3 class="font-bold text-slate-900 mb-2">Choisir la prestation</h3>
+        <p class="text-slate-500 text-sm">Baleines, Dauphins ou Privatisation.</p>
+      </div>
+      <!-- Step 2 -->
+      <div class="text-center">
+        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg shadow-indigo-500/25">📅</div>
+        <div class="text-xs font-bold tracking-widest text-blue-600 uppercase mb-2">Étape 2</div>
+        <h3 class="font-bold text-slate-900 mb-2">Date &amp; Créneau</h3>
+        <p class="text-slate-500 text-sm">Sélectionnez votre jour et votre heure de départ (7h, 10h ou 14h).</p>
+      </div>
+      <!-- Step 3 -->
+      <div class="text-center">
+        <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg shadow-violet-500/25">👥</div>
+        <div class="text-xs font-bold tracking-widest text-indigo-600 uppercase mb-2">Étape 3</div>
+        <h3 class="font-bold text-slate-900 mb-2">Participants &amp; Infos</h3>
+        <p class="text-slate-500 text-sm">Indiquez le nombre de participants et vos coordonnées.</p>
+      </div>
+      <!-- Step 4 -->
+      <div class="text-center">
+        <div class="w-16 h-16 bg-gradient-to-br from-violet-500 to-pink-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg shadow-pink-500/25">💳</div>
+        <div class="text-xs font-bold tracking-widest text-violet-600 uppercase mb-2">Étape 4</div>
+        <h3 class="font-bold text-slate-900 mb-2">Paiement</h3>
+        <p class="text-slate-500 text-sm">Réglez en toute sécurité par carte bancaire. Confirmation et facture par email.</p>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <a href="reservation.html" class="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-base px-10 py-4 rounded-2xl shadow-2xl shadow-cyan-500/25 transition-all duration-300 hover:scale-105">
+        Commencer ma réservation
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+  FOOTER
+════════════════════════════════════════ -->
+<footer class="bg-slate-900 text-white pt-16 pb-8 px-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-2xl">🐋</span>
+          <span class="playfair text-xl font-bold">Ti'Baleine</span>
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed">Votre spécialiste de l'observation des cétacés en Martinique. Des sorties exceptionnelles en toute sécurité.</p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-white mb-4 text-sm tracking-widest uppercase">Navigation</h4>
+        <ul class="space-y-2">
+          <li><a href="#prestations" class="text-slate-400 hover:text-cyan-400 text-sm transition-colors">Nos prestations</a></li>
+          <li><a href="#horaires" class="text-slate-400 hover:text-cyan-400 text-sm transition-colors">Horaires</a></li>
+          <li><a href="#tarifs" class="text-slate-400 hover:text-cyan-400 text-sm transition-colors">Tarifs</a></li>
+          <li><a href="reservation.html" class="text-slate-400 hover:text-cyan-400 text-sm transition-colors">Réserver</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-white mb-4 text-sm tracking-widest uppercase">Contact</h4>
+        <ul class="space-y-2 text-sm text-slate-400">
+          <li class="flex items-center gap-2"><span>📍</span> Martinique, Antilles françaises</li>
+          <li class="flex items-center gap-2"><span>📞</span> +596 696 XX XX XX</li>
+          <li class="flex items-center gap-2"><span>✉️</span> contact@tibaleine.com</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>© 2026 Ti'Baleine · Tous droits réservés</p>
+      <div class="flex items-center gap-6">
+        <a href="#" class="hover:text-slate-300 transition-colors">Mentions légales</a>
+        <a href="#" class="hover:text-slate-300 transition-colors">CGV</a>
+        <a href="#" class="hover:text-slate-300 transition-colors">Politique de confidentialité</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  // Language switcher
+  function toggleLang() {
+    const dd = document.getElementById('langDropdown');
+    dd.classList.toggle('hidden');
+  }
+  function setLang(code, flag, label) {
+    document.getElementById('langFlag').textContent = flag;
+    document.getElementById('langCode').textContent = label;
+    document.getElementById('langDropdown').classList.add('hidden');
+    // In real app: i18n switch would happen here
+    alert(`[MAQUETTE] Langue sélectionnée : ${label}\nDans la version finale, l'interface basculera en ${label}.`);
+  }
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    const wrapper = document.getElementById('langWrapper');
+    if (!wrapper.contains(e.target)) {
+      document.getElementById('langDropdown').classList.add('hidden');
+    }
+  });
+
+  // Mobile menu
+  function toggleMobileMenu() {
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+  }
+
+  // Header scroll effect
+  window.addEventListener('scroll', function() {
+    const header = document.getElementById('header');
+    if (window.scrollY > 60) {
+      header.style.background = 'rgba(2, 20, 50, 0.95)';
+    } else {
+      header.style.background = 'rgba(2, 20, 50, 0.65)';
+    }
+  });
+</script>
+
+</body>
+</html>

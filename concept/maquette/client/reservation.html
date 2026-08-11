@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ti'Baleine — Réservation</title>
+  <meta name="description" content="Réservez votre sortie en mer avec Ti'Baleine — Observation des baleines et dauphins en Martinique." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .playfair { font-family: 'Playfair Display', serif; }
+
+    /* Stepper */
+    .step-active .step-circle { background: linear-gradient(135deg, #00B4D8, #0077B6); color: white; box-shadow: 0 0 0 4px rgba(0,180,216,0.2); }
+    .step-done .step-circle { background: #0077B6; color: white; }
+    .step-idle .step-circle { background: #f1f5f9; color: #94a3b8; }
+    .step-line-done { background: #0077B6; }
+    .step-line-idle { background: #e2e8f0; }
+
+    /* Calendar */
+    .cal-day:hover:not(.cal-closed):not(.cal-full) { background: rgba(0,119,182,0.1); border-color: #0077B6; }
+    .cal-day.cal-selected { background: #0077B6; color: white; border-color: #0077B6; }
+    .cal-closed { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
+    .cal-full { opacity: 0.5; cursor: not-allowed; background: #fef2f2; }
+
+    /* Slot cards */
+    .slot-card { cursor: pointer; transition: all 0.2s; }
+    .slot-card:hover:not(.slot-full):not(.slot-closed) { transform: scale(1.02); }
+    .slot-card.slot-selected { border-color: #0077B6; background: rgba(0,119,182,0.08); }
+    .slot-full { opacity: 0.5; cursor: not-allowed; }
+    .slot-closed { opacity: 0.4; cursor: not-allowed; }
+
+    /* Form focus */
+    input:focus, select:focus { outline: none; border-color: #0077B6; box-shadow: 0 0 0 3px rgba(0,119,182,0.15); }
+
+    /* Counter button */
+    .counter-btn { transition: all 0.15s; }
+    .counter-btn:hover { background: #023E8A; }
+    .counter-btn:active { transform: scale(0.95); }
+
+    /* Card animate in */
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .slide-up { animation: slideUp 0.4s ease; }
+
+    /* Prestation card selected */
+    .prest-card { cursor: pointer; transition: all 0.25s; border: 2px solid transparent; }
+    .prest-card:hover { transform: translateY(-3px); }
+    .prest-card.selected { border-color: #0077B6; box-shadow: 0 0 0 4px rgba(0,119,182,0.12); }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+<!-- Header compact -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+    <a href="accueil.html" class="flex items-center gap-2">
+      <span class="text-xl">🐋</span>
+      <span class="playfair font-bold text-slate-900">Ti'Baleine</span>
+    </a>
+
+    <!-- Language Widget -->
+    <div class="relative" id="langWrapper">
+      <button onclick="toggleLang()" class="flex items-center gap-1.5 border border-slate-200 rounded-full px-3 py-1.5 text-slate-600 hover:text-slate-900 text-sm font-medium transition-all hover:border-slate-400">
+        <span id="langFlag">🇫🇷</span>
+        <span id="langCode">FR</span>
+        <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div id="langDropdown" class="hidden absolute right-0 mt-2 w-36 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden z-50">
+        <button onclick="setLang('fr','🇫🇷','FR')" class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">🇫🇷 Français</button>
+        <button onclick="setLang('en','🇬🇧','EN')" class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">🇬🇧 English</button>
+        <button onclick="setLang('es','🇪🇸','ES')" class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">🇪🇸 Español</button>
+        <button onclick="setLang('zh','🇨🇳','中文')" class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">🇨🇳 中文</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Progress Stepper -->
+<div class="fixed top-14 left-0 right-0 z-40 bg-white border-b border-slate-100 shadow-sm">
+  <div class="max-w-3xl mx-auto px-4 py-4">
+    <div class="flex items-center">
+
+      <!-- Step 1 -->
+      <div class="flex flex-col items-center flex-1" id="step-1-el">
+        <div class="step-circle w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold step-active mb-1 transition-all">1</div>
+        <span class="text-xs font-medium text-blue-700 text-center hidden sm:block">Prestation</span>
+      </div>
+
+      <div class="h-0.5 flex-1 mx-2 step-line-idle transition-all" id="line-1"></div>
+
+      <!-- Step 2 -->
+      <div class="flex flex-col items-center flex-1" id="step-2-el">
+        <div class="step-circle w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold step-idle mb-1 transition-all" id="sc2">2</div>
+        <span class="text-xs font-medium text-slate-400 text-center hidden sm:block">Date &amp; Créneau</span>
+      </div>
+
+      <div class="h-0.5 flex-1 mx-2 step-line-idle transition-all" id="line-2"></div>
+
+      <!-- Step 3 -->
+      <div class="flex flex-col items-center flex-1" id="step-3-el">
+        <div class="step-circle w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold step-idle mb-1 transition-all" id="sc3">3</div>
+        <span class="text-xs font-medium text-slate-400 text-center hidden sm:block">Participants</span>
+      </div>
+
+      <div class="h-0.5 flex-1 mx-2 step-line-idle transition-all" id="line-3"></div>
+
+      <!-- Step 4 -->
+      <div class="flex flex-col items-center flex-1" id="step-4-el">
+        <div class="step-circle w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold step-idle mb-1 transition-all" id="sc4">4</div>
+        <span class="text-xs font-medium text-slate-400 text-center hidden sm:block">Paiement</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main content -->
+<main class="pt-36 pb-24 px-4">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- ── STEP 1: Prestation ── -->
+    <div id="panel-1" class="slide-up">
+      <div class="text-center mb-8">
+        <h1 class="playfair text-3xl md:text-4xl font-bold text-slate-900 mb-2">Choisissez votre sortie</h1>
+        <p class="text-slate-500">Sélectionnez le type d'excursion qui vous correspond.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+
+        <div class="prest-card bg-white rounded-2xl p-6 shadow-sm hover:shadow-md" onclick="selectPrestation('baleines', this)">
+          <div class="text-5xl mb-4">🐋</div>
+          <h3 class="font-bold text-slate-900 mb-1">Baleines</h3>
+          <p class="text-slate-500 text-xs mb-3 leading-relaxed">Observation des baleines à bosse avec un naturaliste.</p>
+          <div class="text-xl font-bold text-blue-700">65 €</div>
+          <div class="text-xs text-slate-400">/ adulte</div>
+        </div>
+
+        <div class="prest-card bg-white rounded-2xl p-6 shadow-sm hover:shadow-md" onclick="selectPrestation('dauphins', this)">
+          <div class="text-5xl mb-4">🐬</div>
+          <h3 class="font-bold text-slate-900 mb-1">Dauphins</h3>
+          <p class="text-slate-500 text-xs mb-3 leading-relaxed">Nage et observation des dauphins sauvages.</p>
+          <div class="text-xl font-bold text-teal-700">50 €</div>
+          <div class="text-xs text-slate-400">/ adulte</div>
+        </div>
+
+        <div class="prest-card bg-white rounded-2xl p-6 shadow-sm hover:shadow-md" onclick="selectPrestation('privatisation', this)">
+          <div class="text-5xl mb-4">⛵</div>
+          <h3 class="font-bold text-slate-900 mb-1">Privatisation</h3>
+          <p class="text-slate-500 text-xs mb-3 leading-relaxed">Navire privatisé — coucher de soleil (Sunset).</p>
+          <div class="text-xl font-bold text-amber-700">600 €</div>
+          <div class="text-xs text-slate-400">forfait Tikap</div>
+        </div>
+      </div>
+
+      <div id="prest-error" class="hidden text-red-500 text-sm text-center mb-4">⚠ Veuillez sélectionner une prestation.</div>
+
+      <div class="flex justify-end">
+        <button onclick="goToStep(2)" class="bg-gradient-to-r from-cyan-500 to-blue-700 hover:from-cyan-400 hover:to-blue-600 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition-all hover:scale-105">
+          Continuer → Date &amp; Créneau
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 2: Date & Créneau ── -->
+    <div id="panel-2" class="hidden slide-up">
+      <div class="text-center mb-8">
+        <h2 class="playfair text-3xl md:text-4xl font-bold text-slate-900 mb-2">Date &amp; Créneau</h2>
+        <p class="text-slate-500">Choisissez votre date et votre heure de départ.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Calendar -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <button onclick="prevMonth()" class="p-2 rounded-lg hover:bg-slate-100 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <h3 class="font-bold text-slate-900" id="cal-title">Août 2026</h3>
+            <button onclick="nextMonth()" class="p-2 rounded-lg hover:bg-slate-100 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-7 gap-1 mb-2">
+            <div class="text-xs text-slate-400 text-center font-medium py-1">L</div>
+            <div class="text-xs text-slate-400 text-center font-medium py-1">M</div>
+            <div class="text-xs text-slate-400 text-center font-medium py-1">M</div>
+            <div class="text-xs text-slate-400 text-center font-medium py-1">J</div>
+            <div class="text-xs text-slate-400 text-center font-medium py-1">V</div>
+            <div class="text-xs text-slate-400 text-center font-medium py-1">S</div>
+            <div class="text-xs text-slate-400 text-center font-medium py-1">D</div>
+          </div>
+
+          <div class="grid grid-cols-7 gap-1" id="cal-grid">
+            <!-- Filled by JS -->
+          </div>
+
+          <div class="mt-3 flex flex-wrap gap-3 text-xs">
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-700 inline-block"></span><span class="text-slate-500">Sélectionné</span></div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-red-100 border border-red-200 inline-block"></span><span class="text-slate-500">Complet</span></div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-slate-100 opacity-30 inline-block"></span><span class="text-slate-500">Fermé</span></div>
+          </div>
+        </div>
+
+        <!-- Time slots -->
+        <div class="space-y-4">
+          <h3 class="font-bold text-slate-700 text-sm tracking-widest uppercase">Créneaux disponibles</h3>
+          <p class="text-slate-400 text-xs" id="slot-date-label">Sélectionnez une date →</p>
+
+          <div class="space-y-3" id="slot-container">
+            <!-- 7h -->
+            <div class="slot-card border-2 border-slate-200 rounded-xl p-4 bg-white flex items-center justify-between" id="slot-7" onclick="selectSlot('07h00', this)">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl">🌅</span>
+                <div>
+                  <div class="font-bold text-slate-900">07h00</div>
+                  <div class="text-xs text-slate-400">Départ matin</div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm font-semibold text-emerald-600">24 / 36 places</div>
+                <div class="text-xs text-slate-400">disponibles</div>
+              </div>
+            </div>
+
+            <!-- 10h -->
+            <div class="slot-card border-2 border-slate-200 rounded-xl p-4 bg-white flex items-center justify-between" id="slot-10" onclick="selectSlot('10h00', this)">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl">☀️</span>
+                <div>
+                  <div class="font-bold text-slate-900">10h00</div>
+                  <div class="text-xs text-slate-400">Départ milieu de matinée</div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm font-semibold text-amber-600">8 / 36 places</div>
+                <div class="text-xs text-slate-400">disponibles</div>
+              </div>
+            </div>
+
+            <!-- 14h — complet -->
+            <div class="slot-card slot-full border-2 border-red-200 rounded-xl p-4 bg-red-50 flex items-center justify-between" id="slot-14">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl opacity-50">🌇</span>
+                <div>
+                  <div class="font-bold text-slate-500">14h00</div>
+                  <div class="text-xs text-red-400">Complet</div>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs font-bold text-red-500 bg-red-100 px-2 py-1 rounded-full">COMPLET</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="slot-error" class="hidden text-red-500 text-sm text-center mt-4">⚠ Veuillez sélectionner une date et un créneau.</div>
+
+      <div class="flex justify-between mt-8">
+        <button onclick="goToStep(1)" class="text-slate-500 hover:text-slate-900 font-medium px-6 py-3 rounded-xl border border-slate-200 hover:border-slate-400 transition-colors">
+          ← Retour
+        </button>
+        <button onclick="goToStep(3)" class="bg-gradient-to-r from-cyan-500 to-blue-700 hover:from-cyan-400 hover:to-blue-600 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition-all hover:scale-105">
+          Continuer → Participants
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 3: Participants & Coordonnées ── -->
+    <div id="panel-3" class="hidden slide-up">
+      <div class="text-center mb-8">
+        <h2 class="playfair text-3xl md:text-4xl font-bold text-slate-900 mb-2">Participants &amp; Coordonnées</h2>
+        <p class="text-slate-500">Aucune création de compte requise.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Participants -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm">
+          <h3 class="font-bold text-slate-900 mb-5 flex items-center gap-2">
+            <span class="w-8 h-8 bg-blue-100 text-blue-700 rounded-lg flex items-center justify-center text-sm">👥</span>
+            Participants
+          </h3>
+
+          <!-- Adultes -->
+          <div class="flex items-center justify-between mb-5 pb-5 border-b border-slate-100">
+            <div>
+              <div class="font-semibold text-slate-900">Adultes</div>
+              <div class="text-xs text-slate-400">12 ans et plus · <span id="adult-price">65 €</span> / pers.</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <button class="counter-btn w-9 h-9 bg-blue-700 hover:bg-blue-800 text-white rounded-full text-lg font-bold flex items-center justify-center" onclick="changeCount('adults', -1)">−</button>
+              <span class="w-6 text-center font-bold text-slate-900 text-lg" id="adults-count">2</span>
+              <button class="counter-btn w-9 h-9 bg-blue-700 hover:bg-blue-800 text-white rounded-full text-lg font-bold flex items-center justify-center" onclick="changeCount('adults', +1)">+</button>
+            </div>
+          </div>
+
+          <!-- Enfants -->
+          <div class="flex items-center justify-between mb-5 pb-5 border-b border-slate-100">
+            <div>
+              <div class="font-semibold text-slate-900">Enfants</div>
+              <div class="text-xs text-slate-400">4 à 11 ans · <span id="child-price">40 €</span> / pers.</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <button class="counter-btn w-9 h-9 bg-blue-700 hover:bg-blue-800 text-white rounded-full text-lg font-bold flex items-center justify-center" onclick="changeCount('children', -1)">−</button>
+              <span class="w-6 text-center font-bold text-slate-900 text-lg" id="children-count">0</span>
+              <button class="counter-btn w-9 h-9 bg-blue-700 hover:bg-blue-800 text-white rounded-full text-lg font-bold flex items-center justify-center" onclick="changeCount('children', +1)">+</button>
+            </div>
+          </div>
+
+          <!-- Note moins de 4 ans -->
+          <div class="flex items-start gap-2 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+            <span class="text-emerald-600 text-sm">👶</span>
+            <p class="text-emerald-700 text-xs leading-relaxed"><strong>Moins de 4 ans :</strong> accueil gratuit sur demande, sous réserve des conditions de sécurité à bord.</p>
+          </div>
+
+          <!-- Total -->
+          <div class="mt-5 bg-blue-700 rounded-xl p-4 text-white flex justify-between items-center">
+            <span class="font-semibold">Total estimé</span>
+            <span class="text-2xl font-bold" id="total-price">130 €</span>
+          </div>
+        </div>
+
+        <!-- Coordonnées -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm">
+          <h3 class="font-bold text-slate-900 mb-5 flex items-center gap-2">
+            <span class="w-8 h-8 bg-blue-100 text-blue-700 rounded-lg flex items-center justify-center text-sm">📋</span>
+            Vos coordonnées
+          </h3>
+
+          <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1.5">Prénom *</label>
+                <input type="text" id="inp-prenom" placeholder="Marie" class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-0 transition-colors" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1.5">Nom *</label>
+                <input type="text" id="inp-nom" placeholder="Dupont" class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-0 transition-colors" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1.5">Adresse e-mail *</label>
+              <input type="email" id="inp-email" placeholder="marie.dupont@email.com" class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-0 transition-colors" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1.5">Téléphone *</label>
+              <input type="tel" id="inp-tel" placeholder="+596 696 XX XX XX" class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-0 transition-colors" />
+            </div>
+
+            <div class="flex items-start gap-2 pt-1">
+              <input type="checkbox" id="rgpd" class="mt-0.5 rounded border-slate-300 text-blue-700 focus:ring-blue-500" />
+              <label for="rgpd" class="text-xs text-slate-500 leading-relaxed">
+                J'accepte que mes données soient utilisées uniquement pour cette réservation, conformément à la <a href="#" class="text-blue-600 hover:underline">politique de confidentialité</a>.
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="form-error" class="hidden text-red-500 text-sm text-center mt-4">⚠ Veuillez remplir tous les champs obligatoires.</div>
+
+      <div class="flex justify-between mt-8">
+        <button onclick="goToStep(2)" class="text-slate-500 hover:text-slate-900 font-medium px-6 py-3 rounded-xl border border-slate-200 hover:border-slate-400 transition-colors">
+          ← Retour
+        </button>
+        <button onclick="goToStep(4)" class="bg-gradient-to-r from-cyan-500 to-blue-700 hover:from-cyan-400 hover:to-blue-600 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition-all hover:scale-105">
+          Continuer → Paiement
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 4: Paiement ── -->
+    <div id="panel-4" class="hidden slide-up">
+      <div class="text-center mb-8">
+        <h2 class="playfair text-3xl md:text-4xl font-bold text-slate-900 mb-2">Paiement sécurisé</h2>
+        <p class="text-slate-500">Paiement 100 % en ligne par carte bancaire.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+
+        <!-- Payment form -->
+        <div class="md:col-span-3 bg-white rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center gap-2 mb-6">
+            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            <span class="text-sm font-semibold text-emerald-700">Paiement sécurisé SSL</span>
+            <div class="ml-auto flex gap-2 text-xs text-slate-400">
+              <span class="border border-slate-200 rounded px-2 py-0.5 font-bold">VISA</span>
+              <span class="border border-slate-200 rounded px-2 py-0.5 font-bold text-amber-600">MC</span>
+              <span class="border border-slate-200 rounded px-2 py-0.5 font-bold text-blue-600">CB</span>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1.5">Titulaire de la carte *</label>
+              <input type="text" placeholder="MARIE DUPONT" class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm uppercase tracking-widest focus:ring-0 transition-colors" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1.5">Numéro de carte *</label>
+              <div class="relative">
+                <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)" class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm font-mono tracking-widest focus:ring-0 transition-colors pr-12" />
+                <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1.5">Expiration *</label>
+                <input type="text" placeholder="MM / AA" maxlength="7" class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm font-mono tracking-widest focus:ring-0 transition-colors" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1.5">CVV *</label>
+                <input type="text" placeholder="•••" maxlength="3" class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm font-mono tracking-widest focus:ring-0 transition-colors" />
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 flex items-center gap-2 text-xs text-slate-400">
+            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            Vos données bancaires sont chiffrées et ne sont jamais stockées sur nos serveurs.
+          </div>
+        </div>
+
+        <!-- Order recap -->
+        <div class="md:col-span-2 bg-slate-900 text-white rounded-2xl p-6 shadow-xl">
+          <h3 class="font-bold mb-5 text-white">Récapitulatif</h3>
+
+          <div class="space-y-3 text-sm mb-6">
+            <div class="flex justify-between">
+              <span class="text-slate-400">Prestation</span>
+              <span class="font-semibold" id="recap-type">Baleines</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Date</span>
+              <span class="font-semibold" id="recap-date">14 août 2026</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Créneau</span>
+              <span class="font-semibold" id="recap-slot">10h00</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Adultes</span>
+              <span class="font-semibold" id="recap-adults">2 × 65 € = 130 €</span>
+            </div>
+            <div class="flex justify-between" id="recap-children-row">
+              <span class="text-slate-400">Enfants</span>
+              <span class="font-semibold" id="recap-children">0 × 40 € = 0 €</span>
+            </div>
+          </div>
+
+          <div class="border-t border-white/10 pt-4 mb-6">
+            <div class="flex justify-between items-center">
+              <span class="text-lg font-bold">Total</span>
+              <span class="text-3xl font-black text-cyan-400" id="recap-total">130 €</span>
+            </div>
+          </div>
+
+          <button onclick="confirmPayment()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all hover:scale-105 flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            Confirmer et payer 130 €
+          </button>
+
+          <div class="mt-4 flex justify-center gap-4">
+            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/flags/4x3/eu.svg" class="h-5 opacity-50" alt="UE" />
+            <span class="text-slate-500 text-xs my-auto">Paiement conforme RGPD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-start mt-6">
+        <button onclick="goToStep(3)" class="text-slate-500 hover:text-slate-900 font-medium px-6 py-3 rounded-xl border border-slate-200 hover:border-slate-400 transition-colors">
+          ← Retour
+        </button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+
+<script>
+  // State
+  let currentStep = 1;
+  let selectedPrestation = null;
+  let selectedDate = null;
+  let selectedSlot = null;
+  let adults = 2;
+  let children = 0;
+  const priceAdult = { baleines: 65, dauphins: 50, privatisation: 600 };
+  const priceChild  = { baleines: 40, dauphins: 30, privatisation: 0 };
+
+  // Month state
+  let calYear = 2026, calMonth = 7; // 0-indexed: 7=August
+  const monthNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+  function goToStep(n) {
+    if (n === 2 && !selectedPrestation) {
+      document.getElementById('prest-error').classList.remove('hidden');
+      return;
+    }
+    document.getElementById('prest-error').classList.add('hidden');
+
+    document.getElementById('panel-' + currentStep).classList.add('hidden');
+    document.getElementById('panel-' + n).classList.remove('hidden');
+
+    // Update stepper visuals
+    for (let i = 1; i <= 4; i++) {
+      const sc = document.getElementById('sc' + i) || document.querySelector('#step-' + i + '-el .step-circle');
+      const el = document.querySelector('#step-' + i + '-el');
+      if (!el) continue;
+      const circle = el.querySelector('.step-circle');
+      if (!circle) continue;
+      const label = el.querySelector('span');
+
+      if (i < n) {
+        circle.className = 'step-circle w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold step-done mb-1 transition-all';
+        circle.innerHTML = '✓';
+        if (label) label.className = 'text-xs font-medium text-blue-600 text-center hidden sm:block';
+      } else if (i === n) {
+        circle.className = 'step-circle w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold step-active mb-1 transition-all';
+        circle.innerHTML = i;
+        if (label) label.className = 'text-xs font-medium text-blue-700 text-center hidden sm:block';
+      } else {
+        circle.className = 'step-circle w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold step-idle mb-1 transition-all';
+        circle.innerHTML = i;
+        if (label) label.className = 'text-xs font-medium text-slate-400 text-center hidden sm:block';
+      }
+    }
+
+    for (let i = 1; i <= 3; i++) {
+      const line = document.getElementById('line-' + i);
+      if (!line) continue;
+      if (i < n) {
+        line.className = 'h-0.5 flex-1 mx-2 transition-all bg-blue-700';
+      } else {
+        line.className = 'h-0.5 flex-1 mx-2 transition-all bg-slate-200';
+      }
+    }
+
+    currentStep = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function selectPrestation(type, el) {
+    selectedPrestation = type;
+    document.querySelectorAll('.prest-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('prest-error').classList.add('hidden');
+    updatePrices();
+  }
+
+  function updatePrices() {
+    if (!selectedPrestation) return;
+    const pa = priceAdult[selectedPrestation];
+    const pc = priceChild[selectedPrestation];
+    document.getElementById('adult-price').textContent = pa + ' €';
+    document.getElementById('child-price').textContent = (pc > 0 ? pc + ' €' : 'N/A');
+    document.getElementById('total-price').textContent = (adults * pa + children * (pc || 0)) + ' €';
+    document.getElementById('recap-type').textContent = selectedPrestation.charAt(0).toUpperCase() + selectedPrestation.slice(1);
+    document.getElementById('recap-adults').textContent = adults + ' × ' + pa + ' € = ' + (adults * pa) + ' €';
+    document.getElementById('recap-children').textContent = children + ' × ' + (pc || 0) + ' € = ' + (children * (pc || 0)) + ' €';
+    document.getElementById('recap-total').textContent = (adults * pa + children * (pc || 0)) + ' €';
+    const btn = document.querySelector('[onclick="confirmPayment()"]');
+    if (btn) btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg> Confirmer et payer ' + (adults * pa + children * (pc || 0)) + ' €';
+  }
+
+  function changeCount(type, delta) {
+    if (type === 'adults') {
+      adults = Math.max(1, adults + delta);
+      document.getElementById('adults-count').textContent = adults;
+    } else {
+      children = Math.max(0, children + delta);
+      document.getElementById('children-count').textContent = children;
+    }
+    updatePrices();
+  }
+
+  function selectSlot(slot, el) {
+    if (el.classList.contains('slot-full') || el.classList.contains('slot-closed')) return;
+    selectedSlot = slot;
+    document.querySelectorAll('.slot-card:not(.slot-full):not(.slot-closed)').forEach(c => c.classList.remove('slot-selected'));
+    el.classList.add('slot-selected');
+    document.getElementById('recap-slot').textContent = slot;
+  }
+
+  // Calendar
+  function renderCalendar() {
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+    document.getElementById('cal-title').textContent = monthNames[calMonth] + ' ' + calYear;
+
+    const first = new Date(calYear, calMonth, 1).getDay();
+    const days = new Date(calYear, calMonth + 1, 0).getDate();
+    const offset = (first + 6) % 7; // Mon=0
+
+    for (let i = 0; i < offset; i++) grid.innerHTML += '<div></div>';
+
+    const today = new Date();
+    for (let d = 1; d <= days; d++) {
+      const date = new Date(calYear, calMonth, d);
+      const isClosed = (calMonth === 11 && d === 25) || (calMonth === 0 && d === 1);
+      const isPast = date < today && date.toDateString() !== today.toDateString();
+      const isFull = d === 18 || d === 22; // Simulated
+      let classes = 'cal-day w-full aspect-square flex items-center justify-center text-sm rounded-lg border-2 border-transparent cursor-pointer transition-all font-medium';
+      if (isClosed || isPast) classes += ' cal-closed text-slate-400';
+      else if (isFull) classes += ' cal-full bg-red-50 text-red-300 border-red-100';
+      else classes += ' hover:bg-blue-50 text-slate-700';
+
+      const el = document.createElement('button');
+      el.className = classes;
+      el.textContent = d;
+      if (!isClosed && !isPast && !isFull) {
+        el.onclick = () => {
+          document.querySelectorAll('.cal-day').forEach(c => c.classList.remove('cal-selected'));
+          el.classList.add('cal-selected');
+          selectedDate = `${d} ${monthNames[calMonth]} ${calYear}`;
+          document.getElementById('slot-date-label').textContent = selectedDate;
+          document.getElementById('recap-date').textContent = selectedDate;
+        };
+      }
+      grid.appendChild(el);
+    }
+  }
+
+  function prevMonth() {
+    if (calMonth === 0) { calMonth = 11; calYear--; } else calMonth--;
+    renderCalendar();
+  }
+  function nextMonth() {
+    if (calMonth === 11) { calMonth = 0; calYear++; } else calMonth++;
+    renderCalendar();
+  }
+
+  function confirmPayment() {
+    window.location.href = 'confirmation.html';
+  }
+
+  // Lang
+  function toggleLang() {
+    document.getElementById('langDropdown').classList.toggle('hidden');
+  }
+  function setLang(code, flag, label) {
+    document.getElementById('langFlag').textContent = flag;
+    document.getElementById('langCode').textContent = label;
+    document.getElementById('langDropdown').classList.add('hidden');
+    alert('[MAQUETTE] Langue : ' + label);
+  }
+  document.addEventListener('click', function(e) {
+    if (!document.getElementById('langWrapper').contains(e.target)) {
+      document.getElementById('langDropdown').classList.add('hidden');
+    }
+  });
+
+  function formatCard(input) {
+    let v = input.value.replace(/\D/g, '');
+    v = v.substring(0, 16);
+    input.value = v.replace(/(\d{4})(?=\d)/g, '$1 ');
+  }
+
+  // Init
+  renderCalendar();
+  updatePrices();
+</script>
+
+</body>
+</html>
