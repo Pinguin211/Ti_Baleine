@@ -77,7 +77,7 @@ Les tarifs sont fixes, sans variation saisonnière :
 | **Sortie Baleines — Enfant** | 4 à 11 ans inclus | 40 € |
 | **Sortie Dauphins — Adulte** | 12 ans et plus | 50 € |
 | **Sortie Dauphins — Enfant** | 4 à 11 ans inclus | 30 € |
-| **Enfants de moins de 4 ans** | Moins de 4 ans | Gratuit / Sur demande de sécurité |
+| **Enfants de moins de 4 ans** | Moins de 4 ans | Non admis |
 | **Privatisation du Tikap** | Demi-journée (Formula Sunset) | 600 € (Forfait) |
 | **Privatisation du Grand Bleu** | Demi-journée (Formula Sunset) | 1 100 € (Forfait) |
 
