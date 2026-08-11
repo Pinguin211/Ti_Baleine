@@ -1,0 +1,184 @@
+/* =============================================================================
+   PdfPreview — Viewer PDF dans le navigateur
+   ============================================================================= */
+
+.pdf-viewer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #1a1d27;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   Toolbar
+   -------------------------------------------------------------------------- */
+
+.pdf-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.pdf-toolbar__page {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+  font-variant-numeric: tabular-nums;
+  min-width: 64px;
+}
+
+.pdf-toolbar__separator {
+  flex: 1;
+}
+
+.pdf-toolbar__group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.pdf-toolbar__icon-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  line-height: 1;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.pdf-toolbar__icon-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.pdf-toolbar__icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pdf-toolbar__zoom-label {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  min-width: 48px;
+  text-align: center;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.pdf-toolbar__zoom-label:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.pdf-toolbar__zoom-label:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   Zone de canvas (scrollable)
+   -------------------------------------------------------------------------- */
+
+.pdf-canvas-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.pdf-canvas-area::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.pdf-canvas-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pdf-canvas-area::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.pdf-canvas-area::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   Pages PDF
+   -------------------------------------------------------------------------- */
+
+.pdf-canvas-area .react-pdf__Document {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.pdf-canvas-area .react-pdf__Page {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.pdf-canvas-area .react-pdf__Page:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   États : chargement & erreur
+   -------------------------------------------------------------------------- */
+
+.pdf-viewer__status {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  text-align: center;
+  padding: 48px 24px;
+  animation: pdf-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pdf-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
+}
+
+.pdf-viewer__error {
+  color: #f87171;
+  font-size: 13px;
+  text-align: center;
+  padding: 48px 24px;
+  background: rgba(248, 113, 113, 0.08);
+  border-radius: 8px;
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  margin: 24px;
+}
