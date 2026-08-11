@@ -63,3 +63,28 @@ Loic, Thomas, Benjamin et Ivan.
 
 **Questions ouvertes pour le client.**
 - L'annulation d'une réservation doit-elle être faite par téléphone ou par l'application ?
+
+## J2 — <11/08/2026>
+
+**Présents.**
+ Thomas, Benjamin et Ivan.
+**Décisions.**
+Redaction du cahier-des-charges-V1.md en se référent aux comptes-rendu-entretien-01.md et compte-rendu-entretien-02.md.
+Redaction du cahier-des-charges-V2.md en se référent au cahier-des-charges-V1.md et des point-relevés.md.
+Redaction de l'ADR-001-stack.md en se référent au cahier-des-charges-V2.md
+
+Choix de la stack technique : Next.js / TypeScript. Voir ADR-001-stack.md.
+**Critiques de l'IA acceptées.**
+- Aucune : l'IA n'intervient pas en J2.
+
+**Critiques de l'IA refusées, et pourquoi.**
+- Sans objet.
+
+**Erreurs produites par l'IA et détectées.**
+- Sans objet.
+
+**Ce qui a été généré aujourd'hui.**
+- Rien.
+
+**Questions ouvertes pour le client.**
+- L'ajout de la gestion des annulations en back-office est-elle acceptable?
