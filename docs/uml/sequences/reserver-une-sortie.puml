@@ -1,0 +1,90 @@
+@startuml reserver-une-sortie
+title Diagramme de séquence — « Réserver une sortie en ligne » (Ti'Baleine)
+
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 220
+autonumber
+
+actor "Client\n(visiteur)" as Client
+participant "Site de réservation\n(interface web)" as Site
+participant "Application\n(back-end)" as App
+database "Base de données" as BDD
+participant "Passerelle de\npaiement CB" as Paiement
+participant "Générateur de\nfacture PDF" as Facture
+participant "Service e-mail" as Email
+
+note over Site, App
+  Planning fixe : 3 créneaux/jour (7h, 10h, 14h), 7j/7 toute l'année.
+  Fermé le 25 décembre et le 1er janvier.  (CDC §3.1)
+end note
+
+== 1. Consultation de l'offre ==
+Client -> Site : Ouvre le site, choisit la langue
+Site -> App : Demande le catalogue des prestations
+App -> BDD : Lit les prestations et les tarifs
+BDD --> App : Baleines / Dauphins / Privatisation + tarifs
+App --> Site : Prestations (contenu multilingue)
+Site --> Client : Affiche les prestations
+
+== 2. Choix de la date et du créneau ==
+Client -> Site : Sélectionne une prestation et une date
+Site -> App : Demande les créneaux disponibles (prestation, date)
+App -> BDD : Lit les réservations du jour / créneau
+BDD --> App : Taux d'occupation par créneau
+App -> App : Calcule la disponibilité\n(capacité restante, clôture 2h avant, jours fermés)
+App --> Site : Créneaux 7h / 10h / 14h + places restantes\n(masque : complets, clos < 2h, jours fermés)
+Site --> Client : Affiche les créneaux disponibles
+note right of App : CDC §3.1 — clôture des réservations en ligne 2h avant le départ
+
+== 3. Saisie des participants ==
+Client -> Site : Nombre d'adultes / enfants + coordonnées\n(nom, prénom, e-mail, téléphone)
+Site -> Site : Validation locale\n(enfants de moins de 4 ans non admis — CDC §3.2)
+Site -> App : Envoie la demande de réservation
+
+== 4. Contrôle des jauges (sécurité dispatch) ==
+App -> BDD : Relit et verrouille la capacité du créneau\n(concurrence sur la dernière place)
+alt Créneau clos (< 2h), complet ou dépassement de jauge (12 / 24 — blocage à 36)
+    App --> Site : Refus — créneau indisponible
+    Site --> Client : Message d'indisponibilité
+else Places disponibles
+    App -> BDD : Crée une réservation « en attente de paiement »\n+ calcule le montant total (100 %)
+    BDD --> App : Identifiant de réservation
+    App --> Site : Montant à régler
+end
+note right of App
+  CDC §3.1 — jauges de dispatch : 12 (Tikap) / 24 (Grand Bleu),
+  blocage absolu à 36 places par créneau.
+end note
+
+== 5. Paiement en ligne (Carte Bancaire) ==
+Client -> Site : Procède au paiement
+Site -> Paiement : Initie le paiement CB (100 % du montant)
+Paiement --> Client : Formulaire sécurisé (saisie carte + 3-D Secure)
+Client -> Paiement : Valide le paiement
+alt Paiement accepté
+    Paiement --> App : Notification de paiement OK
+    App -> BDD : Confirme la réservation (payée)
+    App -> Facture : Génère la facture PDF
+    Facture --> App : Facture PDF
+    App -> Email : Envoie l'e-mail de confirmation + facture PDF
+    Email --> Client : E-mail de confirmation reçu
+    App --> Site : Réservation confirmée
+    Site --> Client : Écran de confirmation immédiat
+else Paiement refusé / abandonné
+    Paiement --> App : Notification de paiement KO
+    App -> BDD : Libère la place\n(réservation expirée / annulée)
+    App --> Site : Échec du paiement
+    Site --> Client : Message d'échec + proposition de réessai
+end
+note over App, Email : CDC §2.1 / §4.1 — paiement 100 % CB, facture PDF automatique, e-mail de confirmation
+
+note over Client, App
+  Hors système (CDC §2.2) :
+  • Aucune annulation en ligne ni remboursement automatisé
+    (traités en direct par l'entreprise avec le client).
+  • Seuil de maintien (min. 6 passagers/bateau) et affectation
+    de l'unique naturaliste (sorties baleines) : gérés
+    opérationnellement, hors plateforme.
+end note
+
+@enduml
