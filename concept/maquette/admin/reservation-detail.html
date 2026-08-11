@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ti'Baleine Admin — Détail Réservation</title>
+  <title>Ti'Baleine Admin — Réservations du Créneau</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
@@ -15,10 +15,18 @@
     .nav-link:hover { background: rgba(255,255,255,0.05); color: #e2e8f0; }
     .nav-link.active { background: rgba(0,180,216,0.1); color: #00B4D8; border-left: 3px solid #00B4D8; }
     .card { background: #1e293b; border: 1px solid rgba(255,255,255,0.06); border-radius: 1rem; }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-    .fade-in { animation: fadeIn 0.4s ease both; }
-    .info-row { border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .info-row:last-child { border-bottom: none; }
+    .card-stat { background: linear-gradient(145deg, #1e293b 0%, #152033 100%); border: 1px solid rgba(255,255,255,0.06); }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .fade-in { animation: fadeIn 0.3s ease both; }
+    .gauge-bar { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.08); overflow: hidden; }
+    .gauge-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+    
+    /* Table hover */
+    .table-row-hover { transition: background-color 0.15s ease; }
+    .table-row-hover:hover { background-color: rgba(0,180,216,0.04); }
+    
+    /* Modal transitions */
+    .modal-overlay { background: rgba(2, 6, 23, 0.75); backdrop-filter: blur(8px); }
   </style>
 </head>
 <body class="flex min-h-screen">
@@ -27,31 +35,27 @@
 <aside class="sidebar w-60 shrink-0 fixed top-0 left-0 h-screen flex flex-col z-30 hidden md:flex">
   <div class="px-5 py-5 border-b border-white/5">
     <div class="flex items-center gap-3">
-      <div class="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-700 rounded-xl flex items-center justify-center text-lg shadow-lg">⚓</div>
+      <div class="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-700 rounded-xl flex items-center justify-center text-lg shadow-lg shadow-cyan-500/20">⚓</div>
       <div>
         <div class="playfair font-bold text-white text-base leading-none">Ti'Baleine</div>
-        <div class="text-white/30 text-xs">Administration</div>
+        <div class="text-white/30 text-xs mt-0.5">Administration</div>
       </div>
     </div>
   </div>
   <nav class="flex-1 px-3 py-5 space-y-1">
-    <a href="dashboard.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-      Tableau de bord
-    </a>
     <a href="planning.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
       Planning
     </a>
     <a href="reservation-detail.html" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-      Réservations
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+      Créneau &amp; Passagers
     </a>
   </nav>
   <div class="px-3 py-4 border-t border-white/5 space-y-1">
-    <a href="../client/accueil.html" target="_blank" class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium text-slate-500">
+    <a href="../client/accueil.html" target="_blank" class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium text-slate-500 hover:text-slate-300">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-      Site client
+      Site public
     </a>
     <a href="login.html" class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium text-red-400/70 hover:text-red-400">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
@@ -64,169 +68,961 @@
 <div class="flex-1 md:ml-60 flex flex-col min-h-screen">
 
   <!-- Header -->
-  <header class="bg-[#0b1120] border-b border-white/5 px-6 py-4 flex items-center justify-between sticky top-0 z-20">
+  <header class="bg-[#0b1120] border-b border-white/5 px-6 py-4 flex flex-wrap items-center justify-between sticky top-0 z-20 gap-4">
     <div class="flex items-center gap-3">
-      <a href="dashboard.html" class="text-slate-400 hover:text-white transition-colors flex items-center gap-1 text-sm">
+      <a href="planning.html" class="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 text-sm bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-        Retour
+        Retour au planning
       </a>
       <span class="text-white/20">/</span>
-      <h1 class="font-bold text-white text-base">Réservation #TIB-2026-00847</h1>
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <h1 class="font-bold text-white text-base">Vendredi 14 août 2026 · Créneau 10h00</h1>
+      </div>
     </div>
-    <div class="flex items-center gap-3">
-      <button onclick="window.print()" class="flex items-center gap-2 border border-white/10 hover:border-white/30 text-slate-400 hover:text-white px-4 py-2 rounded-xl text-sm transition-colors">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-        Imprimer
+    <div class="flex items-center gap-2.5">
+      <button onclick="window.print()" class="flex items-center gap-2 border border-white/10 hover:border-white/25 text-slate-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold transition-all">
+        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        Manifeste PDF / Imprimer
       </button>
-      <button onclick="alert('[MAQUETTE] Export PDF de la facture simulé.')" class="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-700 hover:from-cyan-400 hover:to-blue-600 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:scale-105">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-        Facture PDF
+      <button onclick="openNewBookingModal()" class="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-cyan-500/20 transition-all hover:scale-105">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        + Ajouter une réservation
       </button>
-      <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-700 rounded-full flex items-center justify-center text-sm font-bold text-white">A</div>
+      <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-700 rounded-full flex items-center justify-center text-xs font-bold text-white ml-2">A</div>
     </div>
   </header>
 
   <!-- Content -->
-  <main class="flex-1 p-6 space-y-5 max-w-5xl mx-auto w-full">
+  <main class="flex-1 p-6 space-y-6 max-w-7xl mx-auto w-full">
 
-    <!-- Status banner -->
-    <div class="fade-in flex items-center justify-between bg-emerald-500/10 border border-emerald-500/20 rounded-2xl px-6 py-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center">
-          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    <!-- Hero / Créneau Banner -->
+    <div class="card p-6 fade-in relative overflow-hidden bg-gradient-to-r from-slate-900 via-[#13233a] to-slate-900">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+        <!-- Left: Slot info -->
+        <div class="space-y-2">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <span class="bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 text-xs font-bold px-3 py-1 rounded-lg inline-flex items-center gap-1.5">
+              <span>🐋</span> Observation Baleines &amp; Sanctuaire
+            </span>
+            <span class="bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-xs font-semibold px-2.5 py-1 rounded-lg inline-flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Ventes Ouvertes
+            </span>
+            <span class="text-slate-400 text-xs">Durée estimée : 3h30</span>
+          </div>
+          
+          <h2 class="playfair text-2xl md:text-3xl font-bold text-white">
+            Sortie Baleines du Vendredi 14 août — 10h00
+          </h2>
+          
+          <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-slate-300 pt-1">
+            <div class="flex items-center gap-1.5">
+              <span class="text-slate-400">🚤 Bateau :</span>
+              <span class="font-semibold text-white">Ti'Baleine One (Capacité 36 pax)</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-slate-400">👨‍✈️ Capitaine :</span>
+              <span class="font-semibold text-white">Loïc</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-slate-400">📍 Embarquement :</span>
+              <span class="font-semibold text-white">Ponton Marina Trois-Îlets (09h45)</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-cyan-300">
+              <span>☀️</span> Mer belle (0.7m) · Vent 11 kts
+            </div>
+          </div>
         </div>
-        <div>
-          <div class="font-bold text-emerald-400">Réservation confirmée et payée</div>
-          <div class="text-slate-400 text-xs">Créée le 10 août 2026 à 14h32 · Paiement validé</div>
+
+        <!-- Right: Slot Management Actions -->
+        <div class="flex flex-wrap lg:flex-col items-end gap-2 shrink-0">
+          <div class="flex items-center gap-2">
+            <button onclick="toggleSlotStatus(this)" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 hover:border-white/20 text-slate-300 hover:text-white transition-all flex items-center gap-2">
+              <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              <span>Verrouiller les ventes en ligne</span>
+            </button>
+            <button onclick="alert('[MAQUETTE] Message groupé SMS/Email envoyé aux 7 clients du créneau.')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 hover:border-white/20 text-slate-300 hover:text-white transition-all flex items-center gap-2">
+              <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              <span>Aviser passagers</span>
+            </button>
+          </div>
+          <span class="text-[11px] text-slate-400">Dernière synchronisation en direct : il y a 2 min</span>
         </div>
       </div>
-      <div class="playfair text-2xl font-black text-white">#TIB-2026-00847</div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 fade-in" style="animation-delay:.1s">
-
-      <!-- Client info -->
-      <div class="card p-6 lg:col-span-2">
-        <h2 class="font-bold text-white text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
-          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-          Informations Client
-        </h2>
-
-        <div class="space-y-0">
-          <div class="info-row grid grid-cols-2 py-3">
-            <span class="text-slate-400 text-sm">Prénom</span>
-            <span class="text-white font-semibold text-sm">Marie</span>
-          </div>
-          <div class="info-row grid grid-cols-2 py-3">
-            <span class="text-slate-400 text-sm">Nom</span>
-            <span class="text-white font-semibold text-sm">Dupont</span>
-          </div>
-          <div class="info-row grid grid-cols-2 py-3">
-            <span class="text-slate-400 text-sm">Email</span>
-            <a href="mailto:marie.dupont@email.com" class="text-cyan-400 hover:underline text-sm">marie.dupont@email.com</a>
-          </div>
-          <div class="info-row grid grid-cols-2 py-3">
-            <span class="text-slate-400 text-sm">Téléphone</span>
-            <a href="tel:+596696123456" class="text-cyan-400 hover:underline text-sm">+596 696 12 34 56</a>
-          </div>
+    <!-- 4 KPI Cards for the specific Slot -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 fade-in" style="animation-delay:.05s">
+      
+      <!-- Card 1: Jauge & Places -->
+      <div class="card-stat rounded-2xl p-5">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Jauge &amp; Remplissage</span>
+          <span class="text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">78%</span>
         </div>
-
-        <!-- Sortie info -->
-        <h2 class="font-bold text-white text-sm uppercase tracking-widest mt-8 mb-5 flex items-center gap-2">
-          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          Détail de la Sortie
-        </h2>
-
-        <div class="space-y-0">
-          <div class="info-row grid grid-cols-2 py-3">
-            <span class="text-slate-400 text-sm">Type de sortie</span>
-            <span class="flex items-center gap-2 text-white font-semibold text-sm"><span class="text-lg">🐋</span>Observation Baleines</span>
-          </div>
-          <div class="info-row grid grid-cols-2 py-3">
-            <span class="text-slate-400 text-sm">Date</span>
-            <span class="text-white font-semibold text-sm">Vendredi 14 août 2026</span>
-          </div>
-          <div class="info-row grid grid-cols-2 py-3">
-            <span class="text-slate-400 text-sm">Créneau</span>
-            <span class="text-white font-semibold text-sm flex items-center gap-2"><span>☀️</span>10h00</span>
-          </div>
-          <div class="info-row grid grid-cols-2 py-3">
-            <span class="text-slate-400 text-sm">Adultes</span>
-            <span class="text-white font-semibold text-sm">2 × 65 € = 130 €</span>
-          </div>
-          <div class="info-row grid grid-cols-2 py-3">
-            <span class="text-slate-400 text-sm">Enfants</span>
-            <span class="text-slate-500 text-sm italic">Aucun</span>
-          </div>
-          <div class="info-row grid grid-cols-2 py-3">
-            <span class="text-slate-400 text-sm">Passagers total</span>
-            <span class="text-white font-semibold text-sm">2 personnes</span>
-          </div>
+        <div class="flex items-baseline gap-2 mb-3">
+          <span class="text-3xl font-black text-white" id="stat-pax">28</span>
+          <span class="text-slate-400 text-sm">/ 36 passagers</span>
+        </div>
+        <div class="gauge-bar mb-2">
+          <div class="gauge-fill bg-gradient-to-r from-cyan-400 to-amber-400" id="stat-bar" style="width:78%"></div>
+        </div>
+        <div class="flex justify-between text-xs text-slate-400">
+          <span class="text-emerald-400 font-medium" id="stat-free">8 places libres</span>
+          <span>Max 36</span>
         </div>
       </div>
 
-      <!-- Right column -->
-      <div class="space-y-4">
-
-        <!-- Payment card -->
-        <div class="card p-6">
-          <h2 class="font-bold text-white text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
-            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-            Paiement
-          </h2>
-
-          <div class="text-center py-4">
-            <div class="text-4xl font-black text-white mb-1">130,00 €</div>
-            <div class="text-emerald-400 text-sm font-semibold">✓ Paiement reçu</div>
-            <div class="text-slate-500 text-xs mt-1">10 août 2026 · 14h32</div>
-          </div>
-
-          <div class="border-t border-white/5 pt-4 space-y-2">
-            <div class="flex justify-between text-xs">
-              <span class="text-slate-400">Moyen de paiement</span>
-              <span class="text-slate-300 font-medium">CB •••• 4782</span>
-            </div>
-            <div class="flex justify-between text-xs">
-              <span class="text-slate-400">Transaction ID</span>
-              <span class="text-slate-300 font-medium font-mono">ch_3Pxk…ab12</span>
-            </div>
-          </div>
+      <!-- Card 2: Pointage / Check-in embarquement -->
+      <div class="card-stat rounded-2xl p-5">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Pointage à Quai</span>
+          <span class="text-xs font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full" id="stat-checkin-badge">50%</span>
         </div>
-
-        <!-- Quick actions -->
-        <div class="card p-5">
-          <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Actions</h3>
-          <div class="space-y-2">
-            <button onclick="alert('[MAQUETTE] Export PDF simulé')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 hover:border-white/20 text-slate-300 hover:text-white text-sm transition-all text-left">
-              <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              Télécharger la facture PDF
-            </button>
-            <button onclick="alert('[MAQUETTE] Réimpression confirmation email simulée')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 hover:border-white/20 text-slate-300 hover:text-white text-sm transition-all text-left">
-              <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-              Renvoyer l'email de confirmation
-            </button>
-            <button onclick="window.print()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 hover:border-white/20 text-slate-300 hover:text-white text-sm transition-all text-left">
-              <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-              Imprimer la fiche
-            </button>
-          </div>
+        <div class="flex items-baseline gap-2 mb-3">
+          <span class="text-3xl font-black text-cyan-400" id="stat-checkin-count">14</span>
+          <span class="text-slate-400 text-sm">/ 28 pointés</span>
         </div>
-
-        <!-- Note annulation -->
-        <div class="card p-4 border-amber-500/20">
-          <div class="flex items-start gap-3">
-            <svg class="w-4 h-4 text-amber-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <div>
-              <div class="text-amber-400 text-xs font-semibold mb-1">Annulation</div>
-              <p class="text-slate-400 text-xs leading-relaxed">Les annulations se traitent directement avec le client (téléphone, email, accueil). Aucune annulation en ligne n'est disponible.</p>
-            </div>
-          </div>
+        <div class="gauge-bar mb-2">
+          <div class="gauge-fill bg-cyan-500" id="stat-checkin-bar" style="width:50%"></div>
+        </div>
+        <div class="flex justify-between text-xs text-slate-400">
+          <span class="text-slate-300 font-medium" id="stat-checkin-waiting">14 en attente</span>
+          <span>Embarquement 09:45</span>
         </div>
       </div>
+
+      <!-- Card 3: Dossiers & Typologie -->
+      <div class="card-stat rounded-2xl p-5">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Dossiers Réservations</span>
+          <span class="text-xs font-bold text-violet-400 bg-violet-500/10 px-2 py-0.5 rounded-full">7 groupes</span>
+        </div>
+        <div class="flex items-baseline gap-2 mb-2">
+          <span class="text-3xl font-black text-white" id="stat-bookings-count">7</span>
+          <span class="text-slate-400 text-sm">commandes</span>
+        </div>
+        <div class="pt-2 border-t border-white/5 flex items-center justify-between text-xs text-slate-300">
+          <span>👨 22 Adultes (65€)</span>
+          <span>🧒 6 Enfants (45€)</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Recette & Encaissé -->
+      <div class="card-stat rounded-2xl p-5">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Total Créneau</span>
+          <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">Encaissé</span>
+        </div>
+        <div class="flex items-baseline gap-2 mb-2">
+          <span class="text-3xl font-black text-emerald-400" id="stat-revenue">1 700 €</span>
+        </div>
+        <div class="pt-2 border-t border-white/5 flex items-center justify-between text-xs">
+          <span class="text-slate-400">En ligne CB : <strong class="text-white">1 570 €</strong></span>
+          <span class="text-amber-400 font-semibold">Sur place : 130 €</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Table Section: Liste des Réservations pour ce Créneau -->
+    <div class="card p-6 fade-in space-y-5" style="animation-delay:.1s">
+      
+      <!-- Filter Bar -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        
+        <!-- Left: Title & Live Filter Tabs -->
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <h3 class="font-bold text-white text-lg">Liste des Passagers &amp; Réservations</h3>
+            <span class="bg-cyan-500/20 text-cyan-300 text-xs font-bold px-2 py-0.5 rounded-full" id="filter-total-count">7 dossiers</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="filterTable('all', this)" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500 text-white transition-colors">
+              Tous (7)
+            </button>
+            <button onclick="filterTable('checked', this)" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-slate-400 hover:text-white transition-colors">
+              À bord / Pointés (4)
+            </button>
+            <button onclick="filterTable('waiting', this)" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-slate-400 hover:text-white transition-colors">
+              Non pointés (3)
+            </button>
+            <button onclick="filterTable('pending_pay', this)" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-slate-400 hover:text-white transition-colors">
+              Paiement quai (1)
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Search & Actions -->
+        <div class="flex items-center gap-3">
+          <div class="relative w-full sm:w-64">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" id="table-search" oninput="searchTable(this.value)" placeholder="Rechercher client, tél, réf..." class="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors" />
+          </div>
+          <button onclick="checkAllIn()" class="shrink-0 px-3 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-xl transition-colors flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Tout pointer
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Reservations Table -->
+      <div class="overflow-x-auto rounded-xl border border-white/5">
+        <table class="w-full text-left text-xs" id="bookings-table">
+          <thead class="bg-[#0b1120] text-slate-400 uppercase tracking-wider font-semibold border-b border-white/5">
+            <tr>
+              <th class="py-3.5 px-4">Réf. &amp; Date</th>
+              <th class="py-3.5 px-4">Client Référent</th>
+              <th class="py-3.5 px-4">Passagers</th>
+              <th class="py-3.5 px-4">Canal</th>
+              <th class="py-3.5 px-4">Paiement</th>
+              <th class="py-3.5 px-4 text-center">Embarquement</th>
+              <th class="py-3.5 px-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5 text-slate-300" id="bookings-body">
+
+            <!-- Row 1 -->
+            <tr class="table-row-hover booking-row" data-status="checked" data-payment="paid" data-pax="2" data-name="Dupont Marie" data-ref="TIB-2026-00847" data-phone="+596 696 12 34 56" data-email="marie.dupont@email.com" data-adults="2" data-kids="0" data-amount="130,00 €" data-method="CB en ligne" data-channel="Site Web" data-date="10/08/2026 14:32">
+              <td class="py-4 px-4 font-medium text-white">
+                <div class="font-mono text-cyan-400 font-semibold cursor-pointer hover:underline" onclick="openDetailModal(this.closest('tr'))">#TIB-00847</div>
+                <div class="text-[11px] text-slate-500">10/08 à 14:32</div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center text-xs">MD</div>
+                  <div>
+                    <div class="font-semibold text-white cursor-pointer hover:text-cyan-300 transition-colors" onclick="openDetailModal(this.closest('tr'))">Marie Dupont</div>
+                    <div class="text-[11px] text-slate-400"><a href="tel:+596696123456" class="hover:text-cyan-400">+596 696 12 34 56</a></div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-1.5">
+                  <span class="bg-white/10 text-white font-bold px-2 py-0.5 rounded text-[11px]">2 pax</span>
+                  <span class="text-slate-400 text-[11px]">(2 Ad.)</span>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <span class="bg-blue-500/10 text-blue-300 border border-blue-500/20 px-2 py-0.5 rounded text-[11px]">Site Web</span>
+              </td>
+              <td class="py-4 px-4">
+                <div class="font-semibold text-white">130,00 €</div>
+                <div class="text-[11px] text-emerald-400 font-medium">✓ CB en ligne</div>
+              </td>
+              <td class="py-4 px-4 text-center">
+                <button onclick="toggleCheckin(this)" class="checkin-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25 transition-all inline-flex items-center gap-1.5">
+                  <span>✓</span> <span>À bord</span>
+                </button>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <div class="flex items-center justify-end gap-1.5">
+                  <button onclick="openDetailModal(this.closest('tr'))" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Voir fiche">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  </button>
+                  <button onclick="alert('[MAQUETTE] Facture envoyée par email à marie.dupont@email.com')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Billet / Facture">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 2 -->
+            <tr class="table-row-hover booking-row" data-status="checked" data-payment="paid" data-pax="6" data-name="Bernard Thomas" data-ref="TIB-2026-00842" data-phone="+33 6 45 89 12 00" data-email="thomas.bernard@orange.fr" data-adults="4" data-kids="2" data-amount="350,00 €" data-method="CB en ligne" data-channel="Site Web" data-date="09/08/2026 18:15">
+              <td class="py-4 px-4 font-medium text-white">
+                <div class="font-mono text-cyan-400 font-semibold cursor-pointer hover:underline" onclick="openDetailModal(this.closest('tr'))">#TIB-00842</div>
+                <div class="text-[11px] text-slate-500">09/08 à 18:15</div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-violet-500/20 text-violet-300 font-bold flex items-center justify-center text-xs">TB</div>
+                  <div>
+                    <div class="font-semibold text-white cursor-pointer hover:text-cyan-300 transition-colors" onclick="openDetailModal(this.closest('tr'))">Thomas Bernard (Famille)</div>
+                    <div class="text-[11px] text-slate-400"><a href="tel:+33645891200" class="hover:text-cyan-400">+33 6 45 89 12 00</a></div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-1.5">
+                  <span class="bg-white/10 text-white font-bold px-2 py-0.5 rounded text-[11px]">6 pax</span>
+                  <span class="text-slate-400 text-[11px]">(4 Ad. + 2 Enf.)</span>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <span class="bg-blue-500/10 text-blue-300 border border-blue-500/20 px-2 py-0.5 rounded text-[11px]">Site Web</span>
+              </td>
+              <td class="py-4 px-4">
+                <div class="font-semibold text-white">350,00 €</div>
+                <div class="text-[11px] text-emerald-400 font-medium">✓ CB en ligne</div>
+              </td>
+              <td class="py-4 px-4 text-center">
+                <button onclick="toggleCheckin(this)" class="checkin-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25 transition-all inline-flex items-center gap-1.5">
+                  <span>✓</span> <span>À bord</span>
+                </button>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <div class="flex items-center justify-end gap-1.5">
+                  <button onclick="openDetailModal(this.closest('tr'))" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Voir fiche">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  </button>
+                  <button onclick="alert('[MAQUETTE] Facture envoyée par email à thomas.bernard@orange.fr')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Billet / Facture">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 3: Pending pay on site -->
+            <tr class="table-row-hover booking-row" data-status="waiting" data-payment="pending_pay" data-pax="2" data-name="Laurent Sophie" data-ref="TIB-2026-00839" data-phone="+596 696 88 77 66" data-email="sophie.laurent@gmail.com" data-adults="2" data-kids="0" data-amount="130,00 €" data-method="À régler au quai" data-channel="Téléphone" data-date="11/08/2026 09:20">
+              <td class="py-4 px-4 font-medium text-white">
+                <div class="font-mono text-cyan-400 font-semibold cursor-pointer hover:underline" onclick="openDetailModal(this.closest('tr'))">#TIB-00839</div>
+                <div class="text-[11px] text-slate-500">11/08 à 09:20</div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-amber-500/20 text-amber-300 font-bold flex items-center justify-center text-xs">SL</div>
+                  <div>
+                    <div class="font-semibold text-white cursor-pointer hover:text-cyan-300 transition-colors" onclick="openDetailModal(this.closest('tr'))">Sophie Laurent</div>
+                    <div class="text-[11px] text-slate-400"><a href="tel:+596696887766" class="hover:text-cyan-400">+596 696 88 77 66</a></div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-1.5">
+                  <span class="bg-white/10 text-white font-bold px-2 py-0.5 rounded text-[11px]">2 pax</span>
+                  <span class="text-slate-400 text-[11px]">(2 Ad.)</span>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <span class="bg-amber-500/10 text-amber-300 border border-amber-500/20 px-2 py-0.5 rounded text-[11px]">Téléphone</span>
+              </td>
+              <td class="py-4 px-4">
+                <div class="font-semibold text-amber-400">130,00 €</div>
+                <div class="text-[11px] text-amber-400/80 font-medium">⏳ À régler au quai</div>
+              </td>
+              <td class="py-4 px-4 text-center">
+                <button onclick="toggleCheckin(this)" class="checkin-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-500/15 border border-slate-500/30 text-slate-400 hover:bg-slate-500/25 transition-all inline-flex items-center gap-1.5">
+                  <span>⏳</span> <span>Non pointé</span>
+                </button>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <div class="flex items-center justify-end gap-1.5">
+                  <button onclick="openDetailModal(this.closest('tr'))" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Voir fiche">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  </button>
+                  <button onclick="encaisserDirect(this.closest('tr'))" class="px-2 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded text-[11px] font-bold transition-colors" title="Encaisser sur place">
+                    Encaisser
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 4 -->
+            <tr class="table-row-hover booking-row" data-status="checked" data-payment="paid" data-pax="3" data-name="Vasseur Jean-Marc" data-ref="TIB-2026-00835" data-phone="+33 6 12 34 56 78" data-email="jm.vasseur@sfr.fr" data-adults="2" data-kids="1" data-amount="175,00 €" data-method="CB en ligne" data-channel="Site Web" data-date="08/08/2026 11:04">
+              <td class="py-4 px-4 font-medium text-white">
+                <div class="font-mono text-cyan-400 font-semibold cursor-pointer hover:underline" onclick="openDetailModal(this.closest('tr'))">#TIB-00835</div>
+                <div class="text-[11px] text-slate-500">08/08 à 11:04</div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center text-xs">JV</div>
+                  <div>
+                    <div class="font-semibold text-white cursor-pointer hover:text-cyan-300 transition-colors" onclick="openDetailModal(this.closest('tr'))">Jean-Marc Vasseur</div>
+                    <div class="text-[11px] text-slate-400"><a href="tel:+33612345678" class="hover:text-cyan-400">+33 6 12 34 56 78</a></div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-1.5">
+                  <span class="bg-white/10 text-white font-bold px-2 py-0.5 rounded text-[11px]">3 pax</span>
+                  <span class="text-slate-400 text-[11px]">(2 Ad. + 1 Enf.)</span>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <span class="bg-blue-500/10 text-blue-300 border border-blue-500/20 px-2 py-0.5 rounded text-[11px]">Site Web</span>
+              </td>
+              <td class="py-4 px-4">
+                <div class="font-semibold text-white">175,00 €</div>
+                <div class="text-[11px] text-emerald-400 font-medium">✓ CB en ligne</div>
+              </td>
+              <td class="py-4 px-4 text-center">
+                <button onclick="toggleCheckin(this)" class="checkin-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25 transition-all inline-flex items-center gap-1.5">
+                  <span>✓</span> <span>À bord</span>
+                </button>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <div class="flex items-center justify-end gap-1.5">
+                  <button onclick="openDetailModal(this.closest('tr'))" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Voir fiche">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  </button>
+                  <button onclick="alert('[MAQUETTE] Facture envoyée par email à jm.vasseur@sfr.fr')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Billet / Facture">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 5: Hotel Partner -->
+            <tr class="table-row-hover booking-row" data-status="waiting" data-payment="paid" data-pax="4" data-name="Moreau Caroline" data-ref="TIB-2026-00828" data-phone="+33 6 77 88 99 00" data-email="caroline.moreau@free.fr" data-adults="4" data-kids="0" data-amount="260,00 €" data-method="Partenaire Hôtel" data-channel="Hôtel Bakoua" data-date="07/08/2026 16:40">
+              <td class="py-4 px-4 font-medium text-white">
+                <div class="font-mono text-cyan-400 font-semibold cursor-pointer hover:underline" onclick="openDetailModal(this.closest('tr'))">#TIB-00828</div>
+                <div class="text-[11px] text-slate-500">07/08 à 16:40</div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-300 font-bold flex items-center justify-center text-xs">CM</div>
+                  <div>
+                    <div class="font-semibold text-white cursor-pointer hover:text-cyan-300 transition-colors" onclick="openDetailModal(this.closest('tr'))">Caroline Moreau (x4)</div>
+                    <div class="text-[11px] text-slate-400"><a href="tel:+33677889900" class="hover:text-cyan-400">+33 6 77 88 99 00</a></div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-1.5">
+                  <span class="bg-white/10 text-white font-bold px-2 py-0.5 rounded text-[11px]">4 pax</span>
+                  <span class="text-slate-400 text-[11px]">(4 Ad.)</span>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <span class="bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 px-2 py-0.5 rounded text-[11px]">Hôtel Bakoua</span>
+              </td>
+              <td class="py-4 px-4">
+                <div class="font-semibold text-white">260,00 €</div>
+                <div class="text-[11px] text-emerald-400 font-medium">✓ Virement Partenaire</div>
+              </td>
+              <td class="py-4 px-4 text-center">
+                <button onclick="toggleCheckin(this)" class="checkin-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-500/15 border border-slate-500/30 text-slate-400 hover:bg-slate-500/25 transition-all inline-flex items-center gap-1.5">
+                  <span>⏳</span> <span>Non pointé</span>
+                </button>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <div class="flex items-center justify-end gap-1.5">
+                  <button onclick="openDetailModal(this.closest('tr'))" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Voir fiche">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  </button>
+                  <button onclick="alert('[MAQUETTE] Billet envoyé par email à caroline.moreau@free.fr')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Billet / Facture">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 6: Group -->
+            <tr class="table-row-hover booking-row" data-status="checked" data-payment="paid" data-pax="9" data-name="Alexandre Pierre" data-ref="TIB-2026-00821" data-phone="+596 696 22 33 44" data-email="p.alexandre@martinique.mq" data-adults="6" data-kids="3" data-amount="525,00 €" data-method="CB en ligne" data-channel="Site Web" data-date="05/08/2026 10:18">
+              <td class="py-4 px-4 font-medium text-white">
+                <div class="font-mono text-cyan-400 font-semibold cursor-pointer hover:underline" onclick="openDetailModal(this.closest('tr'))">#TIB-00821</div>
+                <div class="text-[11px] text-slate-500">05/08 à 10:18</div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center text-xs">PA</div>
+                  <div>
+                    <div class="font-semibold text-white cursor-pointer hover:text-cyan-300 transition-colors" onclick="openDetailModal(this.closest('tr'))">Pierre Alexandre (Groupe Famille)</div>
+                    <div class="text-[11px] text-slate-400"><a href="tel:+596696223344" class="hover:text-cyan-400">+596 696 22 33 44</a></div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-1.5">
+                  <span class="bg-cyan-500/20 text-cyan-300 font-bold px-2 py-0.5 rounded text-[11px]">9 pax</span>
+                  <span class="text-slate-400 text-[11px]">(6 Ad. + 3 Enf.)</span>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <span class="bg-blue-500/10 text-blue-300 border border-blue-500/20 px-2 py-0.5 rounded text-[11px]">Site Web</span>
+              </td>
+              <td class="py-4 px-4">
+                <div class="font-semibold text-white">525,00 €</div>
+                <div class="text-[11px] text-emerald-400 font-medium">✓ CB en ligne</div>
+              </td>
+              <td class="py-4 px-4 text-center">
+                <button onclick="toggleCheckin(this)" class="checkin-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25 transition-all inline-flex items-center gap-1.5">
+                  <span>✓</span> <span>À bord</span>
+                </button>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <div class="flex items-center justify-end gap-1.5">
+                  <button onclick="openDetailModal(this.closest('tr'))" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Voir fiche">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  </button>
+                  <button onclick="alert('[MAQUETTE] Facture envoyée par email à p.alexandre@martinique.mq')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Billet / Facture">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 7: Guichet -->
+            <tr class="table-row-hover booking-row" data-status="waiting" data-payment="paid" data-pax="2" data-name="Mercier Élodie" data-ref="TIB-2026-00815" data-phone="+33 7 88 99 11 22" data-email="elodie.mercier@yahoo.fr" data-adults="2" data-kids="0" data-amount="130,00 €" data-method="Espèces Guichet" data-channel="Guichet Ponton" data-date="04/08/2026 15:30">
+              <td class="py-4 px-4 font-medium text-white">
+                <div class="font-mono text-cyan-400 font-semibold cursor-pointer hover:underline" onclick="openDetailModal(this.closest('tr'))">#TIB-00815</div>
+                <div class="text-[11px] text-slate-500">04/08 à 15:30</div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center text-xs">EM</div>
+                  <div>
+                    <div class="font-semibold text-white cursor-pointer hover:text-cyan-300 transition-colors" onclick="openDetailModal(this.closest('tr'))">Élodie Mercier</div>
+                    <div class="text-[11px] text-slate-400"><a href="tel:+33788991122" class="hover:text-cyan-400">+33 7 88 99 11 22</a></div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex items-center gap-1.5">
+                  <span class="bg-white/10 text-white font-bold px-2 py-0.5 rounded text-[11px]">2 pax</span>
+                  <span class="text-slate-400 text-[11px]">(2 Ad.)</span>
+                </div>
+              </td>
+              <td class="py-4 px-4">
+                <span class="bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 px-2 py-0.5 rounded text-[11px]">Guichet Ponton</span>
+              </td>
+              <td class="py-4 px-4">
+                <div class="font-semibold text-white">130,00 €</div>
+                <div class="text-[11px] text-emerald-400 font-medium">✓ Espèces reçues</div>
+              </td>
+              <td class="py-4 px-4 text-center">
+                <button onclick="toggleCheckin(this)" class="checkin-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-500/15 border border-slate-500/30 text-slate-400 hover:bg-slate-500/25 transition-all inline-flex items-center gap-1.5">
+                  <span>⏳</span> <span>Non pointé</span>
+                </button>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <div class="flex items-center justify-end gap-1.5">
+                  <button onclick="openDetailModal(this.closest('tr'))" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Voir fiche">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  </button>
+                  <button onclick="alert('[MAQUETTE] Reçu imprimé pour Élodie Mercier')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Billet / Facture">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
     </div>
 
   </main>
 </div>
+
+<!-- MODAL: DÉTAIL D'UNE RÉSERVATION -->
+<div id="detail-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay fade-in">
+  <div class="card max-w-xl w-full p-6 shadow-2xl relative border border-white/15">
+    
+    <!-- Modal Header -->
+    <div class="flex items-start justify-between pb-4 border-b border-white/10 mb-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-mono text-cyan-400 font-bold text-lg" id="modal-ref">#TIB-00847</span>
+          <span class="bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-xs font-semibold px-2 py-0.5 rounded" id="modal-status-badge">Confirmée &amp; Payée</span>
+        </div>
+        <div class="text-xs text-slate-400 mt-1" id="modal-date">Date d'achat : 10/08/2026 à 14:32</div>
+      </div>
+      <button onclick="closeDetailModal()" class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+        ✕
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="space-y-4 text-xs">
+      
+      <!-- Client Section -->
+      <div class="bg-white/5 p-4 rounded-xl space-y-2">
+        <div class="text-slate-400 uppercase font-semibold text-[10px] tracking-wider">Client Référent</div>
+        <div class="grid grid-cols-2 gap-2 text-slate-200">
+          <div><strong class="text-white text-sm" id="modal-name">Marie Dupont</strong></div>
+          <div class="text-right"><span id="modal-channel" class="text-slate-400">Canal : Site Web</span></div>
+          <div>📞 <span id="modal-phone">+596 696 12 34 56</span></div>
+          <div class="text-right">✉️ <span id="modal-email">marie.dupont@email.com</span></div>
+        </div>
+      </div>
+
+      <!-- Passengers & Excursion -->
+      <div class="bg-white/5 p-4 rounded-xl space-y-2">
+        <div class="text-slate-400 uppercase font-semibold text-[10px] tracking-wider">Détail des Passagers sur ce créneau</div>
+        <div class="flex justify-between items-center text-slate-200 py-1 border-b border-white/5">
+          <span>Sortie : <strong>Observation Baleines (10h00)</strong></span>
+          <span class="font-bold text-cyan-400" id="modal-pax-count">2 personnes</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-slate-300 pt-1">
+          <div>Adultes : <strong class="text-white" id="modal-adults">2</strong></div>
+          <div>Enfants : <strong class="text-white" id="modal-kids">0</strong></div>
+        </div>
+      </div>
+
+      <!-- Payment details -->
+      <div class="bg-white/5 p-4 rounded-xl flex items-center justify-between">
+        <div>
+          <div class="text-slate-400 text-[10px] uppercase font-semibold">Règlement</div>
+          <div class="text-white font-bold text-base mt-0.5" id="modal-amount">130,00 €</div>
+          <div class="text-slate-400 text-[11px]" id="modal-method">Moyen : CB en ligne</div>
+        </div>
+        <div class="text-right">
+          <button onclick="alert('[MAQUETTE] Facture PDF téléchargée')" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-semibold transition-colors flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Facture PDF
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Modal Actions -->
+    <div class="flex items-center justify-between pt-5 border-t border-white/10 mt-5">
+      <button onclick="alert('[MAQUETTE] Annulation de la réservation avec motif.'); closeDetailModal();" class="text-red-400/80 hover:text-red-400 text-xs font-semibold flex items-center gap-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+        Annuler ce dossier
+      </button>
+      <div class="flex items-center gap-2">
+        <button onclick="closeDetailModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300">
+          Fermer
+        </button>
+        <button onclick="alert('[MAQUETTE] Email de rappel envoyé au client.'); closeDetailModal();" class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-white">
+          Renvoyer confirmation
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL: NOUVELLE RÉSERVATION MANUELLE (GUICHET / TÉLÉPHONE) -->
+<div id="new-booking-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay fade-in">
+  <div class="card max-w-lg w-full p-6 shadow-2xl relative border border-white/15">
+    
+    <div class="flex items-start justify-between pb-4 border-b border-white/10 mb-4">
+      <div>
+        <h3 class="font-bold text-white text-base flex items-center gap-2">
+          <span>➕</span> Ajouter une Réservation (Créneau 10h00)
+        </h3>
+        <div class="text-xs text-slate-400 mt-0.5">Ajout direct guichet ponton ou réservation téléphonique</div>
+      </div>
+      <button onclick="closeNewBookingModal()" class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+        ✕
+      </button>
+    </div>
+
+    <form onsubmit="submitNewBooking(event)" class="space-y-4 text-xs">
+      
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Prénom *</label>
+          <input type="text" id="new-firstname" required placeholder="Ex: Lucas" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-400" />
+        </div>
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Nom *</label>
+          <input type="text" id="new-lastname" required placeholder="Ex: Martin" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-400" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Téléphone *</label>
+          <input type="tel" id="new-phone" required placeholder="+596 696 00 00 00" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-400" />
+        </div>
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Email</label>
+          <input type="email" id="new-email" placeholder="client@email.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-400" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 bg-white/5 p-3 rounded-xl">
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Adultes (65 €)</label>
+          <input type="number" id="new-adults" min="1" max="8" value="2" oninput="calcNewTotal()" class="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-1.5 text-white font-bold focus:outline-none focus:border-cyan-400" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Enfants &lt; 12 ans (45 €)</label>
+          <input type="number" id="new-kids" min="0" max="8" value="0" oninput="calcNewTotal()" class="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-1.5 text-white font-bold focus:outline-none focus:border-cyan-400" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Canal de vente</label>
+          <select id="new-channel" class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-400">
+            <option value="Guichet Ponton">Guichet Ponton</option>
+            <option value="Téléphone">Téléphone</option>
+            <option value="Partenaire Hôtel">Partenaire Hôtel</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Paiement</label>
+          <select id="new-payment" class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-400">
+            <option value="Payé Espèces">Payé Espèces (Guichet)</option>
+            <option value="Payé CB Quai">Payé CB (TPE Quai)</option>
+            <option value="Chèques Vacances">Chèques Vacances ANCV</option>
+            <option value="À régler au quai">À régler plus tard au quai</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Price Calculation -->
+      <div class="flex items-center justify-between p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+        <div>
+          <span class="text-cyan-300 font-semibold">Total calculé :</span>
+          <span class="text-slate-400 text-[11px] block" id="new-calc-detail">2 Adultes = 130,00 €</span>
+        </div>
+        <div class="text-xl font-black text-cyan-400" id="new-calc-total">130,00 €</div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
+        <button type="button" onclick="closeNewBookingModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300">
+          Annuler
+        </button>
+        <button type="submit" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/20">
+          Enregistrer &amp; Inscrire
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  // State
+  let currentPax = 28;
+  const maxPax = 36;
+  let checkedPax = 14;
+
+  // Toggle check-in button
+  function toggleCheckin(btn) {
+    const row = btn.closest('tr');
+    const isChecked = row.dataset.status === 'checked';
+    const paxInBooking = parseInt(row.dataset.pax, 10) || 1;
+
+    if (isChecked) {
+      row.dataset.status = 'waiting';
+      btn.className = 'checkin-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-500/15 border border-slate-500/30 text-slate-400 hover:bg-slate-500/25 transition-all inline-flex items-center gap-1.5';
+      btn.innerHTML = '<span>⏳</span> <span>Non pointé</span>';
+      checkedPax = Math.max(0, checkedPax - paxInBooking);
+    } else {
+      row.dataset.status = 'checked';
+      btn.className = 'checkin-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25 transition-all inline-flex items-center gap-1.5';
+      btn.innerHTML = '<span>✓</span> <span>À bord</span>';
+      checkedPax = Math.min(currentPax, checkedPax + paxInBooking);
+    }
+    updateCheckinStats();
+  }
+
+  // Update check-in stats
+  function updateCheckinStats() {
+    const percent = Math.round((checkedPax / currentPax) * 100) || 0;
+    document.getElementById('stat-checkin-count').innerText = checkedPax;
+    document.getElementById('stat-checkin-badge').innerText = percent + '%';
+    document.getElementById('stat-checkin-bar').style.width = percent + '%';
+    document.getElementById('stat-checkin-waiting').innerText = (currentPax - checkedPax) + ' en attente';
+  }
+
+  // Check all passengers in
+  function checkAllIn() {
+    document.querySelectorAll('.booking-row').forEach(row => {
+      if (row.dataset.status !== 'checked') {
+        const btn = row.querySelector('.checkin-btn');
+        if (btn) toggleCheckin(btn);
+      }
+    });
+  }
+
+  // Filter Table
+  function filterTable(type, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.className = 'filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-slate-400 hover:text-white transition-colors';
+    });
+    btn.className = 'filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500 text-white transition-colors';
+
+    const rows = document.querySelectorAll('.booking-row');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      let show = false;
+      if (type === 'all') show = true;
+      else if (type === 'checked' && row.dataset.status === 'checked') show = true;
+      else if (type === 'waiting' && row.dataset.status === 'waiting') show = true;
+      else if (type === 'pending_pay' && row.dataset.payment === 'pending_pay') show = true;
+
+      row.style.display = show ? '' : 'none';
+      if (show) visibleCount++;
+    });
+
+    document.getElementById('filter-total-count').innerText = visibleCount + ' dossiers';
+  }
+
+  // Live Search
+  function searchTable(query) {
+    const q = query.toLowerCase().trim();
+    const rows = document.querySelectorAll('.booking-row');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      const name = (row.dataset.name || '').toLowerCase();
+      const ref = (row.dataset.ref || '').toLowerCase();
+      const phone = (row.dataset.phone || '').toLowerCase();
+      const email = (row.dataset.email || '').toLowerCase();
+
+      const matches = !q || name.includes(q) || ref.includes(q) || phone.includes(q) || email.includes(q);
+      row.style.display = matches ? '' : 'none';
+      if (matches) visibleCount++;
+    });
+
+    document.getElementById('filter-total-count').innerText = visibleCount + ' dossiers';
+  }
+
+  // Encaisser direct sur place
+  function encaisserDirect(row) {
+    alert('[MAQUETTE] Encaissement validé sur place pour ' + row.dataset.name + ' (' + row.dataset.amount + ').');
+    row.dataset.payment = 'paid';
+    const payCell = row.cells[4];
+    payCell.innerHTML = `<div class="font-semibold text-white">${row.dataset.amount}</div><div class="text-[11px] text-emerald-400 font-medium">✓ Encaissé sur place</div>`;
+    const actionCell = row.cells[6];
+    actionCell.querySelector('button[onclick*="encaisserDirect"]')?.remove();
+  }
+
+  // Toggle slot sales status
+  function toggleSlotStatus(btn) {
+    const isLocked = btn.innerText.includes('Déverrouiller');
+    if (isLocked) {
+      btn.innerHTML = `<svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg><span>Verrouiller les ventes en ligne</span>`;
+      alert('[MAQUETTE] Les ventes en ligne sont ré-ouvertes pour ce créneau.');
+    } else {
+      btn.innerHTML = `<svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg><span>Déverrouiller les ventes en ligne</span>`;
+      alert('[MAQUETTE] Ventes en ligne verrouillées : aucun nouveau client ne peut réserver sur ce créneau via le site web.');
+    }
+  }
+
+  // Detail Modal functions
+  function openDetailModal(row) {
+    document.getElementById('modal-ref').innerText = '#' + row.dataset.ref;
+    document.getElementById('modal-name').innerText = row.dataset.name;
+    document.getElementById('modal-phone').innerText = row.dataset.phone;
+    document.getElementById('modal-email').innerText = row.dataset.email;
+    document.getElementById('modal-channel').innerText = 'Canal : ' + row.dataset.channel;
+    document.getElementById('modal-date').innerText = "Date d'achat : " + row.dataset.date;
+    document.getElementById('modal-pax-count').innerText = row.dataset.pax + ' personnes';
+    document.getElementById('modal-adults').innerText = row.dataset.adults;
+    document.getElementById('modal-kids').innerText = row.dataset.kids;
+    document.getElementById('modal-amount').innerText = row.dataset.amount;
+    document.getElementById('modal-method').innerText = 'Moyen : ' + row.dataset.method;
+    
+    document.getElementById('detail-modal').classList.remove('hidden');
+  }
+
+  function closeDetailModal() {
+    document.getElementById('detail-modal').classList.add('hidden');
+  }
+
+  // New Booking Modal functions
+  function openNewBookingModal() {
+    document.getElementById('new-booking-modal').classList.remove('hidden');
+    calcNewTotal();
+  }
+
+  function closeNewBookingModal() {
+    document.getElementById('new-booking-modal').classList.add('hidden');
+  }
+
+  function calcNewTotal() {
+    const adults = parseInt(document.getElementById('new-adults').value, 10) || 0;
+    const kids = parseInt(document.getElementById('new-kids').value, 10) || 0;
+    const total = (adults * 65) + (kids * 45);
+    document.getElementById('new-calc-total').innerText = total + ',00 €';
+    document.getElementById('new-calc-detail').innerText = `${adults} Ad. (${adults * 65}€) + ${kids} Enf. (${kids * 45}€)`;
+  }
+
+  function submitNewBooking(e) {
+    e.preventDefault();
+    const fn = document.getElementById('new-firstname').value;
+    const ln = document.getElementById('new-lastname').value;
+    const phone = document.getElementById('new-phone').value;
+    const email = document.getElementById('new-email').value || 'guichet@tibaleine.mq';
+    const adults = parseInt(document.getElementById('new-adults').value, 10) || 1;
+    const kids = parseInt(document.getElementById('new-kids').value, 10) || 0;
+    const pax = adults + kids;
+    const channel = document.getElementById('new-channel').value;
+    const payment = document.getElementById('new-payment').value;
+    const total = (adults * 65) + (kids * 45) + ',00 €';
+    const ref = 'TIB-' + Math.floor(10000 + Math.random() * 90000);
+    const initials = (fn[0] + ln[0]).toUpperCase();
+
+    // Create new row
+    const tbody = document.getElementById('bookings-body');
+    const tr = document.createElement('tr');
+    tr.className = 'table-row-hover booking-row fade-in';
+    tr.dataset.status = 'waiting';
+    tr.dataset.payment = payment.includes('Payé') ? 'paid' : 'pending_pay';
+    tr.dataset.pax = pax;
+    tr.dataset.name = ln + ' ' + fn;
+    tr.dataset.ref = ref;
+    tr.dataset.phone = phone;
+    tr.dataset.email = email;
+    tr.dataset.adults = adults;
+    tr.dataset.kids = kids;
+    tr.dataset.amount = total;
+    tr.dataset.method = payment;
+    tr.dataset.channel = channel;
+    tr.dataset.date = new Date().toLocaleDateString('fr-FR') + ' ' + new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
+
+    tr.innerHTML = `
+      <td class="py-4 px-4 font-medium text-white">
+        <div class="font-mono text-cyan-400 font-semibold cursor-pointer hover:underline" onclick="openDetailModal(this.closest('tr'))">#${ref}</div>
+        <div class="text-[11px] text-slate-500">À l'instant</div>
+      </td>
+      <td class="py-4 px-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-full bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center text-xs">${initials}</div>
+          <div>
+            <div class="font-semibold text-white cursor-pointer hover:text-cyan-300 transition-colors" onclick="openDetailModal(this.closest('tr'))">${fn} ${ln}</div>
+            <div class="text-[11px] text-slate-400"><a href="tel:${phone}" class="hover:text-cyan-400">${phone}</a></div>
+          </div>
+        </div>
+      </td>
+      <td class="py-4 px-4">
+        <div class="flex items-center gap-1.5">
+          <span class="bg-cyan-500/20 text-cyan-300 font-bold px-2 py-0.5 rounded text-[11px]">${pax} pax</span>
+          <span class="text-slate-400 text-[11px]">(${adults} Ad.${kids > 0 ? ' + ' + kids + ' Enf.' : ''})</span>
+        </div>
+      </td>
+      <td class="py-4 px-4">
+        <span class="bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 px-2 py-0.5 rounded text-[11px]">${channel}</span>
+      </td>
+      <td class="py-4 px-4">
+        <div class="font-semibold text-white">${total}</div>
+        <div class="text-[11px] ${payment.includes('Payé') ? 'text-emerald-400' : 'text-amber-400'} font-medium">${payment}</div>
+      </td>
+      <td class="py-4 px-4 text-center">
+        <button onclick="toggleCheckin(this)" class="checkin-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-500/15 border border-slate-500/30 text-slate-400 hover:bg-slate-500/25 transition-all inline-flex items-center gap-1.5">
+          <span>⏳</span> <span>Non pointé</span>
+        </button>
+      </td>
+      <td class="py-4 px-4 text-right">
+        <div class="flex items-center justify-end gap-1.5">
+          <button onclick="openDetailModal(this.closest('tr'))" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Voir fiche">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </button>
+        </div>
+      </td>
+    `;
+
+    tbody.insertBefore(tr, tbody.firstChild);
+
+    // Update global pax stats
+    currentPax += pax;
+    const newPercent = Math.min(100, Math.round((currentPax / maxPax) * 100));
+    document.getElementById('stat-pax').innerText = currentPax;
+    document.getElementById('stat-bar').style.width = newPercent + '%';
+    document.getElementById('stat-free').innerText = Math.max(0, maxPax - currentPax) + ' places libres';
+    document.getElementById('stat-bookings-count').innerText = document.querySelectorAll('.booking-row').length;
+    document.getElementById('filter-total-count').innerText = document.querySelectorAll('.booking-row').length + ' dossiers';
+
+    closeNewBookingModal();
+    alert(`[MAQUETTE] Réservation #${ref} enregistrée avec succès pour ${fn} ${ln} (${pax} personnes).`);
+  }
+</script>
 
 </body>
 </html>
