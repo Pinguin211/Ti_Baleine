@@ -62,4 +62,4 @@ Loic, Thomas, Benjamin et Ivan.
 - Rien.
 
 **Questions ouvertes pour le client.**
--
+- L'annulation d'une réservation doit-elle être faite par téléphone ou par l'application ?
