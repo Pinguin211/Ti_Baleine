@@ -43,7 +43,7 @@ Entretien d'évolution et d'arbitrage : le client précise les fonctionnalités 
 | Q10 | Quels bateaux opèrent depuis Saint-Leu ? | Uniquement le **Tikap** (12 places). |
 | Q11 | Quels jours les départs ont-ils lieu depuis Saint-Leu ? | Le **mardi** et le **jeudi** depuis Saint-Leu ; le reste de la semaine depuis Saint-Gilles. |
 | Q12 | Les types de sortie diffèrent-ils à Saint-Leu ? | Non : **mêmes types de sortie** qu'à Saint-Gilles (baleines, dauphins, privatisation). |
-| Q13 | Quels sont les horaires des départs de Saint-Leu et quel est l'impact sur Saint-Gilles ? | **Départ à 9 h** de Saint-Leu (Tikap). Ensuite le bateau repart se positionner à Saint-Gilles : **pas de Tikap disponible à 10 h le mardi et le jeudi à Saint-Gilles** (jauge 10h à Saint-Gilles = 24 places sur Grand Bleu seul). |
+| Q13 | Quels sont les horaires des départs de Saint-Leu et quel est l'impact sur Saint-Gilles ? | **Départ à 9 h** de Saint-Leu (Tikap). Ensuite le bateau repart se positionner à Saint-Gilles : **pas de Tikap disponible la matinée le mardi et le jeudi à Saint-Gilles** (jauge 07h et 10h à Saint-Gilles = 24 places sur Grand Bleu seul). |
 | Q14 | Le naturaliste est-il affecté à un lieu fixe ? | Non : l'**emplacement du naturaliste dépend des réservations**. |
 | Q15 | Le client choisit-il le lieu de départ lors de la réservation ? | Oui : le **choix du lieu** (Saint-Gilles / Saint-Leu) se fait sur l'application selon les disponibilités du planning. |
 | Q16 | Quelles informations liées au lieu faut-il afficher au client ? | Afficher la disponibilité selon le lieu, l'adresse du port d'embarquement, le départ à 9 h pour Saint-Leu et le supplément tarifaire. |
@@ -55,7 +55,7 @@ Entretien d'évolution et d'arbitrage : le client précise les fonctionnalités 
 
 ### Annulation et modification des réservations (gestion back-office admin)
 
-- **Pas d'annulation directe par le client sur le web :** le client contacte l'entreprise par téléphone ou e-mail. L'annulation est enregistrée dans le back-office **exclusivement par l'administrateur**.
+- **Pas d'annulation directe par le client sur le web :** le client contacte l'entreprise par téléphone. L'annulation est enregistrée dans le back-office **exclusivement par l'administrateur**.
 - **Libération automatique de créneau :** dès que l'administrateur valide l'annulation d'une réservation, les places associées sont immédiatement réincrémentées dans la jauge disponible du créneau sur le site web.
 - **Information par SMS :** un SMS transactionnel d'information/confirmation d'annulation est envoyé automatiquement au numéro de téléphone mobile du client.
 - **Modification de réservation :** réservée à l'administrateur pour ajuster le nombre de passagers ou reporter une date en cas de besoin.
@@ -72,8 +72,8 @@ L'exploitation s'étend sur **deux points d'embarquement** :
 
 ### Règle d'indisponibilité de la flotte à Saint-Gilles (Tikap à 10h)
 
-En raison de la sortie à 9h00 à Saint-Leu et du temps de navigation de repositionnement maritime vers Saint-Gilles, **le Tikap n'est pas disponible pour le créneau de 10h00 le mardi et le jeudi à Saint-Gilles**.
-Sur ce créneau spécifique (mar/jeu 10h à Saint-Gilles), seul le *Grand Bleu* (24 places) opère, limitant la jauge maximale du créneau à **24 places** au lieu de 36. Le Tikap redevient disponible à Saint-Gilles pour le créneau de 14h00.
+En raison de la sortie à 9h00 à Saint-Leu et du temps de navigation de repositionnement maritime vers Saint-Gilles, **le Tikap n'est pas disponible pour les créneaux de 07h00 et 10h00 le mardi et le jeudi à Saint-Gilles**.
+Sur ces créneaux spécifiques (mar/jeu 07h et 10h à Saint-Gilles), seul le *Grand Bleu* (24 places) opère, limitant la jauge maximale des créneaux à **24 places** au lieu de 36. Le Tikap redevient disponible à Saint-Gilles pour le créneau de 14h00.
 
 ### Privatisations en demi-journée (Saint-Gilles et Saint-Leu)
 
@@ -111,7 +111,7 @@ Sur ce créneau spécifique (mar/jeu 10h à Saint-Gilles), seul le *Grand Bleu* 
 | RM-36 | Les billets individuels au départ de Saint-Leu sont majorés de + 10 € par personne (baleines et dauphins). | Quel est l'écart tarifaire pour les départs de Saint-Leu ? | Q09 | ✅ oui |
 | RM-37 | À Saint-Leu, seul le Tikap (12 places) opère. | Quels bateaux opèrent depuis Saint-Leu ? | Q10 | ✅ oui |
 | RM-38 | Saint-Leu opère le mardi et le jeudi à 9h00 ; Saint-Gilles opère le reste du planning. | Quels jours et horaires ont lieu les départs de Saint-Leu ? | Q11 / Q13 | ✅ oui |
-| RM-39 | Le mardi et le jeudi, le Tikap n'est pas disponible à 10h00 à Saint-Gilles (en opération/repositionnement depuis Saint-Leu). La jauge maximale à 10h à Saint-Gilles ces jours-là est bornée à 24 places (Grand Bleu seul). | Quels sont les horaires et l'impact de repositionnement ? | Q13 | ✅ oui |
+| RM-39 | Le mardi et le jeudi, le Tikap n'est pas disponible la matinée à Saint-Gilles (en opération/repositionnement depuis Saint-Leu). La jauge maximale à 07h et 10h à Saint-Gilles ces jours-là est bornée à 24 places (Grand Bleu seul). | Quels sont les horaires et l'impact de repositionnement ? | Q13 | ✅ oui |
 | RM-40 | L'affectation du naturaliste unique dépend des réservations journalières (pas d'affectation géographique fixe). | Le naturaliste est-il affecté à un lieu fixe ? | Q14 | ✅ oui |
 | RM-41 | Le client choisit son lieu de départ (Saint-Gilles ou Saint-Leu) lors de sa réservation sur l'application. | Le client choisit-il le lieu de départ lors de la réservation ? | Q15 | ✅ oui |
 | RM-42 | L'application affiche les informations propres à chaque lieu de départ (port, horaires, consignes). | Quelles informations liées au lieu faut-il afficher au client ? | Q16 | ✅ oui |
@@ -139,7 +139,7 @@ Sur ce créneau spécifique (mar/jeu 10h à Saint-Gilles), seul le *Grand Bleu* 
 |---|---|---|---|
 | C-25 | Deuxième point de départ **Saint-Leu**, le mardi et le jeudi à 9h, **Tikap uniquement** (12 places). | Q08 / Q10 / Q11 | Métier / Logistique |
 | C-26 | Supplément **+ 10 € / personne** pour les billets individuels au départ de Saint-Leu (forfait privatisation inchangé à 600 €). | Q09 / Q17 | Tarifaire |
-| C-27 | **Pas de Tikap à 10h le mardi et le jeudi à Saint-Gilles** (jauge max 10h = 24 places avec Grand Bleu seul). | Q13 | Logistique / Capacité |
+| C-27 | **Pas de Tikap à 07h et 10h le mardi et le jeudi à Saint-Gilles** (jauge max 07h et 10h = 24 places avec Grand Bleu seul). | Q13 | Logistique / Capacité |
 | C-28 | **Choix du lieu de départ** par le client sur l'interface publique. | Q15 | Fonctionnelle |
 | C-29 | **Affichage d'informations spécifiques au lieu** dans l'interface (adresses, horaires). | Q16 | Ergonomie |
 | C-30 | **Naturaliste unique** affecté selon les réservations. | Q14 | Ressource / Physique |
@@ -154,8 +154,7 @@ Sur ce créneau spécifique (mar/jeu 10h à Saint-Gilles), seul le *Grand Bleu* 
 |---|---|---|
 | 1 | Quel est le délai limite de notification d'annulation à respecter vis-à-vis du client ? | |
 | 2 | Quel prestataire SMS (Twilio, OVH SMS, SMS Factor...) est privilégié pour l'envoi des notifications ? | |
-| 3 | Le nom de domaine « tibaleine.re » est-il validé et réservé ? | |
-| 4 | Comment l'administrateur procède-t-il pour encaisser un complément de tarif en cas d'ajout de passagers lors d'une modification ? | |
+| 3 | Dans quel ordre se fait les choix du client concernant le lieu, la date et le type de sortie ? | |
 
 ---
 
