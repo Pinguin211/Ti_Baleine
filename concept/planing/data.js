@@ -5,7 +5,7 @@
 window.PLANNING_INITIAL_DATA = {
   "startMonday": "2026-08-10",
   "daysPerWeek": 5,
-  "lastSaved": "2026-08-11T10:14:25.583Z",
+  "lastSaved": "2026-08-12T12:05:25.840Z",
   "personas": [
     {
       "id": "p_benjamin",
@@ -70,23 +70,27 @@ window.PLANNING_INITIAL_DATA = {
     },
     "p_benjamin__2026-08-12": {
       "title": "Diagramme de séquence",
-      "status": "todo",
-      "notes": ""
+      "status": "done",
+      "notes": "",
+      "updatedAt": "2026-08-12T12:04:54.945Z"
     },
     "p_thomas__2026-08-12": {
       "title": "Diagramme MLD",
-      "status": "todo",
-      "notes": ""
+      "status": "done",
+      "notes": "",
+      "updatedAt": "2026-08-12T12:05:01.474Z"
     },
     "p_ivan__2026-08-12": {
       "title": "Maquettes",
-      "status": "todo",
-      "notes": ""
+      "status": "in_progress",
+      "notes": "",
+      "updatedAt": "2026-08-12T12:05:14.463Z"
     },
     "p_loic__2026-08-12": {
       "title": "Diagramme de cas d'utilisation",
-      "status": "todo",
-      "notes": ""
+      "status": "done",
+      "notes": "",
+      "updatedAt": "2026-08-12T12:05:18.962Z"
     },
     "p_benjamin__2026-08-13": {
       "title": "Initialisation du moteur de test",
