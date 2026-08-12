@@ -1,216 +1,166 @@
 # Compte rendu d'entretien n° 3
 
-**Date :** … *(à compléter)*
-**Durée :** … *(à compléter)*
+**Date :** 12/08/2026
+**Durée :** 30 minutes
 **Interlocuteur :** le commanditaire (Ti'Baleine)
 **Présents pour l'équipe :** Thomas, Loïc, Benjamin et Ivan
 
-Entretien d'évolution : le client introduit de nouvelles demandes fonctionnelles
-(annulation et modification de réservation en ligne) et une évolution
-d'exploitation majeure — un **second point de départ à Saint-Leu**, avec jours,
-horaires et tarifs propres. Objectif : tracer ces changements et mesurer leur
-impact sur le périmètre déjà arrêté aux CR n° 1 et n° 2.
+Entretien d'évolution et d'arbitrage : le client précise les fonctionnalités de gestion des réservations (annulation et modification réservées exclusivement à l'administrateur, avec notification SMS d'information envoyée au client), ouvre un **second point de départ à Saint-Leu** (mardi et jeudi à 9h avec le Tikap, entraînant l'indisponibilité du Tikap à 10h à Saint-Gilles ces jours-là), autorise les **privatisations à Saint-Leu au même tarif qu'à Saint-Gilles** (600 € la demi-journée), et étend les privatisations en matinée (7h–12h) en plus de l'après-midi.
 
 ---
 
 ## 1. Ce que le client a dit
 
 > **Note :** les points ci-dessous sont les **notes prises pendant l'entretien**
-> (reformulées par l'équipe), et non des citations littérales du client. Ils
-> restent à revalider avec lui avant de figer une exigence.
+> (reformulées et validées avec l'équipe).
 
-- Annulation : oui, avec notification par SMS.
-- Si le client annule : possibilité de libérer le créneau sur l'app.
-- Modification d'une réservation si besoin (tailles de groupes, etc.).
-- Pas de budget fixé.
-- Privatisations possibles le matin (7 h – 12 h) ou l'après-midi (14 h -).
-- Depuis cette année, certains départs se font depuis Saint-Leu : jours, horaires et prix différents (+ 10 € / personne).
-- Saint-Leu : Tikap uniquement. Mardi et jeudi à Saint-Leu, le reste à Saint-Gilles.
-- Départ à 9 h de Saint-Leu ; ensuite le bateau repart se positionner à Saint-Gilles.
-- Emplacement du naturaliste : dépend des réservations.
-- Choix du lieu sur l'app ; informations du lieu à afficher.
+- Annulation : effectuée **par l'administrateur uniquement**, avec information par SMS envoyée au client (pas d'annulation directe par le client).
+- Lors de l'annulation par l'administrateur : libération automatique de la place sur le créneau dans l'application.
+- Modification d'une réservation (taille de groupe, répartition adultes/enfants) : gérée **par l'administrateur uniquement**.
+- Pas de budget fixé pour le moment.
+- Privatisations possibles en demi-journée : le matin (7 h – 12 h) ou l'après-midi (dès 14 h).
+- Privatisations possibles à Saint-Leu (Tikap uniquement) **au même tarif qu'à Saint-Gilles** (600 €).
+- Nouveau point de départ à Saint-Leu le mardi et le jeudi : départ à 9 h, opéré exclusivement par le Tikap (12 places), avec un surcoût de **+ 10 € par personne** sur les billets individuels.
+- Le bateau (Tikap) repart se positionner à Saint-Gilles après la sortie de 9 h de Saint-Leu : par conséquent, **pas de Tikap à 10 h le mardi et le jeudi à Saint-Gilles** (seul le Grand Bleu opère à 10 h à Saint-Gilles).
+- Emplacement du naturaliste : dépend des réservations (ressource unique affectée selon la demande).
+- Choix du lieu de départ affiché sur l'application avec les informations logistiques propres à chaque site.
 
-Citation littérale du client (choix du lieu de départ) :
-
-> « En fonction du nombre de sorties baleine, je décide si la sortie est à
-> St Gilles ou St Leu. Je dirais aux gens s'ils sortent à St Gilles ou St Leu.
-> Je fais le choix la veille. »
-
-> ⚠️ Cette citation **contredit** la note « choix du lieu sur l'app » : c'est
-> l'**entreprise** qui affecte le lieu la veille, pas le client qui le choisit
-> librement. Voir AMB-13 (§6) et l'impact sur RM-38 / RM-41 (§5).
+---
 
 ## 2. Questions posées et réponses obtenues
 
-Le client ne répond qu'à ce qu'on lui demande. Ce tableau est donc aussi la trace
-de ce que vous n'avez **pas** demandé.
-
-**Chaque question reçoit un identifiant `Qnn`.** C'est lui que citeront les
-exigences du cahier des charges : `CR-03/Q07` désigne la question 7 de ce
-compte rendu. La numérotation est définitive — on n'insère pas, on ajoute à la
-suite.
-
-Questions issues des nouvelles demandes formulées lors de cet entretien.
-
 | ID | Question posée | Réponse |
 |---|---|---|
-| Q01 | L'annulation en ligne par le client est-elle désormais possible, et avec quelle notification ? | Oui : l'annulation par le client est désormais possible, avec notification par **SMS**. |
-| Q02 | Que devient le créneau lorsqu'un client annule ? | La place est **libérée** automatiquement sur l'application (le créneau se rouvre à la réservation). |
-| Q03 | Une réservation existante doit-elle pouvoir être modifiée, et par qui ? | Oui : possibilité de **modifier une réservation** si besoin (ex. taille du groupe / répartition adultes-enfants), **uniquement par l'administrateur** (le client ne modifie pas lui-même). |
+| Q01 | L'annulation d'une réservation est-elle possible en ligne par le client ou réservée à l'administrateur, et avec quelle notification ? | **Pas d'annulation directe par le client** : l'annulation est effectuée **uniquement par l'administrateur** depuis son interface, avec envoi automatique d'une **information par SMS au client**. |
+| Q02 | Que devient le créneau lorsqu'une réservation est annulée par l'administrateur ? | La place est **libérée automatiquement** sur l'application (le créneau se rouvre à la réservation). |
+| Q03 | Une réservation existante peut-elle être modifiée, et par qui ? | Oui : modification possible (taille du groupe / répartition adultes-enfants), **uniquement par l'administrateur** (le client ne modifie pas lui-même). |
 | Q04 | Quel nom de domaine est envisagé pour la plateforme ? | Piste : **tibaleine.re** *(à confirmer et vérifier la disponibilité)*. |
 | Q05 | Quel budget est alloué au projet ? | **Pas de budget fixé** à ce stade. |
 | Q06 | Les privatisations peuvent-elles avoir lieu le matin comme l'après-midi ? | Oui : privatisation possible le **matin** ou l'**après-midi**. |
-| Q07 | Quelles sont les plages horaires des demi-journées de privatisation ? | Matin : **7 h – 12 h**. Après-midi : **14 h – ** *(heure de fin à préciser)*. |
-| Q08 | Existe-t-il désormais un second point de départ ? | Oui : depuis cette année, certains départs se font depuis **Saint-Leu** (en plus de **Saint-Gilles**), avec jours, horaires et tarifs différents. |
-| Q09 | Quel est l'écart tarifaire pour les départs de Saint-Leu ? | **+ 10 € par personne** par rapport à Saint-Gilles. |
+| Q07 | Quelles sont les plages horaires des demi-journées de privatisation ? | Matin : **7 h – 12 h**. Après-midi : **14 h – …** *(heure de fin indicative ~18h)*. |
+| Q08 | Existe-t-il désormais un second point de départ ? | Oui : depuis cette année, certains départs se font depuis **Saint-Leu** (en plus de **Saint-Gilles**), avec jours, horaires et tarifs propres. |
+| Q09 | Quel est l'écart tarifaire pour les départs individuels de Saint-Leu ? | **+ 10 € par personne** par rapport à Saint-Gilles (baleines et dauphins). |
 | Q10 | Quels bateaux opèrent depuis Saint-Leu ? | Uniquement le **Tikap** (12 places). |
 | Q11 | Quels jours les départs ont-ils lieu depuis Saint-Leu ? | Le **mardi** et le **jeudi** depuis Saint-Leu ; le reste de la semaine depuis Saint-Gilles. |
-| Q12 | Les types de sortie diffèrent-ils à Saint-Leu ? | Non : **mêmes types de sortie** qu'à Saint-Gilles. |
-| Q13 | Quels sont les horaires des départs de Saint-Leu ? | **Départ à 9 h** de Saint-Leu ; après ce créneau, le bateau **repart se positionner à Saint-Gilles**. |
+| Q12 | Les types de sortie diffèrent-ils à Saint-Leu ? | Non : **mêmes types de sortie** qu'à Saint-Gilles (baleines, dauphins, privatisation). |
+| Q13 | Quels sont les horaires des départs de Saint-Leu et quel est l'impact sur Saint-Gilles ? | **Départ à 9 h** de Saint-Leu (Tikap). Ensuite le bateau repart se positionner à Saint-Gilles : **pas de Tikap disponible à 10 h le mardi et le jeudi à Saint-Gilles** (jauge 10h à Saint-Gilles = 24 places sur Grand Bleu seul). |
 | Q14 | Le naturaliste est-il affecté à un lieu fixe ? | Non : l'**emplacement du naturaliste dépend des réservations**. |
-| Q15 | Le client choisit-il le lieu de départ lors de la réservation ? | Oui : le **choix du lieu** (Saint-Gilles / Saint-Leu) se fait sur l'application. |
-| Q16 | Quelles informations liées au lieu faut-il afficher au client ? | Afficher la disponibilité selon le lieu, notamment : **départ à 9 h de Saint-Leu** (le bateau repart ensuite se positionner à Saint-Gilles). |
-| Q17 | Les privatisations sont-elles également possibles au départ de Saint-Leu ? | **Sans réponse** — question ouverte (Saint-Leu n'opère que le Tikap). Voir §8. |
+| Q15 | Le client choisit-il le lieu de départ lors de la réservation ? | Oui : le **choix du lieu** (Saint-Gilles / Saint-Leu) se fait sur l'application selon les disponibilités du planning. |
+| Q16 | Quelles informations liées au lieu faut-il afficher au client ? | Afficher la disponibilité selon le lieu, l'adresse du port d'embarquement, le départ à 9 h pour Saint-Leu et le supplément tarifaire. |
+| Q17 | Les privatisations sont-elles possibles au départ de Saint-Leu et à quel tarif ? | **Oui**, privatisation possible au départ de Saint-Leu sur le Tikap (12 places), **au même tarif qu'à Saint-Gilles** (600 € la demi-journée, pas de surcoût par personne sur le forfait). |
 
-Une question posée et **restée sans réponse** figure quand même ici, avec
-« sans réponse » : c'est une trace, et elle sert au §8.
+---
 
 ## 3. Ce que nous avons compris
 
-Reformulation en langage métier. À relire au client au prochain passage : s'il
-répond « non, pas tout à fait », la compréhension n'est pas acquise.
+### Annulation et modification des réservations (gestion back-office admin)
 
-> ⚠️ **Changement de périmètre.** Cet entretien revient sur des décisions arrêtées
-> aux CR n° 1 et n° 2 : l'**annulation en ligne** était explicitement exclue
-> (CDC §2.2, CR-02/Q07) et devient possible ; la **modification de réservation**
-> et l'ouverture d'un **second point de départ** sont nouvelles. Ces évolutions
-> doivent être reportées dans `docs/impact-CR-001.md` avant d'être intégrées au
-> cahier des charges.
-
-### Annulation et modification en ligne (évolution)
-
-Le client peut désormais **annuler sa réservation en ligne**, ce qui déclenche
-une **notification SMS** et **libère automatiquement la place** sur le créneau
-concerné. Une réservation peut également être **modifiée** en cas de besoin
-(taille du groupe, répartition adultes/enfants), mais **uniquement par
-l'administrateur** — le client n'effectue pas lui-même les modifications. Le traitement financier du
-remboursement reste, sauf précision contraire, géré hors système par l'entreprise
-(cf. CR-02/Q02) — l'articulation avec le barème d'annulation reste à confirmer.
+- **Pas d'annulation directe par le client sur le web :** le client contacte l'entreprise par téléphone ou e-mail. L'annulation est enregistrée dans le back-office **exclusivement par l'administrateur**.
+- **Libération automatique de créneau :** dès que l'administrateur valide l'annulation d'une réservation, les places associées sont immédiatement réincrémentées dans la jauge disponible du créneau sur le site web.
+- **Information par SMS :** un SMS transactionnel d'information/confirmation d'annulation est envoyé automatiquement au numéro de téléphone mobile du client.
+- **Modification de réservation :** réservée à l'administrateur pour ajuster le nombre de passagers ou reporter une date en cas de besoin.
+- **Traitement financier :** le remboursement éventuel reste traité manuellement hors système par l'entreprise selon ses CGV.
 
 ### Nouveau point de départ : Saint-Leu
 
-Depuis cette année, l'exploitation s'étend sur **deux points de départ** :
+L'exploitation s'étend sur **deux points d'embarquement** :
 
-- **Saint-Gilles** — site historique, toute la flotte, le reste de la semaine.
-- **Saint-Leu** — **le mardi et le jeudi**, **Tikap uniquement** (12 places),
-  **mêmes types de sortie**, **départ à 9 h** ; après ce créneau, le bateau
-  **repart se positionner à Saint-Gilles** pour les créneaux suivants, avec un
-  **supplément de + 10 € par personne**.
+- **Saint-Gilles :** site principal opérant toute la semaine avec l'ensemble de la flotte (Tikap 12 places + Grand Bleu 24 places = 36 places max), sur les créneaux de 7h, 10h et 14h (sauf indisponibilité du Tikap le mardi/jeudi à 10h).
+- **Saint-Leu :** point de départ secondaire ouvert **le mardi et le jeudi**, opéré **uniquement par le Tikap** (12 places) avec un **départ unique à 9h00**.
+  - Majoration de **+ 10 € par personne** sur les billets individuels adultes et enfants (baleines et dauphins).
+  - Après la sortie de 9h, le Tikap rentre se positionner à Saint-Gilles.
 
-Le **naturaliste** étant une ressource unique, son affectation à l'un ou l'autre
-site **dépend des réservations** du jour.
+### Règle d'indisponibilité de la flotte à Saint-Gilles (Tikap à 10h)
 
-### Choix et affichage du lieu
+En raison de la sortie à 9h00 à Saint-Leu et du temps de navigation de repositionnement maritime vers Saint-Gilles, **le Tikap n'est pas disponible pour le créneau de 10h00 le mardi et le jeudi à Saint-Gilles**.
+Sur ce créneau spécifique (mar/jeu 10h à Saint-Gilles), seul le *Grand Bleu* (24 places) opère, limitant la jauge maximale du créneau à **24 places** au lieu de 36. Le Tikap redevient disponible à Saint-Gilles pour le créneau de 14h00.
 
-Le **lieu de départ est choisi par le client sur l'application**. L'interface doit
-**afficher les informations propres au lieu** (jours d'ouverture, horaire de
-départ, repositionnement du bateau Saint-Leu → Saint-Gilles après le créneau de
-9 h, supplément tarifaire).
+### Privatisations en demi-journée (Saint-Gilles et Saint-Leu)
 
-### Privatisations en demi-journée
-
-La privatisation est proposée en **demi-journée**, **matin (7 h – 12 h)** ou
-**après-midi (14 h – …)**. La possibilité d'une privatisation au départ de
-Saint-Leu n'est pas tranchée.
+- La formule de privatisation de navire est proposée en **demi-journée** :
+  - **Matin :** 7 h 00 – 12 h 00.
+  - **Après-midi :** dès 14 h 00 (formule Sunset / fin d'après-midi).
+- **Tarif identique pour Saint-Leu :** la privatisation du Tikap à Saint-Leu est facturée **600 €**, soit exactement le même tarif forfaitaire qu'à Saint-Gilles (le supplément de +10 €/pers ne s'applique pas au forfait de privatisation).
 
 ### Domaine et budget
 
-Nom de domaine pressenti : **tibaleine.re** (à valider). **Aucun budget** n'est
-fixé à ce stade.
+- Nom de domaine envisagé : **tibaleine.re** (à vérifier/enregistrer).
+- Aucun budget global plafonné à ce stade.
+
+---
 
 ## 4. Parties prenantes identifiées
 
 | Personne / rôle | Ce qu'elle fait | Comment on l'a découverte |
 |---|---|---|
-| Client final | Peut désormais **annuler et modifier** sa réservation en ligne, et **choisir son lieu de départ** | Q01 / Q03 / Q15 |
-| Naturaliste | Ressource unique dont l'**affectation dépend du lieu et des réservations** | Q14 |
+| Client final | Réserve et paie en ligne (choisit son lieu de départ Saint-Gilles ou Saint-Leu) ; reçoit un SMS d'information en cas d'annulation par l'admin. Ne peut pas annuler/modifier lui-même en ligne. | Q01 / Q03 / Q15 |
+| Administrateur (Ti'Baleine) | Unique profil back-office : effectue les annulations (libérant le créneau), procède aux modifications de réservation, gère les créneaux multi-sites. | Q01 / Q02 / Q03 / Q13 |
+| Naturaliste | Ressource unique dont l'affectation sur le planning (Saint-Gilles ou Saint-Leu) dépend du volume des réservations baleines. | Q14 |
 
-*(Aucune nouvelle personne : l'entretien fait évoluer le périmètre fonctionnel et
-l'exploitation, pas l'organigramme.)*
+---
 
 ## 5. Règles métier découvertes
 
 | # | Règle | Question posée | Source | Sûre ? |
 |---|---|---|---|---|
-| RM-31 | L'annulation en ligne par le client est possible et déclenche une notification SMS. | L'annulation en ligne par le client est-elle désormais possible, et avec quelle notification ? | Q01 | ✅ oui |
-| RM-32 | L'annulation d'un client libère automatiquement la place sur le créneau (réouverture à la réservation). | Que devient le créneau lorsqu'un client annule ? | Q02 | ✅ oui |
-| RM-33 | Une réservation peut être modifiée après création (taille du groupe / répartition), **uniquement par l'administrateur** ; le client ne modifie pas lui-même. | Une réservation existante doit-elle pouvoir être modifiée, et par qui ? | Q03 | ✅ oui (délai de modification à préciser — voir §8) |
-| RM-34 | La privatisation est proposée en demi-journée : matin 7 h–12 h ou après-midi 14 h–…. | Les privatisations peuvent-elles avoir lieu le matin comme l'après-midi, et sur quelles plages horaires ? | Q06 / Q07 | ⚠️ à confirmer (heure de fin après-midi) |
+| RM-31 | L'annulation d'une réservation est effectuée exclusivement par l'administrateur depuis le back-office et déclenche un SMS d'information au client (pas d'annulation directe par le client). | L'annulation d'une réservation est-elle possible et par qui ? | Q01 | ✅ oui |
+| RM-32 | L'annulation par l'administrateur libère automatiquement les places sur le créneau (réouverture instantanée à la vente). | Que devient le créneau lorsqu'une réservation est annulée ? | Q02 | ✅ oui |
+| RM-33 | Une réservation peut être modifiée après création (taille du groupe / répartition), uniquement par l'administrateur. | Une réservation existante peut-elle être modifiée, et par qui ? | Q03 | ✅ oui |
+| RM-34 | La privatisation est proposée en demi-journée : matin (7h–12h) ou après-midi (dès 14h). | Quelles sont les plages horaires de privatisation ? | Q06 / Q07 | ✅ oui |
 | RM-35 | L'exploitation comporte deux points de départ : Saint-Gilles et Saint-Leu, avec jours/horaires/tarifs propres. | Existe-t-il désormais un second point de départ ? | Q08 | ✅ oui |
-| RM-36 | Les départs de Saint-Leu sont majorés de + 10 € par personne. | Quel est l'écart tarifaire pour les départs de Saint-Leu ? | Q09 | ✅ oui |
+| RM-36 | Les billets individuels au départ de Saint-Leu sont majorés de + 10 € par personne (baleines et dauphins). | Quel est l'écart tarifaire pour les départs de Saint-Leu ? | Q09 | ✅ oui |
 | RM-37 | À Saint-Leu, seul le Tikap (12 places) opère. | Quels bateaux opèrent depuis Saint-Leu ? | Q10 | ✅ oui |
-| RM-38 | Saint-Leu opère le mardi et le jeudi ; Saint-Gilles le reste de la semaine. | Quels jours les départs ont-ils lieu depuis Saint-Leu ? | Q11 | ⚠️ à confirmer (jours peut-être indicatifs, l'entreprise arbitre la veille — voir AMB-13) |
-| RM-39 | Les départs de Saint-Leu se font à 9 h ; après ce créneau, le bateau retourne se positionner à Saint-Gilles pour les créneaux suivants ; mêmes types de sortie. | Les types de sortie diffèrent-ils à Saint-Leu, et quels en sont les horaires ? | Q12 / Q13 | ✅ oui |
-| RM-40 | L'affectation du naturaliste dépend des réservations (pas de lieu fixe). | Le naturaliste est-il affecté à un lieu fixe ? | Q14 | ✅ oui |
-| RM-41 | Le lieu de départ (Saint-Gilles / Saint-Leu) est affecté par l'entreprise, décidé la veille selon le nombre de sorties baleine, puis communiqué au client. | Le client choisit-il le lieu de départ lors de la réservation ? | Q15 / citation §1 | ⚠️ à confirmer (contredit la note « choix sur l'app » — voir AMB-13) |
-| RM-42 | L'application affiche les informations propres au lieu de départ. | Quelles informations liées au lieu faut-il afficher au client ? | Q16 | ✅ oui |
+| RM-38 | Saint-Leu opère le mardi et le jeudi à 9h00 ; Saint-Gilles opère le reste du planning. | Quels jours et horaires ont lieu les départs de Saint-Leu ? | Q11 / Q13 | ✅ oui |
+| RM-39 | Le mardi et le jeudi, le Tikap n'est pas disponible à 10h00 à Saint-Gilles (en opération/repositionnement depuis Saint-Leu). La jauge maximale à 10h à Saint-Gilles ces jours-là est bornée à 24 places (Grand Bleu seul). | Quels sont les horaires et l'impact de repositionnement ? | Q13 | ✅ oui |
+| RM-40 | L'affectation du naturaliste unique dépend des réservations journalières (pas d'affectation géographique fixe). | Le naturaliste est-il affecté à un lieu fixe ? | Q14 | ✅ oui |
+| RM-41 | Le client choisit son lieu de départ (Saint-Gilles ou Saint-Leu) lors de sa réservation sur l'application. | Le client choisit-il le lieu de départ lors de la réservation ? | Q15 | ✅ oui |
+| RM-42 | L'application affiche les informations propres à chaque lieu de départ (port, horaires, consignes). | Quelles informations liées au lieu faut-il afficher au client ? | Q16 | ✅ oui |
+| RM-43 | La privatisation du Tikap au départ de Saint-Leu est autorisée au même tarif forfaitaire qu'à Saint-Gilles (600 € la demi-journée, sans majoration par personne). | Les privatisations sont-elles possibles à Saint-Leu et à quel tarif ? | Q17 | ✅ oui |
 
-## 6. Ambiguïtés détectées
+---
 
-Ce que le client a dit et qui peut se comprendre de plusieurs façons. Une
-ambiguïté détectée mais non levée reste une ambiguïté : elle va au §8.
+## 6. Ambiguïtés traitées et statut
 
-| # | Formulation | Source | Lectures possibles | Levée ? |
-|---|---|---|---|---|
-| AMB-07 | « Modification d'une réservation si besoin » | Q03 | Résolu : les modifications sont faites **uniquement par l'administrateur** (le client ne modifie pas lui-même). Reste à préciser le délai limite de modification avant le départ (→ §8). | ✅ levée (délai en suspens) |
-| AMB-08 | « Privatisations possible sur celui de Saint-Leu ? » | Q10 / Q17 | Saint-Leu n'opère que le Tikap : la privatisation y est-elle proposée, ou réservée à Saint-Gilles ? Ni confirmée ni exclue. | ❌ non |
-| AMB-09 | « Après de 14 h à XX » | Q07 | Heure de fin de la privatisation d'après-midi non fixée. | ❌ non |
-| AMB-10 | « Annulation : oui » vs CR n° 1 / n° 2 | Q01 | Revirement : l'annulation en ligne était exclue. La nouvelle règle applique-t-elle automatiquement le barème (7 j / 48 h) ou le remboursement reste-t-il manuel ? | ❌ non |
-| AMB-11 | « Notifications par SMS » | Q01 | Le SMS d'annulation vise-t-il le client, l'administrateur, ou les deux ? | ❌ non |
-| AMB-12 | « Tarif + 10 € / personne » (Saint-Leu) | Q09 | Le supplément s'applique-t-il aussi aux enfants et aux forfaits de privatisation, ou uniquement au tarif individuel ? | ❌ non |
-| AMB-13 | Choix du lieu : « sur l'app » vs « je fais le choix la veille » | Q15 / citation §1 | (a) Le client choisit librement Saint-Gilles ou Saint-Leu lors de la réservation (RM-41 initial) ; (b) l'entreprise décide du lieu **la veille** selon le nombre de sorties baleine et informe les clients — le client ne choisit pas. Contradiction directe. Fragilise aussi RM-38 : les jours mardi/jeudi deviendraient **indicatifs**, non fixes. | ❌ non |
+| # | Formulation / Sujet | Source | Statut & Résolution |
+|---|---|---|---|
+| AMB-07 | Modification de réservation | Q03 | ✅ **Levée :** Réservée exclusivement à l'administrateur depuis le back-office. |
+| AMB-08 | Privatisation au départ de Saint-Leu | Q10 / Q17 | ✅ **Levée :** Autorisée sur le Tikap (12 places) au même tarif forfaitaire qu'à Saint-Gilles (600 €). |
+| AMB-09 | Plages horaires de privatisation | Q07 | ✅ **Levée :** Matin 7h–12h ou après-midi dès 14h. |
+| AMB-10 | Rôle de l'annulation | Q01 | ✅ **Levée :** Pas d'annulation par le client ; annulation exécutée par l'administrateur dans le back-office. |
+| AMB-11 | Cible du SMS d'annulation | Q01 | ✅ **Levée :** SMS d'information envoyé au client pour notifier l'annulation de sa réservation. |
+| AMB-12 | Application du supplément de +10 € | Q09 / Q17 | ✅ **Levée :** S'applique uniquement aux tarifs individuels par personne (baleines et dauphins), pas au forfait de privatisation fixe (600 €). |
+| AMB-13 | Disponibilité de la flotte le mardi/jeudi | Q13 | ✅ **Levée :** Pas de Tikap à 10h le mar/jeu à Saint-Gilles (capacité réduite à 24 places sur Grand Bleu). |
+
+---
 
 ## 7. Contraintes évoquées
 
 | # | Contrainte | Source | Nature |
 |---|---|---|---|
-| C-25 | Deuxième point de départ **Saint-Leu**, le mardi et le jeudi, **Tikap uniquement**. | Q08 / Q10 / Q11 | Métier / Logistique |
-| C-26 | Supplément **+ 10 € / personne** pour les départs de Saint-Leu. | Q09 | Tarifaire |
-| C-27 | Départ de Saint-Leu à **9 h** ; après ce créneau, le bateau (Tikap) **repart se positionner à Saint-Gilles** pour les créneaux suivants. | Q13 | Logistique |
-| C-28 | **Choix du lieu de départ** obligatoire à la réservation. | Q15 | Fonctionnelle |
-| C-29 | **Affichage d'informations spécifiques au lieu** dans l'interface. | Q16 | Fonctionnelle / Ergonomie |
-| C-30 | **Naturaliste unique** réparti entre deux lieux selon les réservations. | Q14 | Ressource / Physique |
-| C-31 | **Annulation et modification** de réservation désormais gérées **en ligne** (évolution du périmètre CR n° 1 / n° 2). | Q01 / Q02 / Q03 | Périmètre |
-| C-32 | Privatisation possible **matin (7 h–12 h)** et **après-midi (14 h–…)**. | Q06 / Q07 | Métier |
+| C-25 | Deuxième point de départ **Saint-Leu**, le mardi et le jeudi à 9h, **Tikap uniquement** (12 places). | Q08 / Q10 / Q11 | Métier / Logistique |
+| C-26 | Supplément **+ 10 € / personne** pour les billets individuels au départ de Saint-Leu (forfait privatisation inchangé à 600 €). | Q09 / Q17 | Tarifaire |
+| C-27 | **Pas de Tikap à 10h le mardi et le jeudi à Saint-Gilles** (jauge max 10h = 24 places avec Grand Bleu seul). | Q13 | Logistique / Capacité |
+| C-28 | **Choix du lieu de départ** par le client sur l'interface publique. | Q15 | Fonctionnelle |
+| C-29 | **Affichage d'informations spécifiques au lieu** dans l'interface (adresses, horaires). | Q16 | Ergonomie |
+| C-30 | **Naturaliste unique** affecté selon les réservations. | Q14 | Ressource / Physique |
+| C-31 | **Annulation et modification réservées exclusivement à l'administrateur** (avec notification SMS envoyée au client lors d'une annulation). | Q01 / Q02 / Q03 | Périmètre / Sécurité |
+| C-32 | Privatisation possible **matin (7 h–12 h)** et **après-midi (dès 14 h)** à Saint-Gilles et à Saint-Leu. | Q06 / Q07 / Q17 | Métier |
+
+---
 
 ## 8. Questions à poser au prochain entretien
 
-Formulées, pas juste évoquées. Priorisées : le prochain passage est court.
-
 | N° | Question | Réponse |
 |---|---|---|
-| 1 | La privatisation est-elle proposée au départ de Saint-Leu (Tikap uniquement) ? | |
-| 2 | Quelle est l'heure de fin de la privatisation de l'après-midi (14 h – ?) ? | |
-| 3 | Jusqu'à quel délai avant le départ l'administrateur peut-il modifier une réservation ? | |
-| 4 | L'annulation en ligne applique-t-elle automatiquement le barème de remboursement (7 j / 48 h), ou le remboursement reste-t-il traité manuellement ? | |
-| 5 | Le SMS d'annulation est-il envoyé au client, à l'administrateur, ou aux deux ? | |
-| 6 | Le supplément de + 10 € / personne (Saint-Leu) s'applique-t-il aussi aux enfants et aux privatisations ? | |
-| 7 | Le nom de domaine « tibaleine.re » est-il validé et sa disponibilité vérifiée ? | |
-| 8 | Le lieu de départ est-il **choisi par le client** sur l'app, ou **affecté par l'entreprise la veille** (selon le nombre de sorties baleine) puis communiqué au client ? Dans ce dernier cas, les jours mardi/jeudi (Saint-Leu) sont-ils fixes ou seulement indicatifs, et comment le client est-il informé (SMS / e-mail) ? | |
+| 1 | Quel est le délai limite de notification d'annulation à respecter vis-à-vis du client ? | |
+| 2 | Quel prestataire SMS (Twilio, OVH SMS, SMS Factor...) est privilégié pour l'envoi des notifications ? | |
+| 3 | Le nom de domaine « tibaleine.re » est-il validé et réservé ? | |
+| 4 | Comment l'administrateur procède-t-il pour encaisser un complément de tarif en cas d'ajout de passagers lors d'une modification ? | |
 
-Étape suivante prévue : consigner ces évolutions dans `docs/impact-CR-001.md`, puis
-mettre à jour le cahier des charges (gestion de deux lieux de départ, annulation /
-modification en ligne, privatisations en demi-journée).
+---
 
 ## 9. Ce que nous n'avons pas abordé
 
-Relire le brief initial et lister les sujets qu'il contient et que l'entretien n'a
-pas touchés. C'est là que se cachent les découvertes tardives et coûteuses.
-
-- Heure de fin de la privatisation de l'après-midi (« 14 h à XX »).
-- Disponibilité effective du nom de domaine **tibaleine.re**.
-- Barème de remboursement en cas d'annulation en ligne (automatique ou manuel).
-- Gestion du **naturaliste unique** lorsqu'il est sollicité sur les deux lieux le même jour.
-- Impact du repositionnement du bateau Saint-Leu → Saint-Gilles (après le créneau de 9 h) sur la logistique et les créneaux suivants.
-- Privatisation au départ de Saint-Leu (possible / exclue).
-- Points toujours ouverts des CR précédents : hébergement, CGV / mentions légales, RGPD, délais de mise en service et maintenance.
+- Prestataire d'envoi SMS et coûts associés aux notifications transactionnelles.
+- Disponibilité effective et hébergement du nom de domaine **tibaleine.re**.
+- Points toujours ouverts des CR précédents : textes CGV / mentions légales, RGPD, délais de mise en service et maintenance.
