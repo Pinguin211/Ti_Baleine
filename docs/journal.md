@@ -88,3 +88,25 @@ Choix de la stack technique : Next.js / TypeScript. Voir ADR-001-stack.md.
 
 **Questions ouvertes pour le client.**
 - L'ajout de la gestion des annulations en back-office est-elle acceptable?
+
+## J3 — <12/08/2026>
+
+**Présents.**
+ Loic, Thomas, Benjamin et Ivan.
+**Décisions.**
+Redaction du cahier-des-charges-V3.md en se référent au cahier-des-charges-V2.md et du compte-rendu-entretien-03.md.
+Redaction des specs en se référent au cahier-des-charges-V3.md et plus précisement les éxigences fonctionnelles.
+**Critiques de l'IA acceptées.**
+- Aucune : l'IA n'intervient pas en J3.
+
+**Critiques de l'IA refusées, et pourquoi.**
+- Sans objet.
+
+**Erreurs produites par l'IA et détectées.**
+- Sans objet.
+
+**Ce qui a été généré aujourd'hui.**
+- Rien.
+
+**Questions ouvertes pour le client.**
+
