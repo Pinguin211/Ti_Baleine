@@ -1,0 +1,58 @@
+@startuml mpd
+title Modèle Physique de Données (MPD) — Ti'Baleine
+
+skinparam monochrome false
+skinparam roundcorner 8
+skinparam linetype ortho
+skinparam defaultFontName Arial
+skinparam dpi 150
+
+entity "users" as users {
+  * **id** : BIGSERIAL / UUID <<PK>>
+  --
+  * **email** : VARCHAR(255) <<UQ, NOT NULL>>
+  password_hash : VARCHAR(255) <<NULLABLE>>
+  * **first_name** : VARCHAR(100) <<NOT NULL>>
+  * **last_name** : VARCHAR(100) <<NOT NULL>>
+  phone : VARCHAR(20) <<NULLABLE>>
+  * **role** : ENUM('Client', 'Administrateur') <<NOT NULL, DEFAULT 'Client'>>
+  * **created_at** : TIMESTAMP WITH TIME ZONE <<NOT NULL, DEFAULT NOW()>>
+  * **updated_at** : TIMESTAMP WITH TIME ZONE <<NOT NULL, DEFAULT NOW()>>
+}
+
+entity "bookings" as bookings {
+  * **id** : BIGSERIAL / UUID <<PK>>
+  --
+  * **booking_ref** : VARCHAR(20) <<UQ, NOT NULL>>
+  invoice_number : VARCHAR(50) <<UQ, NULLABLE>>
+  * **user_id** : BIGINT / UUID <<FK, NOT NULL>>
+  * **excursion_type** : ENUM('Sortie Baleines', 'Sortie Dauphins', 'Privatisation Tikap', 'Privatisation Grand Bleu') <<NOT NULL>>
+  * **departure_date** : DATE <<NOT NULL>>
+  * **departure_time** : ENUM('07:00', '09:00', '10:00', '14:00') <<NOT NULL>>
+  * **status** : ENUM('En attente', 'Confirmée', 'Annulée') <<NOT NULL, DEFAULT 'En attente'>>
+  * **created_at** : TIMESTAMP WITH TIME ZONE <<NOT NULL, DEFAULT NOW()>>
+}
+
+entity "booking_items" as booking_items {
+  * **id** : BIGSERIAL / UUID <<PK>>
+  --
+  * **booking_id** : BIGINT / UUID <<FK, NOT NULL, ON DELETE CASCADE>>
+  * **passenger_type** : ENUM('Adulte', 'Enfant', 'Forfait Privatisation') <<NOT NULL>>
+}
+
+entity "payments" as payments {
+  * **id** : BIGSERIAL / UUID <<PK>>
+  --
+  * **booking_id** : BIGINT / UUID <<FK, NOT NULL, ON DELETE RESTRICT>>
+  * **transaction_ref** : VARCHAR(100) <<UQ, NOT NULL>>
+  * **amount_cents** : INTEGER <<NOT NULL>>
+  * **status** : ENUM('Réussi', 'Échoué', 'Remboursé') <<NOT NULL>>
+  raw_data : JSONB / TEXT <<NULLABLE>>
+  * **paid_at** : TIMESTAMP WITH TIME ZONE <<NOT NULL, DEFAULT NOW()>>
+}
+
+users ||--o{ bookings : "FK: user_id"
+bookings ||--|{ booking_items : "FK: booking_id (CASCADE)"
+bookings ||--o{ payments : "FK: booking_id"
+
+@enduml

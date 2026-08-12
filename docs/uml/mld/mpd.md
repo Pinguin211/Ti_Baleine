@@ -30,7 +30,7 @@ Cette table contient les en-têtes de commande pour chaque réservation d'excurs
 | **`user_id`** | `BIGSERIAL` / `UUID` | **FOREIGN KEY (`users.id`), NOT NULL** | Lien vers le client ayant effectué la réservation. |
 | **`excursion_type`** | `ENUM('Sortie Baleines', 'Sortie Dauphins', 'Privatisation Tikap', 'Privatisation Grand Bleu')` | **NOT NULL** | Prestation d'excursion choisie. |
 | **`departure_date`** | `DATE` | **NOT NULL** | Date de départ de la sortie en mer. |
-| **`departure_time`** | `TIME` / `ENUM('07:00', '10:00', '14:00')` | **NOT NULL** | Créneau horaire de départ retenu. |
+| **`departure_time`** | `ENUM('07:00', '09:00', '10:00', '14:00')` | **NOT NULL** | Créneau horaire de départ retenu. |
 | **`status`** | `ENUM('En attente', 'Confirmée', 'Annulée')` | **NOT NULL, DEFAULT 'En attente'** | État courant du dossier de réservation. |
 | **`created_at`** | `TIMESTAMP WITH TIME ZONE` | **NOT NULL, DEFAULT CURRENT_TIMESTAMP** | Horodatage de création de la réservation. |
 
@@ -65,70 +65,7 @@ Cette table stocke l'historique des tentatives et validations de paiement par ca
 
 ---
 
-## 5. Script SQL DDL (PostgreSQL)
-
-```sql
--- Création des types ENUM
-CREATE TYPE user_role AS ENUM ('Client', 'Administrateur');
-CREATE TYPE excursion_type AS ENUM ('Sortie Baleines', 'Sortie Dauphins', 'Privatisation Tikap', 'Privatisation Grand Bleu');
-CREATE TYPE booking_status AS ENUM ('En attente', 'Confirmée', 'Annulée');
-CREATE TYPE passenger_type AS ENUM ('Adulte', 'Enfant', 'Forfait Privatisation');
-CREATE TYPE payment_status AS ENUM ('Réussi', 'Échoué', 'Remboursé');
-
--- Table USERS
-CREATE TABLE users (
-    id BIGSERIAL PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NULL,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    phone VARCHAR(20) NULL,
-    role user_role NOT NULL DEFAULT 'Client',
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
-);
-
--- Table BOOKINGS
-CREATE TABLE bookings (
-    id BIGSERIAL PRIMARY KEY,
-    booking_ref VARCHAR(20) UNIQUE NOT NULL,
-    invoice_number VARCHAR(50) UNIQUE NULL,
-    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
-    excursion_type excursion_type NOT NULL,
-    departure_date DATE NOT NULL,
-    departure_time TIME NOT NULL,
-    status booking_status NOT NULL DEFAULT 'En attente',
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
-);
-
--- Table BOOKING_ITEMS
-CREATE TABLE booking_items (
-    id BIGSERIAL PRIMARY KEY,
-    booking_id BIGINT NOT NULL REFERENCES bookings(id) ON DELETE CASCADE,
-    passenger_type passenger_type NOT NULL
-);
-
--- Table PAYMENTS
-CREATE TABLE payments (
-    id BIGSERIAL PRIMARY KEY,
-    booking_id BIGINT NOT NULL REFERENCES bookings(id) ON DELETE RESTRICT,
-    transaction_ref VARCHAR(100) UNIQUE NOT NULL,
-    amount_cents INTEGER NOT NULL,
-    status payment_status NOT NULL,
-    raw_data JSONB NULL,
-    paid_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
-);
-
--- Index pour optimiser les performances de recherche
-CREATE INDEX idx_bookings_user_id ON bookings(user_id);
-CREATE INDEX idx_bookings_departure ON bookings(departure_date, departure_time);
-CREATE INDEX idx_booking_items_booking_id ON booking_items(booking_id);
-CREATE INDEX idx_payments_booking_id ON payments(booking_id);
-```
-
----
-
-## 6. Relations & Contraintes d'intégrité
+## 5. Relations & Contraintes d'intégrité
 
 1. **`users` 1 — N `bookings`**
     * Un utilisateur peut posséder plusieurs réservations (`user_id` clé étrangère dans `bookings`).
