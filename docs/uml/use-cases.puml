@@ -1,0 +1,51 @@
+@startuml use-cases
+title Diagramme de cas d'utilisation — Ti'Baleine
+
+skinparam monochrome false
+skinparam roundcorner 8
+skinparam linetype ortho
+skinparam defaultFontName Arial
+skinparam dpi 150
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor White
+  BorderColor Black
+}
+left to right direction
+
+' ===== Acteurs =====
+actor "Client" as Client
+actor "Administrateur" as Admin
+
+actor "Passerelle de\npaiement CB" as PaiementCB
+actor "Service de\nnotification\n(e-mail / SMS)" as ServiceNotif
+
+rectangle "Ti'Baleine — Plateforme de réservation" {
+  usecase "Réserver une sortie\nen mer" as UC1
+  usecase "Réserver une formule\nde privatisation" as UC2
+  usecase "Consulter le planning et\nle remplissage des créneaux" as UC3
+  usecase "Gérer une réservation\n(annuler ou réduire\nles passagers)" as UC4
+  usecase "Configurer la disponibilité\ndes créneaux" as UC5
+}
+
+' ===== Acteur principal -> cas d'utilisation =====
+Client -- UC1
+Admin -- UC3
+Admin -- UC4
+Admin -- UC5
+
+' ===== Acteurs secondaires =====
+UC1 -- PaiementCB
+UC1 -- ServiceNotif
+UC4 -- ServiceNotif
+
+' ===== Relation entre cas =====
+UC2 ..> UC1 : <<extend>>
+
+' ===== Note unique =====
+note bottom of UC4
+  Le SMS n'accompagne que l'annulation
+  totale — jamais la réduction de passagers.
+end note
+
+@enduml
