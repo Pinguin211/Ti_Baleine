@@ -1,41 +1,42 @@
 /**
  * @file cahier-des-charges/index.ts
- * @description Barrel export de toutes les sources du cahier des charges Ti'Baleine.
- *
- * Regroupe la totalité des données du document dans un objet typé unique
- * utilisé par le CdcSourceContext pour alimenter les sections PDF.
+ * @description Barrel export de toutes les sources du cahier des charges Ti'Baleine v2.
  */
 export { cahierMeta } from './meta'
-export { section1_1, section1_2 } from './section1'
-export { section2_1, section2_2 } from './section2'
-export { section3_1, section3_2 } from './section3'
-export { section4_1, section4_2 } from './section4'
-export { section5_1, section5_2 } from './section5'
-export { section6_1, section6_2 } from './section6'
+export { cdcContext, cdcProblem } from './section1'
+export { cdcObjectives, cdcStakeholders } from './section2'
+export { cdcPersonas } from './section3'
+export { cdcScopeIn, cdcScopeOut, cdcConstraints } from './section4'
+export { cdcBusinessRules, cdcTarifs } from './section5'
+export { cdcFunctionalReqs, cdcNonFunctionalReqs } from './section6'
+export { cdcOpenQuestions, cdcValidations } from './section7'
 
 import { cahierMeta } from './meta'
-import { section1_1, section1_2 } from './section1'
-import { section2_1, section2_2 } from './section2'
-import { section3_1, section3_2 } from './section3'
-import { section4_1, section4_2 } from './section4'
-import { section5_1, section5_2 } from './section5'
-import { section6_1, section6_2 } from './section6'
+import { cdcContext, cdcProblem } from './section1'
+import { cdcObjectives, cdcStakeholders } from './section2'
+import { cdcPersonas } from './section3'
+import { cdcScopeIn, cdcScopeOut, cdcConstraints } from './section4'
+import { cdcBusinessRules, cdcTarifs } from './section5'
+import { cdcFunctionalReqs, cdcNonFunctionalReqs } from './section6'
+import { cdcOpenQuestions, cdcValidations } from './section7'
 
-/** Sources complètes du cahier des charges Ti'Baleine */
+/** Sources complètes du cahier des charges Ti'Baleine v2 */
 export const cdcSources = {
   meta: cahierMeta,
-  section1_1,
-  section1_2,
-  section2_1,
-  section2_2,
-  section3_1,
-  section3_2,
-  section4_1,
-  section4_2,
-  section5_1,
-  section5_2,
-  section6_1,
-  section6_2,
+  context: cdcContext,
+  problem: cdcProblem,
+  objectives: cdcObjectives,
+  stakeholders: cdcStakeholders,
+  personas: cdcPersonas,
+  scopeIn: cdcScopeIn,
+  scopeOut: cdcScopeOut,
+  constraints: cdcConstraints,
+  businessRules: cdcBusinessRules,
+  tarifs: cdcTarifs,
+  functionalReqs: cdcFunctionalReqs,
+  nonFunctionalReqs: cdcNonFunctionalReqs,
+  openQuestions: cdcOpenQuestions,
+  validations: cdcValidations,
 }
 
 export type CdcSources = typeof cdcSources

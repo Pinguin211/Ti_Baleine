@@ -1,20 +1,22 @@
 /**
  * @file components/sections/cdc/ProSection2.tsx
- * @description Section 2 — Périmètre du Projet (In-Scope vs Out-of-Scope).
+ * @description Sections 3 (Objectifs) et 4 (Parties Prenantes) du CDC v2.
  */
 import { Text, View, StyleSheet } from '../../../shims/react-pdf'
 import { colors, fontSizes, spacing, fontFamilies, borders } from '../../../styles/tokens'
+import { cdcObjectives, cdcStakeholders } from '../../../cahier-des-charges'
 
 const styles = StyleSheet.create({
   container: {
     marginBottom: spacing['3xl'],
   },
   sectionTitle: {
-    fontSize: fontSizes.xl,
+    fontSize: fontSizes.lg,
     fontFamily: fontFamilies.bold,
     color: colors.textDark,
     textTransform: 'uppercase',
     letterSpacing: 0.3,
+    marginTop: spacing['2xl'],
     marginBottom: spacing.xs,
   },
   titleUnderline: {
@@ -22,120 +24,163 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     marginBottom: spacing.md,
   },
-  scopeRow: {
-    flexDirection: 'row',
-    gap: spacing.md,
-  },
-  scopeBoxIn: {
-    flex: 1,
-    backgroundColor: colors.white,
-    borderLeftWidth: 3,
-    borderLeftColor: colors.greenBorder,
+  table: {
     borderWidth: 1,
     borderColor: colors.borderLight,
     borderRadius: borders.radiusSmall,
-    padding: spacing.md,
+    overflow: 'hidden',
+    marginBottom: spacing.md,
   },
-  scopeBoxOut: {
-    flex: 1.1,
-    backgroundColor: '#fffdfd',
-    borderLeftWidth: 3,
-    borderLeftColor: colors.redBorder,
-    borderWidth: 1,
-    borderColor: colors.borderLight,
-    borderRadius: borders.radiusSmall,
-    padding: spacing.md,
-  },
-  scopeHeaderIn: {
-    fontSize: fontSizes.sm + 0.5,
-    fontFamily: fontFamilies.bold,
-    color: colors.greenText,
-    marginBottom: spacing.sm,
-  },
-  scopeHeaderOut: {
-    fontSize: fontSizes.sm + 0.5,
-    fontFamily: fontFamilies.bold,
-    color: colors.redText,
-    marginBottom: spacing.sm,
-  },
-  bulletRow: {
+  tableHeader: {
     flexDirection: 'row',
+    backgroundColor: colors.navyDark,
+    paddingVertical: spacing.xs + 1,
+    paddingHorizontal: spacing.sm,
+    alignItems: 'center',
+  },
+  thText: {
+    fontSize: fontSizes.xxs + 0.5,
+    fontFamily: fontFamilies.bold,
+    color: colors.white,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  tableRow: {
+    flexDirection: 'row',
+    paddingVertical: 5,
+    paddingHorizontal: spacing.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderLight,
     alignItems: 'flex-start',
-    marginBottom: 5,
+    backgroundColor: colors.white,
   },
-  bulletDot: {
+  tableRowAlt: {
+    backgroundColor: '#fafbfc',
+  },
+  colObjNum: {
+    width: 20,
     fontSize: fontSizes.xs,
     fontFamily: fontFamilies.bold,
-    width: 8,
-    marginTop: 1,
+    color: colors.primaryDark,
   },
-  bulletText: {
+  colObjTitle: {
+    width: 170,
+    fontSize: fontSizes.xs,
+    fontFamily: fontFamilies.bold,
+    color: colors.textDark,
+    paddingRight: spacing.xs,
+  },
+  colObjCriteria: {
     flex: 1,
-    fontSize: fontSizes.xs + 0.2,
+    fontSize: fontSizes.xs,
     fontFamily: fontFamilies.base,
     color: colors.textBody,
     lineHeight: 1.35,
   },
+  colStakeName: {
+    width: 140,
+    fontSize: fontSizes.xs,
+    fontFamily: fontFamilies.bold,
+    color: colors.textDark,
+    paddingRight: spacing.xs,
+  },
+  colStakeRole: {
+    flex: 1.2,
+    fontSize: fontSizes.xxs + 1,
+    fontFamily: fontFamilies.base,
+    color: colors.textBody,
+    paddingRight: spacing.xs,
+    lineHeight: 1.3,
+  },
+  colStakeExpect: {
+    flex: 1.1,
+    fontSize: fontSizes.xxs + 1,
+    fontFamily: fontFamilies.base,
+    color: colors.textBody,
+    paddingRight: spacing.xs,
+    lineHeight: 1.3,
+  },
+  colStakeUses: {
+    width: 45,
+    alignItems: 'center',
+  },
+  pillYes: {
+    backgroundColor: colors.greenTag,
+    paddingHorizontal: 6,
+    paddingVertical: 1.5,
+    borderRadius: 3,
+  },
+  pillYesText: {
+    fontSize: fontSizes.xxs,
+    fontFamily: fontFamilies.bold,
+    color: colors.greenText,
+    textTransform: 'uppercase',
+  },
+  pillNo: {
+    backgroundColor: colors.borderLight,
+    paddingHorizontal: 6,
+    paddingVertical: 1.5,
+    borderRadius: 3,
+  },
+  pillNoText: {
+    fontSize: fontSizes.xxs,
+    fontFamily: fontFamilies.bold,
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+  },
 })
-
-const inScope = [
-  { bold: "Site web public de réservation", rest: " responsive (mobile, tablette, desktop)." },
-  { bold: "Parcours de commande fluide sans création de compte", rest: " (invité)." },
-  { bold: "Paiement en ligne 100 % sécurisé", rest: " par Carte Bancaire." },
-  { bold: "Génération et envoi automatique de factures PDF", rest: " post-paiement." },
-  { bold: "Interface d'administration unique", rest: " (sur Desktop/PC) pour consultation du planning." },
-  { bold: "Support multilingue nativement intégré", rest: " sur le parcours client." },
-]
-
-const outScope = [
-  { bold: "Pas de solution SaaS tierce", rest: " (développement sur-mesure exclusif)." },
-  { bold: "Pas de compte client ni d'espace membre dédié", rest: "." },
-  { bold: "Pas d'annulation ni modification en ligne par le client", rest: "." },
-  { bold: "Pas d'accès multi-utilisateurs", rest: " (aucun compte spécifique capitaines/vendeurs)." },
-  { bold: "Pas de modification du planning en admin", rest: " (consultation seule, planning fixe)." },
-  { bold: "Pas de module de dispatch automatisé par bateau", rest: " (fait sur place)." },
-  { bold: "Pas de gestion automatisée des remboursements", rest: " (traités hors plateforme)." },
-  { bold: "Pas de registre légal / manifeste de bord maritime", rest: " (format papier)." },
-  { bold: "Pas de synchronisation agendas externes", rest: " (Google Calendar, etc.)." },
-  { bold: "Pas de notifications/alertes automatiques e-mail/SMS", rest: " à l'administrateur." },
-]
 
 export function ProSection2() {
   return (
-    <View style={styles.container} wrap={false}>
-      {/* Titre 2 */}
-      <Text style={styles.sectionTitle}>2. PÉRIMÈTRE DU PROJET</Text>
+    <View style={styles.container}>
+      {/* 3. Objectifs */}
+      <Text style={styles.sectionTitle}>3. Objectifs</Text>
       <View style={styles.titleUnderline} />
 
-      {/* Colonnes In-Scope / Out-of-Scope */}
-      <View style={styles.scopeRow}>
-        {/* In-Scope */}
-        <View style={styles.scopeBoxIn}>
-          <Text style={styles.scopeHeaderIn}>✔ Dans le Périmètre (In-Scope)</Text>
-          {inScope.map((item, i) => (
-            <View key={i} style={styles.bulletRow}>
-              <Text style={[styles.bulletDot, { color: colors.greenText }]}>•</Text>
-              <Text style={styles.bulletText}>
-                <Text style={{ fontFamily: fontFamilies.bold }}>{item.bold}</Text>
-                {item.rest}
-              </Text>
-            </View>
-          ))}
+      <View style={styles.table}>
+        <View style={styles.tableHeader}>
+          <Text style={[styles.thText, { width: 20 }]}>#</Text>
+          <Text style={[styles.thText, { width: 170 }]}>OBJECTIF</Text>
+          <Text style={[styles.thText, { flex: 1 }]}>COMMENT ON SAURA QUE C'EST ATTEINT</Text>
         </View>
+        {cdcObjectives.map((obj, i) => (
+          <View key={obj.id} style={[styles.tableRow, i % 2 === 1 ? styles.tableRowAlt : {}]}>
+            <Text style={styles.colObjNum}>{obj.id}</Text>
+            <Text style={styles.colObjTitle}>{obj.objective}</Text>
+            <Text style={styles.colObjCriteria}>{obj.criteria}</Text>
+          </View>
+        ))}
+      </View>
 
-        {/* Out-of-Scope */}
-        <View style={styles.scopeBoxOut}>
-          <Text style={styles.scopeHeaderOut}>✖ Hors Périmètre (Out-of-Scope)</Text>
-          {outScope.map((item, i) => (
-            <View key={i} style={styles.bulletRow}>
-              <Text style={[styles.bulletDot, { color: colors.redText }]}>•</Text>
-              <Text style={styles.bulletText}>
-                <Text style={{ fontFamily: fontFamilies.bold }}>{item.bold}</Text>
-                {item.rest}
-              </Text>
-            </View>
-          ))}
+      {/* 4. Parties prenantes */}
+      <Text style={styles.sectionTitle}>4. Parties Prenantes</Text>
+      <View style={styles.titleUnderline} />
+
+      <View style={styles.table}>
+        <View style={styles.tableHeader}>
+          <Text style={[styles.thText, { width: 140 }]}>PARTIE PRENANTE</Text>
+          <Text style={[styles.thText, { flex: 1.2 }]}>RÔLE</Text>
+          <Text style={[styles.thText, { flex: 1.1 }]}>CE QU'ELLE ATTEND</Text>
+          <Text style={[styles.thText, { width: 45, textAlign: 'center' }]}>UTILISE ?</Text>
         </View>
+        {cdcStakeholders.map((s, i) => (
+          <View key={i} style={[styles.tableRow, i % 2 === 1 ? styles.tableRowAlt : {}]}>
+            <Text style={styles.colStakeName}>{s.name}</Text>
+            <Text style={styles.colStakeRole}>{s.role}</Text>
+            <Text style={styles.colStakeExpect}>{s.expectation}</Text>
+            <View style={styles.colStakeUses}>
+              {s.usesApp === 'oui' ? (
+                <View style={styles.pillYes}>
+                  <Text style={styles.pillYesText}>OUI</Text>
+                </View>
+              ) : (
+                <View style={styles.pillNo}>
+                  <Text style={styles.pillNoText}>NON</Text>
+                </View>
+              )}
+            </View>
+          </View>
+        ))}
       </View>
     </View>
   )

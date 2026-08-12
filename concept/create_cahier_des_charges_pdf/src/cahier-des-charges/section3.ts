@@ -1,73 +1,31 @@
 /**
  * @file cahier-des-charges/section3.ts
- * @description Section 3 — Règles Métier et Fonctionnement de l'Activité
+ * @description Section 5 — Personas (CDC v2)
  */
-import type { DocumentSection } from '../types'
 
-export const section3_1: DocumentSection = {
-  chapterTitle: "3. Règles Métier et Fonctionnement",
-  sectionTitle: "3.1 Flotte, Capacités et Calendrier",
-  blocks: [
-    {
-      type: 'paragraph',
-      segments: [
-        { text: "Bateaux exploitables : ", bold: true },
-        { text: "Tikap" , bold: true, color: '#0284c7' },
-        { text: " (capacité max. 12 places) · " },
-        { text: "Grand Bleu", bold: true, color: '#0284c7' },
-        { text: " (capacité max. 24 places) · Capacité globale cumulée : " },
-        { text: "36 places maximum", bold: true },
-        { text: " par créneau." },
-      ],
-    },
-    {
-      type: 'paragraph',
-      segments: [
-        { text: "Créneaux horaires fixes : ", bold: true },
-        { text: "3 départs par jour" , bold: true },
-        { text: " à 7h00, 10h00 et 14h00 — 7 jours sur 7 toute l'année. Fermetures uniquement le 25 décembre et le 1er janvier." },
-      ],
-    },
-    {
-      type: 'paragraph',
-      segments: [
-        { text: "Seuils et sécurité : ", bold: true },
-        { text: "Minimum 6 passagers payants par bateau" , bold: true },
-        { text: " pour maintenir une sortie. Clôture automatique des réservations " },
-        { text: "2 heures avant le départ", bold: true },
-        { text: ". Blocage absolu à 36 places par créneau." },
-      ],
-    },
-    {
-      type: 'paragraph',
-      segments: [
-        { text: "Contraintes d'encadrement : ", bold: true },
-        { text: "1 seul naturaliste disponible" , bold: true },
-        { text: ", dédié et obligatoire pour encadrer les sorties baleines. Séparation stricte des activités : chaque créneau est dédié à une seule activité exclusive." },
-      ],
-    },
-  ],
-}
-
-export const section3_2: DocumentSection = {
-  chapterTitle: "3. Règles Métier et Fonctionnement",
-  sectionTitle: "3.2 Grille Tarifaire et Catégories",
-  blocks: [
-    {
-      type: 'paragraph',
-      text: "Les tarifs sont fixes, sans variation saisonnière :",
-    },
-    {
-      type: 'list',
-      items: [
-        "Sortie Baleines — Adulte (12 ans et plus) : 65 €",
-        "Sortie Baleines — Enfant (4 à 11 ans inclus) : 40 €",
-        "Sortie Dauphins — Adulte (12 ans et plus) : 50 €",
-        "Sortie Dauphins — Enfant (4 à 11 ans inclus) : 30 €",
-        "Enfants de moins de 4 ans : Non admis",
-        "Privatisation Tikap — Demi-journée (Formula Sunset) : 600 € (Forfait)",
-        "Privatisation Grand Bleu — Demi-journée (Formula Sunset) : 1 100 € (Forfait)",
-      ],
-    },
-  ],
-}
+export const cdcPersonas = [
+  {
+    name: "Sophie",
+    role: "Cliente touriste étrangère",
+    tag: "Touriste anglophone",
+    usageContext: "Réserve depuis son téléphone, souvent à l'hôtel, ne parle pas français.",
+    goal: "Trouver un créneau disponible pour une sortie baleines et payer immédiatement par carte bancaire.",
+    blocker: "Absence d'interface dans sa langue et de paiement en ligne direct.",
+  },
+  {
+    name: "Marc",
+    role: "Client local",
+    tag: "Résident réunionnais",
+    usageContext: "Réserve depuis un ordinateur ou un mobile, connaît déjà l'offre de Ti'Baleine.",
+    goal: "Réserver rapidement une sortie « coucher de soleil » pour un groupe (adultes et enfants).",
+    blocker: "Pas de vision claire des créneaux encore disponibles avant d'appeler par téléphone.",
+  },
+  {
+    name: "L'administrateur",
+    role: "Gérant de Ti'Baleine",
+    tag: "Back-office PC",
+    usageContext: "Ordinateur de bureau (Desktop/PC), consultation quotidienne du planning d'excursions.",
+    goal: "Voir en un coup d'œil le remplissage de chaque créneau pour organiser le dispatch opérationnel avant le départ.",
+    blocker: "Pas d'outil centralisé, gestion probablement dispersée entre appels et notes manuelles (CR-02/Q03).",
+  },
+]

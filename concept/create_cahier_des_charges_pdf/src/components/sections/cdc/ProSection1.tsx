@@ -1,20 +1,22 @@
 /**
  * @file components/sections/cdc/ProSection1.tsx
- * @description Section 1 — Contexte et Objectifs du Projet (Format Pro).
+ * @description Sections 1 (Contexte) & 2 (Problème) du CDC v2.
  */
 import { Text, View, StyleSheet } from '../../../shims/react-pdf'
 import { colors, fontSizes, spacing, fontFamilies, borders } from '../../../styles/tokens'
+import { cdcContext, cdcProblem } from '../../../cahier-des-charges'
 
 const styles = StyleSheet.create({
   container: {
     marginBottom: spacing['3xl'],
   },
   sectionTitle: {
-    fontSize: fontSizes.xl,
+    fontSize: fontSizes.lg,
     fontFamily: fontFamilies.bold,
     color: colors.textDark,
     textTransform: 'uppercase',
     letterSpacing: 0.3,
+    marginTop: spacing.lg,
     marginBottom: spacing.xs,
   },
   titleUnderline: {
@@ -22,17 +24,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     marginBottom: spacing.md,
   },
-  introParagraph: {
-    fontSize: fontSizes.sm + 0.5,
+  paragraph: {
+    fontSize: fontSizes.xs + 0.5,
     fontFamily: fontFamilies.base,
-    color: colors.textBase,
-    lineHeight: 1.45,
-    marginBottom: spacing.lg,
+    color: colors.textBody,
+    lineHeight: 1.4,
+    marginBottom: spacing.sm,
   },
   kpiRow: {
     flexDirection: 'row',
     gap: spacing.sm,
-    marginBottom: spacing.lg,
+    marginVertical: spacing.md,
   },
   kpiCard: {
     flex: 1,
@@ -40,22 +42,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.borderLight,
     borderRadius: borders.radiusSmall,
-    paddingVertical: spacing.md,
+    paddingVertical: spacing.sm,
     paddingHorizontal: spacing.xs,
     alignItems: 'center',
   },
   kpiNumber: {
-    fontSize: fontSizes.xl,
+    fontSize: fontSizes.lg,
     fontFamily: fontFamilies.bold,
     color: colors.primary,
-    marginBottom: 2,
+    marginBottom: 1,
   },
   kpiLabel: {
-    fontSize: fontSizes.micro + 0.5,
+    fontSize: fontSizes.micro,
     fontFamily: fontFamilies.bold,
     color: colors.textMuted,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.4,
     textAlign: 'center',
   },
   calloutBox: {
@@ -64,27 +66,16 @@ const styles = StyleSheet.create({
     borderLeftColor: colors.primary,
     borderRadius: borders.radiusSmall,
     padding: spacing.md,
+    marginTop: spacing.md,
   },
   calloutTitle: {
-    fontSize: fontSizes.sm,
+    fontSize: fontSizes.xs + 1,
     fontFamily: fontFamilies.bold,
     color: colors.primaryDark,
-    marginBottom: spacing.xs,
+    marginBottom: 3,
   },
-  bulletRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 4,
-  },
-  bulletDot: {
-    fontSize: fontSizes.sm,
-    color: colors.primary,
-    width: 10,
-    marginTop: 1,
-  },
-  bulletText: {
-    flex: 1,
-    fontSize: fontSizes.xs + 0.5,
+  calloutText: {
+    fontSize: fontSizes.xs,
     fontFamily: fontFamilies.base,
     color: colors.textBody,
     lineHeight: 1.4,
@@ -93,57 +84,31 @@ const styles = StyleSheet.create({
 
 export function ProSection1() {
   return (
-    <View style={styles.container} wrap={false}>
-      {/* Titre 1 */}
-      <Text style={styles.sectionTitle}>1. CONTEXTE ET OBJECTIFS DU PROJET</Text>
+    <View style={styles.container}>
+      {/* 1. Contexte */}
+      <Text style={styles.sectionTitle}>{cdcContext.chapterTitle}</Text>
       <View style={styles.titleUnderline} />
 
-      {/* Paragraphe d'intro */}
-      <Text style={styles.introParagraph}>
-        L'entreprise <Text style={{ fontFamily: fontFamilies.bold }}>Ti'Baleine</Text> est spécialisée dans les excursions maritimes à la journée : observation des baleines et des dauphins, sorties au coucher de soleil (« Sunset ») et privatisations de navires. Afin de moderniser la prise de commande, de rationaliser le suivi des jauges et de simplifier l'organisation opérationnelle au quotidien, l'entreprise souhaite déployer une <Text style={{ fontFamily: fontFamilies.bold }}>plateforme web sur-mesure</Text>.
-      </Text>
+      {cdcContext.paragraphs.map((p, idx) => (
+        <Text key={idx} style={styles.paragraph}>
+          {p}
+        </Text>
+      ))}
 
       {/* 4 KPIs Cards */}
       <View style={styles.kpiRow}>
-        <View style={styles.kpiCard}>
-          <Text style={styles.kpiNumber}>100%</Text>
-          <Text style={styles.kpiLabel}>CANAL EN LIGNE</Text>
-        </View>
-        <View style={styles.kpiCard}>
-          <Text style={styles.kpiNumber}>60%</Text>
-          <Text style={styles.kpiLabel}>CLIENTÈLE ÉTRANGÈRE</Text>
-        </View>
-        <View style={styles.kpiCard}>
-          <Text style={styles.kpiNumber}>36</Text>
-          <Text style={styles.kpiLabel}>CAPACITÉ MAX / CRÉNEAU</Text>
-        </View>
-        <View style={styles.kpiCard}>
-          <Text style={styles.kpiNumber}>3</Text>
-          <Text style={styles.kpiLabel}>DÉPARTS / JOUR</Text>
-        </View>
+        {cdcContext.kpis.map((kpi, idx) => (
+          <View key={idx} style={styles.kpiCard}>
+            <Text style={styles.kpiNumber}>{kpi.value}</Text>
+            <Text style={styles.kpiLabel}>{kpi.label}</Text>
+          </View>
+        ))}
       </View>
 
-      {/* Callout Objectifs Clés */}
+      {/* 2. Problème */}
       <View style={styles.calloutBox}>
-        <Text style={styles.calloutTitle}>Objectifs Clés du Projet</Text>
-        <View style={styles.bulletRow}>
-          <Text style={styles.bulletDot}>•</Text>
-          <Text style={styles.bulletText}>
-            <Text style={{ fontFamily: fontFamilies.bold }}>Canal de vente 100 % en ligne :</Text> Permettre aux clients (locaux et touristes) de réserver et payer leurs sorties directement sur internet.
-          </Text>
-        </View>
-        <View style={styles.bulletRow}>
-          <Text style={styles.bulletDot}>•</Text>
-          <Text style={styles.bulletText}>
-            <Text style={{ fontFamily: fontFamilies.bold }}>Interface Multilingue :</Text> Adapter le parcours aux besoins de la clientèle étrangère (~60 %) via un support multi-langues.
-          </Text>
-        </View>
-        <View style={styles.bulletRow}>
-          <Text style={styles.bulletDot}>•</Text>
-          <Text style={styles.bulletText}>
-            <Text style={{ fontFamily: fontFamilies.bold }}>Gestion simplifiée :</Text> Mettre à disposition un espace d'administration épuré sur ordinateur, focalisé sur la consultation du planning sans complexité inutile.
-          </Text>
-        </View>
+        <Text style={styles.calloutTitle}>{cdcProblem.chapterTitle}</Text>
+        <Text style={styles.calloutText}>{cdcProblem.text}</Text>
       </View>
     </View>
   )

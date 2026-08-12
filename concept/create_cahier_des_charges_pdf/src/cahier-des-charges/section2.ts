@@ -1,45 +1,49 @@
 /**
  * @file cahier-des-charges/section2.ts
- * @description Section 2 — Périmètre du Projet (In-Scope / Out-of-Scope)
+ * @description Sections 3 & 4 — Objectifs et Parties Prenantes (CDC v2)
  */
-import type { DocumentSection } from '../types'
 
-export const section2_1: DocumentSection = {
-  chapterTitle: '2. Périmètre du Projet',
-  sectionTitle: '2.1 Ce que comprend le projet (In-Scope)',
-  blocks: [
-    {
-      type: 'list',
-      items: [
-        "Un site web public de réservation (optimisé pour ordinateurs, tablettes et smartphones).",
-        "Un parcours de commande simple sans création de compte préalable.",
-        "Un module de paiement en ligne 100 % sécurisé par Carte Bancaire.",
-        "La génération et l'envoi automatique de factures PDF après validation du paiement.",
-        "Une interface d'administration unique (sur ordinateur PC/Desktop) pour la consultation du planning des réservations.",
-        "Un support multilingue (prise en charge de plusieurs langues) sur l'ensemble du parcours client.",
-      ],
-    },
-  ],
-}
+export const cdcObjectives = [
+  {
+    id: "1",
+    objective: "Ouvrir un canal de réservation 100 % en ligne",
+    criteria: "Un client peut réserver et payer une sortie de bout en bout sur le site, sans appel ni e-mail (CR-01/Q01, CR-01/Q24)",
+  },
+  {
+    id: "2",
+    objective: "Offrir une interface multilingue (FR/EN)",
+    criteria: "Le parcours public complet (sélection, paiement, confirmation) est disponible en français et en anglais (CR-01/Q07, CR-02/§3)",
+  },
+  {
+    id: "3",
+    objective: "Conserver une gestion simple et accessible pour l'entreprise",
+    criteria: "L'administrateur consulte le planning et le remplissage par créneau depuis un espace unique, sans formation poussée (CR-02/Q03, CR-02/Q12)",
+  },
+]
 
-export const section2_2: DocumentSection = {
-  chapterTitle: '2. Périmètre du Projet',
-  sectionTitle: '2.2 Ce qui est exclu du projet (Out-of-Scope)',
-  blocks: [
-    {
-      type: 'list',
-      items: [
-        "Pas de solution SaaS tierce (développement sur-mesure exclusif).",
-        "Pas de compte client (réservation directe en tant qu'invité, sans création de compte ni espace membre client).",
-        "Pas d'annulation en ligne par le client (traitement en direct hors système entre le client et l'entreprise).",
-        "Pas d'accès multi-utilisateurs ni de sous-comptes (aucun compte spécifique pour les capitaines, les vendeurs ou autres tiers).",
-        "Pas de gestion ou modification des créneaux dans le planning (consultation uniquement, planning fixe).",
-        "Pas de module de répartition des passagers par bateau (le dispatch s'effectue physiquement avant l'excursion).",
-        "Pas de gestion automatisée des remboursements (traité manuellement hors plateforme par l'entreprise).",
-        "Pas de gestion du manifeste de bord maritime (registre légal conservé sous format papier/physique).",
-        "Pas de synchronisation avec des agendas externes (ex. Google Calendar, Outlook).",
-        "Pas de notifications ou alertes automatiques vers l'administrateur (aucun envoi d'e-mail/SMS pour les réservations ou annulations).",
-      ],
-    },
-  ],
-}
+export const cdcStakeholders = [
+  {
+    name: "Administrateur (Ti'Baleine)",
+    role: "Profil unique de back-office : consultation du planning, gestion des créneaux, suivi du remplissage",
+    expectation: "Un espace simple, épuré, sur ordinateur",
+    usesApp: "oui",
+  },
+  {
+    name: "Client final (touriste ou local)",
+    role: "Réserve et paie une sortie en ligne, sans création de compte",
+    expectation: "Un parcours rapide, clair, dans sa langue",
+    usesApp: "oui",
+  },
+  {
+    name: "Naturaliste",
+    role: "Encadre obligatoirement les sorties baleines (ressource unique)",
+    expectation: "Aucune interaction directe avec le système",
+    usesApp: "non",
+  },
+  {
+    name: "Capitainerie / Affaires Maritimes",
+    role: "Autorité réglementaire sur le manifeste de bord",
+    expectation: "Rien du système : le manifeste reste papier",
+    usesApp: "non",
+  },
+]
