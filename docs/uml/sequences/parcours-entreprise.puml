@@ -1,0 +1,64 @@
+@startuml parcours-entreprise
+title Diagramme de séquence — Parcours Entreprise : « Administrer et suivre l'activité » (Ti'Baleine)
+
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 220
+autonumber
+
+actor "Entreprise\n(administrateur)" as Admin
+participant "Espace d'administration\n(desktop / PC)" as AdminUI
+participant "Application\n(back-end)" as App
+database "Base de données" as BDD
+
+note over AdminUI, App
+  Un seul profil administrateur, usage sur ordinateur.
+  Aucun sous-compte (capitaine, vendeur…).  (CDC §4.2)
+end note
+
+== 1. Connexion sécurisée (accès unique) ==
+Admin -> AdminUI : Saisit ses identifiants
+AdminUI -> App : Demande d'authentification
+App -> BDD : Vérifie les identifiants
+BDD --> App : Compte administrateur validé
+alt Identifiants valides
+    App --> AdminUI : Ouvre la session
+    AdminUI --> Admin : Accès au tableau de bord
+else Identifiants invalides
+    App --> AdminUI : Refus d'accès
+    AdminUI --> Admin : Message d'erreur
+end
+note right of App : CDC §4.2 — accès sécurisé unique, pas de multi-utilisateurs
+
+== 2. Consultation du planning ==
+Admin -> AdminUI : Sélectionne un jour / un créneau
+AdminUI -> App : Demande le planning (jour, créneau)
+App -> BDD : Lit les réservations et le remplissage
+BDD --> App : Réservations + places occupées (jauges 12 / 24 / 36)
+App --> AdminUI : Planning consolidé par créneau
+AdminUI --> Admin : Affiche le remplissage global\n(consultation seule — pas d'ouverture/fermeture de créneaux)
+note right of App : CDC §4.2 — planning fixe, consultation uniquement
+
+== 3. Détail d'une réservation (préparation du dispatch) ==
+Admin -> AdminUI : Ouvre une réservation
+AdminUI -> App : Demande le détail
+App -> BDD : Lit la réservation (participants, contact, paiement)
+BDD --> App : Détail de la réservation
+App --> AdminUI : Détail de la réservation
+AdminUI --> Admin : Affiche coordonnées + composition du groupe
+note over Admin
+  Le dispatch des passagers par bateau se fait
+  physiquement avant l'excursion, hors plateforme (CDC §2.2).
+end note
+
+== 4. Annulation / remboursement (hors plateforme) ==
+[-> Admin : Le client contacte l'entreprise\n(téléphone, e-mail, accueil)
+Admin -> Admin : Traite l'annulation et le remboursement\ndirectement avec le client
+note over Admin, App
+  CDC §2.2 / §4.2 — hors système :
+  • aucune annulation en ligne,
+  • remboursement géré manuellement par l'entreprise.
+  La plateforme ne pilote ni l'annulation ni le remboursement
+  (aucune notification/alerte automatique n'est émise).
+end note
+
+@enduml
