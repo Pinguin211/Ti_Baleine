@@ -1,0 +1,58 @@
+@startuml mld
+title Modèle Logique de Données (MLD) — Ti'Baleine
+
+skinparam monochrome false
+skinparam roundcorner 8
+skinparam linetype ortho
+skinparam defaultFontName Arial
+skinparam dpi 150
+
+entity "USERS\n(Utilisateurs)" as USERS {
+  * **id** : Identifiant unique [PK]
+  --
+  * **email** : Adresse e-mail [UNIQUE]
+  password_hash : Mot de passe chiffré (administrateur)
+  * **first_name** : Prénom
+  * **last_name** : Nom de famille
+  phone : Numéro de téléphone
+  * **role** : Rôle (Client, Administrateur)
+  * **created_at** : Date de création
+  * **updated_at** : Date de modification
+}
+
+entity "BOOKINGS\n(Réservations)" as BOOKINGS {
+  * **id** : Identifiant unique [PK]
+  --
+  * **booking_ref** : Référence de réservation [UNIQUE]
+  invoice_number : Numéro de facture [UNIQUE]
+  * **# user_id** : Client associé [FK]
+  * **excursion_type** : Type d'excursion (Sortie Baleines, Sortie Dauphins, Privatisation Tikap, Privatisation Grand Bleu)
+  * **departure_date** : Date de départ
+  * **departure_time** : Heure de départ (07:00, 09:00, 10:00, 14:00)
+  * **status** : Statut (En attente, Confirmée, Annulée)
+  * **created_at** : Date de création
+}
+
+entity "BOOKING_ITEMS\n(Passagers / Places)" as BOOKING_ITEMS {
+  * **id** : Identifiant unique [PK]
+  --
+  * **# booking_id** : Réservation associée [FK]
+  * **passenger_type** : Catégorie passager (Adulte, Enfant, Forfait Privatisation)
+}
+
+entity "PAYMENTS\n(Transactions bancaires)" as PAYMENTS {
+  * **id** : Identifiant unique [PK]
+  --
+  * **# booking_id** : Réservation associée [FK]
+  * **transaction_ref** : Référence de transaction [UNIQUE]
+  * **amount_cents** : Montant encaissé (en centimes)
+  * **status** : Statut du paiement (Réussi, Échoué, Remboursé)
+  raw_data : Données brutes de confirmation
+  * **paid_at** : Date du paiement
+}
+
+USERS "1" -- "0..*" BOOKINGS : effectue >
+BOOKINGS "1" -- "1..*" BOOKING_ITEMS : comprend >
+BOOKINGS "1" -- "0..*" PAYMENTS : fait l'objet de >
+
+@enduml

@@ -26,7 +26,7 @@ Cette table contient les informations principales relatives à chaque commande d
 * **Client associé :** Lien vers la fiche du client ayant effectué cette réservation dans la table des utilisateurs.
 * **Type d'excursion :** Prestation choisie par le client (`Sortie Baleines`, `Sortie Dauphins`, `Privatisation Tikap`, `Privatisation Grand Bleu`).
 * **Date de départ :** Date prévue pour l'excursion en mer.
-* **Heure de départ :** Créneau horaire retenu parmi les 3 départs quotidiens (`07:00`, `10:00`, `14:00`).
+* **Heure de départ :** Créneau horaire retenu parmi les 3 départs quotidiens (`07:00`, `9:00`, `10:00`, `14:00`).
 * **Statut de la réservation :** État d'avancement du dossier (`En attente`, `Confirmée`, `Annulée`).
 * **Date de création :** Date et heure exactes où la réservation a été initiée.
 
