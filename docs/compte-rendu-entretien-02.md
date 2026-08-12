@@ -100,7 +100,9 @@ entretien :
 |---|---|---|---|
 | Enfant | 4 à 11 ans inclus | 40 € | 30 € |
 | Adulte | À partir de 12 ans | 65 € | 50 € |
-| Moins de 4 ans | — | Gratuit / sur demande préalable selon conditions de sécurité | idem |
+| Moins de 4 ans | — | Non admis à bord | idem |
+
+> ⚠️ **Correction ultérieure (12/08/2026) :** le client a confirmé que les enfants de moins de 4 ans ne sont pas admis à bord, sans exception ni gratuité. La ligne ci-dessus reflète la compréhension au moment de cet entretien ; voir `cahier-des-charges-v2.md` R-05 pour la règle retenue en l'état actuel.
 
 Privatisations : forfait fixe — Tikap **600 €** / Grand Bleu **1 100 €** pour une
 demi-journée (formule Sunset).
@@ -205,6 +207,5 @@ pas touchés. C'est là que se cachent les découvertes tardives et coûteuses.
 - Hébergement et nom de domaine définitifs
 - Textes juridiques (CGV, mentions légales) et cases à cocher au checkout
 - Conformité RGPD (durée de conservation des données collectées)
-- Détail opérationnel du statut « moins de 4 ans » (gratuité vs demande préalable)
 - Budget, délais de mise en service et contrat de maintenance (déjà ouverts au CR n° 1)
 - Créneaux horaires de la privatisation : elle a lieu le plus souvent l'après-midi pour le sunset, mais la question de savoir si des privatisations sont également prises le matin n'a pas été abordée

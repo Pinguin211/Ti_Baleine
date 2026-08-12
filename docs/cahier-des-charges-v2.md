@@ -101,7 +101,7 @@ contact humain direct (annulations, remboursements, manifeste passagers).
 | # | Contrainte | Nature | Source |
 |---|---|---|---|
 | 1 | Solution sur-mesure exclusivement, aucun SaaS tiers | stratégique | CR-01/Q01 |
-| 2 | Fermeture le lundi, le 25 décembre et le 1er janvier ; aucune réservation ni sortie ces jours-là | métier | CR-01/Q09 |
+| 2 | Ouverture 7 jours sur 7 ; fermeture uniquement le 25 décembre et le 1er janvier, aucune réservation ni sortie ces deux jours | métier | CR-01/Q09 (corrigé) |
 | 3 | Créneaux figés à 7h, 10h et 14h, pas d'horaires ad hoc | métier | CR-01/Q09, CR-01/Q10 |
 | 4 | Capacité bornée par bateau : 12 places (Tikap) ou 24 places (Grand Bleu), 36 places cumulées par créneau | métier / physique | CR-01/Q12, CR-01/Q15, CR-02/Q01 |
 | 5 | Paiement intégral et 100 % en ligne à la réservation, aucun acompte ni règlement partiel | métier | CR-01/Q24, CR-01/Q25 |
@@ -122,10 +122,10 @@ contact humain direct (annulations, remboursements, manifeste passagers).
 | # | Règle | Source |
 |---|---|---|
 | R-01 | Le planning est fixe toute l'année : trois créneaux par jour, à 7h, 10h et 14h. | CR-01/Q09, CR-01/Q10 |
-| R-02 | Le service est fermé le lundi, le 25 décembre et le 1er janvier. | CR-01/Q09 |
+| R-02 | Le service est ouvert 7 jours sur 7 ; il est fermé uniquement le 25 décembre et le 1er janvier. | CR-01/Q09 (corrigé) |
 | R-03 | La flotte comprend deux bateaux : Tikap (12 places) et Grand Bleu (24 places). | CR-01/Q12, CR-01/Q15 |
 | R-04 | Tarifs fixes : baleines 65 € adulte / 40 € enfant, dauphins 50 € adulte / 30 € enfant, privatisation Tikap 600 €, Grand Bleu 1 100 €. | CR-01/Q18 |
-| R-05 | Le tarif enfant s'applique de 4 à 11 ans inclus ; à partir de 12 ans, tarif adulte. Les moins de 4 ans ne sont pas admis en tarif standard. | CR-02/Q04 |
+| R-05 | Le tarif enfant s'applique de 4 à 11 ans inclus ; à partir de 12 ans, tarif adulte. Les enfants de moins de 4 ans ne sont pas admis à bord, sans exception ni tarif dérogatoire. | CR-02/Q04 |
 | R-06 | Le paiement est intégral et exclusivement en ligne au moment de la réservation, par carte bancaire. | CR-01/Q24, CR-01/Q25 |
 | R-07 | Une facture PDF est générée et envoyée automatiquement à la confirmation de commande. | CR-01/Q47 |
 | R-08 | Le seuil minimum de maintien d'un départ est de 6 passagers payants par bateau. | CR-02/Q01 |
@@ -147,7 +147,7 @@ contact humain direct (annulations, remboursements, manifeste passagers).
 |---|---|---|---|---|
 | REQ-001 | Le client peut choisir un type de sortie (Baleines, Dauphins, Privatisation) | Must | Sophie / Marc | CR-01/Q02 |
 | REQ-002 | Le client peut basculer entre français et anglais à tout moment du parcours | Must | Sophie | CR-01/Q07 |
-| REQ-003 | Le client voit uniquement les créneaux disponibles (masquage des jours fermés et des créneaux complets ou clos à moins de 2h) | Must | Sophie / Marc | CR-01/Q09, CR-01/Q35 |
+| REQ-003 | Le client voit uniquement les créneaux disponibles (masquage des 2 jours de fermeture annuelle — 25 décembre et 1er janvier — et des créneaux complets ou clos à moins de 2h) | Must | Sophie / Marc | CR-01/Q09, CR-01/Q35 |
 | REQ-004 | Le client saisit le nombre d'adultes et d'enfants pour sa réservation | Should | Marc | déduit — nécessaire au calcul du tarif (R-04, R-05) |
 | REQ-005 | Le client renseigne un formulaire de contact minimal (nom, prénom, e-mail, téléphone) sans création de compte | Should | Sophie / Marc | CR-02/§3 |
 | REQ-006 | Le client paie 100 % du montant par carte bancaire via une passerelle sécurisée | Must | Sophie / Marc | CR-01/Q24, CR-01/Q25 |
@@ -185,12 +185,11 @@ personnelles et durée de conservation, déploiement, maintenance après livrais
 | 3 | Qui fournit et valide les textes des CGV et mentions légales ? | CR-02/§8 Q3 | en attente | L'entreprise fournit les textes légaux avant mise en ligne |
 | 4 | Quelles cases à cocher obligatoires au checkout (CGV, décharge, newsletter…) ? | CR-02/§8 Q4 | en attente | Case CGV obligatoire uniquement, sans newsletter |
 | 5 | Quelle durée de conservation des données personnelles au titre du RGPD ? | CR-02/§8 Q5 | en attente | Durée minimale légale par défaut (3 ans après le dernier contact), à confirmer |
-| 6 | Le statut « moins de 4 ans » est-il gratuit ou soumis à demande préalable ? | CR-02/§9 | en attente | Enfant de moins de 4 ans non comptabilisé dans la réservation payante, admission soumise à confirmation par l'entreprise |
-| 7 | Les privatisations sont-elles possibles le matin, ou uniquement l'après-midi (Sunset) ? | CR-02/§9 | en attente | Créneaux de privatisation limités à l'après-midi (14h) jusqu'à confirmation |
-| 8 | Quel budget est alloué à la création et à l'hébergement mensuel de l'outil ? | CR-01/Q53, CR-01/Q55 | sans réponse | Aucune hypothèse chiffrée retenue ; à clarifier avant choix technique |
-| 9 | Quelle est la date cible de mise en service ? | CR-01/Q54 | sans réponse | Mise en service visée avant la prochaine saison des baleines |
-| 10 | Quel identifiant et quelle politique de mot de passe (regex) pour l'accès à l'interface administrateur ? | point-relevés.md | en attente | Identifiant e-mail + mot de passe respectant un minimum de 12 caractères, majuscule, chiffre et caractère spécial, à valider avec le client |
-| 11 | Une fois le calendrier fixé, peut-il être modifié, et par quel moyen l'administrateur y accède-t-il ? | point-relevés.md | en attente | Modification possible depuis le back-office par l'administrateur uniquement (cf. R-12) ; spec détaillée à proposer par l'équipe |
+| 6 | Les privatisations sont-elles possibles le matin, ou uniquement l'après-midi (Sunset) ? | CR-02/§9 | en attente | Créneaux de privatisation limités à l'après-midi (14h) jusqu'à confirmation |
+| 7 | Quel budget est alloué à la création et à l'hébergement mensuel de l'outil ? | CR-01/Q53, CR-01/Q55 | sans réponse | Aucune hypothèse chiffrée retenue ; à clarifier avant choix technique |
+| 8 | Quelle est la date cible de mise en service ? | CR-01/Q54 | sans réponse | Mise en service visée avant la prochaine saison des baleines |
+| 9 | Quel identifiant et quelle politique de mot de passe (regex) pour l'accès à l'interface administrateur ? | point-relevés.md | en attente | Identifiant e-mail + mot de passe respectant un minimum de 12 caractères, majuscule, chiffre et caractère spécial, à valider avec le client |
+| 10 | Une fois le calendrier fixé, peut-il être modifié, et par quel moyen l'administrateur y accède-t-il ? | point-relevés.md | en attente | Modification possible depuis le back-office par l'administrateur uniquement (cf. R-12) ; spec détaillée à proposer par l'équipe |
 
 Une question sans réponse n'interdit pas d'avancer, à condition que l'hypothèse
 soit écrite. Une hypothèse non écrite est une erreur en attente.

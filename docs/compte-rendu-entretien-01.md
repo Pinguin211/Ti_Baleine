@@ -100,7 +100,9 @@ répond « non, pas tout à fait », la compréhension n'est pas acquise.
 
 Le commanditaire exploite deux bateaux — le **Tikap** (12 places) et le **Grand Bleu** (24 places) — pour proposer des sorties en mer à la journée : observation de baleines ou de dauphins, et sorties « coucher de soleil ». Une même sortie peut changer de nature (ex. baleine → coucher de soleil) selon les conditions, ce qui devra être géré dans le système.
 
-Le planning est **fixe toute l'année** : trois créneaux quotidiens à **7 h, 10 h et 14 h**, du mardi au dimanche. Les seules fermetures annuelles sont le lundi, le 25 décembre et le 1er janvier.
+Le planning est **fixe toute l'année** : trois créneaux quotidiens à **7 h, 10 h et 14 h**, du lundi au dimanche (7j/7). Les seules fermetures annuelles sont le 25 décembre et le 1er janvier.
+
+> ⚠️ **Correction ultérieure (12/08/2026) :** le client a précisé que l'établissement est bien ouvert le lundi. La réponse à Q09 ci-dessus reflète ce qui a été dit au moment de cet entretien ; voir `cahier-des-charges-v2.md` §7/§8 pour la règle retenue en l'état actuel.
 
 ### Tarification
 
@@ -151,7 +153,7 @@ Le commanditaire souhaite être informé des annulations par **SMS et/ou email**
 | # | Règle | Formulation exacte du client | Source | Sûre ? |
 |---|---|---|---|---|
 | RM-01 | Le planning est fixe toute l'année : trois créneaux par jour à 7 h, 10 h et 14 h. | — | Q09 / Q10 | ✅ oui |
-| RM-02 | Le service est fermé le lundi, le 25 décembre et le 1er janvier. | — | Q09 | ✅ oui |
+| RM-02 | Le service est ouvert 7 jours sur 7 ; il est fermé uniquement le 25 décembre et le 1er janvier. | — | Q09 | ⚠️ corrigé le 12/08/2026 (ouverture le lundi confirmée) |
 | RM-03 | La flotte comprend deux bateaux : Tikap (12 places) et Grand Bleu (24 places). | — | Q12 / Q15 | ✅ oui |
 | RM-04 | Les tarifs sont fixes : baleines 65 € / 40 €, dauphins 50 € / 30 €, privatisation 600 € / 1 100 €. | — | Q18 | ✅ oui |
 | RM-05 | Le paiement est intégral et exclusivement en ligne au moment de la réservation. | — | Q24 / Q25 | ✅ oui |
@@ -187,7 +189,7 @@ ambiguïté détectée mais non levée reste une ambiguïté : elle va au §8.
 | # | Contrainte | Source | Nature |
 |---|---|---|---|
 | C-01 | La solution doit être **sur-mesure** — aucune solution SaaS (Bokun, Resagenda…) n'est acceptée. | Q01 | Stratégique |
-| C-02 | Le service est **fermé le lundi**, le 25 décembre et le 1er janvier : aucune réservation ni sortie ces jours-là. | Q09 | Métier |
+| C-02 | Le service est **ouvert 7j/7** ; il est fermé uniquement le 25 décembre et le 1er janvier : aucune réservation ni sortie ces deux jours-là. *(corrigé le 12/08/2026 — le service est bien ouvert le lundi)* | Q09 | Métier |
 | C-03 | Les créneaux sont **figés** (7 h, 10 h, 14 h) ; le système ne doit pas permettre de créer des horaires ad hoc. | Q09 / Q10 | Métier |
 | C-04 | La capacité par sortie est bornée par le bateau affecté : **12 places** (Tikap) ou **24 places** (Grand Bleu) — aucune sur-réservation possible au-delà. | Q12 / Q15 | Métier / Physique |
 | C-05 | Le paiement est **intégral et 100 % en ligne** au moment de la réservation : aucun règlement partiel, différé ou en espèces n'est accepté via le système. | Q24 / Q25 | Métier |
