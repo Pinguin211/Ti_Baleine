@@ -1,4 +1,4 @@
-## SPEC-<DOM>-03 — <Reserver une sortie>
+## SPEC-RESERVATION-03 — Réserver une sortie
 
 **Exigence :** REQ-0xx
 **Statut :** brouillon | revue IA faite | validée
@@ -17,8 +17,8 @@ pourrait », pas de « idéalement ».
 Ce que cette spécification couvre, et surtout **ce qu'elle ne couvre pas**. Nommer
 explicitement les cas voisins traités ailleurs, avec leur ID.
 
-- Ne couvre pas la facturation
-- Couvre du lieu au paiment
+- Ne couvre pas la [facturation](./facturation.md)
+- Couvre du lieu au paiement
 
 ### Scénarios nominaux
 
@@ -90,4 +90,4 @@ Consigne utilisée :
 | Montant payé jamais vérifié (montant = participants × prix) : sous-paiement indétectable | acceptée | Corrigé : AC-7 ajouté |
 | AC-5 couplé à une formulation d'UI (« invite à choisir un autre créneau ») | acceptée | Corrigé : AC-5 reformulé avec le motif métier « créneau complet » |
 
-Les refus se reportent aussi dans `docs/journal.md`.
+Les refus se reportent aussi dans [journal](../docs/journal.md).
