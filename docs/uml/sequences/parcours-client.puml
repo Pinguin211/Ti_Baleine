@@ -1,5 +1,5 @@
-@startuml reserver-une-sortie
-title Diagramme de séquence — « Réserver une sortie en ligne » (Ti'Baleine)
+@startuml parcours-client
+title Diagramme de séquence — Parcours Client : « Réserver une sortie en ligne » (Ti'Baleine)
 
 skinparam sequenceMessageAlign center
 skinparam maxMessageSize 220
