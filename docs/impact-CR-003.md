@@ -2,7 +2,7 @@
 
 **Évolution et consolidation suite à l'entretien n° 3 du 12/08/2026.**
 
-**Demande du client :** Gestion de l'annulation et de la modification de réservation réservée exclusivement à l'administrateur dans le back-office (avec libération automatique des places sur le créneau et envoi d'un SMS d'information au client, sans annulation directe par le client), ouverture d'un second point de départ à Saint-Leu (mardi et jeudi, Tikap 12 places uniquement, départ à 9h, surcoût individuel de +10 €/personne, entraînant l'indisponibilité du Tikap la matinée à 07h00 et 10h00 à Saint-Gilles ces jours-là), ouverture de la privatisation du Tikap à Saint-Leu au même tarif qu'à Saint-Gilles (600 € la demi-journée), extension des privatisations en demi-journée le matin (7h–12h) en plus de l'après-midi, affectation dynamique du naturaliste unique selon les réservations, et piste de nom de domaine `tibaleine.re`.
+**Demande du client :** Gestion de l'annulation totale et de la modification à la baisse du nombre de passagers réservées exclusivement à l'administrateur dans le back-office (avec libération automatique des places sur le créneau et envoi d'un SMS d'information au client lors d'une annulation, sans annulation directe par le client, sans possibilité d'ajouter des passagers ni de changer la date), ouverture d'un second point de départ à Saint-Leu (mardi et jeudi, Tikap 12 places uniquement, départ à 9h, surcoût individuel de +10 €/personne, entraînant l'indisponibilité du Tikap la matinée à 07h00 et 10h00 à Saint-Gilles ces jours-là), ouverture de la privatisation du Tikap à Saint-Leu au même tarif qu'à Saint-Gilles (600 € la demi-journée), extension des privatisations en demi-journée le matin (7h–12h) en plus de l'après-midi, affectation dynamique du naturaliste unique selon les réservations, et piste de nom de domaine `tibaleine.re`.
 **Reçue le :** 12/08/2026 (Entretien n° 3)
 **Rédigée par :** Thomas, Loïc, Benjamin et Ivan
 
@@ -23,7 +23,7 @@ Le commanditaire acte l'ouverture d'un **second point de départ à Saint-Leu**,
 
 Les formules de **privatisation de navire** en demi-journée sont confirmées le matin (**7h00 – 12h00**) et l'après-midi (**dès 14h00**), et sont **possibles à Saint-Leu sur le Tikap au même tarif qu'à Saint-Gilles (600 €)** sans application de surcoût par personne sur le forfait.
 
-Le système n'offre **aucune interface d'annulation ou de modification directe pour le client public**. L'annulation d'une réservation est effectuée **exclusivement par l'administrateur** depuis son back-office ; elle **libère automatiquement les places** sur le créneau concerné et déclenche l'envoi d'un **SMS d'information au client**. De même, les modifications de réservations (taille du groupe, répartition adultes/enfants) sont réservées à l'administrateur.
+Le système n'offre **aucune interface d'annulation ou de modification directe pour le client public**. L'annulation d'une réservation est effectuée **exclusivement par l'administrateur** depuis son back-office ; elle **libère automatiquement les places** sur le créneau concerné et déclenche l'envoi d'un **SMS d'information au client**. De même, les modifications de réservations sont réservées à l'administrateur et **strictement limitées à la réduction du nombre de passagers** (annulation partielle de places libérant la jauge, sans possibilité d'ajouter des passagers ni de changer la date).
 
 La contrainte d'encadrement du **naturaliste unique** est gérée dynamiquement : son affectation quotidienne à Saint-Gilles ou Saint-Leu s'ajuste selon le volume des réservations enregistrées. Le nom de domaine envisagé est **tibaleine.re** (sans budget global plafonné).
 
@@ -35,7 +35,7 @@ La contrainte d'encadrement du **naturaliste unique** est gérée dynamiquement 
 |---|---|---|
 | 1 | L'annulation d'une réservation est-elle possible en ligne par le client ou réservée à l'administrateur, et avec quelle notification ? | **Pas d'annulation directe par le client** : l'annulation est effectuée **uniquement par l'administrateur** depuis son interface, avec envoi automatique d'une **information par SMS au client**. |
 | 2 | Que devient le créneau lorsqu'une réservation est annulée par l'administrateur ? | La place est **libérée automatiquement** sur l'application (le créneau se rouvre à la réservation). |
-| 3 | Une réservation existante peut-elle être modifiée, et par qui ? | Oui : modification possible (taille du groupe / répartition adultes-enfants), **uniquement par l'administrateur** (le client ne modifie pas lui-même). |
+| 3 | Une réservation existante peut-elle être modifiée, et par qui ? | Oui : modification possible (**uniquement réduction de la taille du groupe / annulation partielle de places**, sans ajout de passager ni report de date), **uniquement par l'administrateur** (le client ne modifie pas lui-même). |
 | 4 | Quel nom de domaine est envisagé pour la plateforme ? | Piste : **tibaleine.re** *(à confirmer et vérifier la disponibilité)*. |
 | 5 | Quel budget est alloué au projet ? | **Pas de budget fixé** à ce stade. |
 | 6 | Les privatisations peuvent-elles avoir lieu le matin comme l'après-midi ? | Oui : privatisation possible le **matin** ou l'**après-midi**. |
@@ -57,7 +57,7 @@ La contrainte d'encadrement du **naturaliste unique** est gérée dynamiquement 
 
 | Exigence / Section CDC | Impact | Action |
 |---|---|---|
-| **Périmètre & Hors périmètre (CDC §6)** | modifiée | L'annulation *par l'administrateur* (avec libération synchrone du créneau et SMS d'information client) ainsi que la modification de réservation par l'admin entrent dans le périmètre applicatif back-office. L'auto-annulation directe et l'auto-modification par le client restent strictement hors périmètre. Les remboursements financiers demeurent manuels hors système. |
+| **Périmètre & Hors périmètre (CDC §6)** | modifiée | L'annulation totale ainsi que la modification à la baisse (réduction de passagers libérant des places) par l'admin entrent dans le périmètre applicatif back-office. L'auto-annulation directe, l'auto-modification par le client, l'ajout de passagers et le report de date restent strictement hors périmètre. Les remboursements financiers demeurent manuels hors système. |
 | **Questions ouvertes (CDC §11)** | modifiée | Clôture de questions ouvertes du CDC v2 grâce au CR-03 :<br>- Q1 (Domaine) : piste identifiée sur `tibaleine.re`.<br>- Q6 (Créneaux privatisation) : validé matin (7h–12h) et après-midi (dès 14h).<br>- Q7 (Budget) : aucun budget fixé à ce stade. |
 | REQ-001 *(Sélection type de sortie & port)* | modifiée | Intégrer l'étape de choix du point de départ (Saint-Gilles / Saint-Leu) et adapter les sorties proposées. |
 | REQ-003 *(Visualisation créneaux disponibles)* | modifiée | Afficher les créneaux par site : Saint-Gilles (7h, 10h, 14h toute la semaine) et Saint-Leu (mardi et jeudi à 9h00 uniquement, Tikap 12 places). Brider la capacité des créneaux de 07h00 et 10h00 à Saint-Gilles à 24 places le mardi et le jeudi (Grand Bleu seul). |
@@ -67,7 +67,7 @@ La contrainte d'encadrement du **naturaliste unique** est gérée dynamiquement 
 | REQ-011 *(Gestion des créneaux back-office)* | modifiée | Permettre à l'administrateur de gérer les créneaux multi-sites (Saint-Gilles et Saint-Leu) et d'assigner le naturaliste unique. |
 | REQ-013 *(Annulation back-office par l'admin)* | ajoutée *(nouvelle)* | Développer l'action d'annulation de réservation réservée à l'administrateur dans le back-office, déclenchant la libération synchrone des places sur le créneau. |
 | REQ-014 *(Notification SMS d'information client)* | ajoutée *(nouvelle)* | Déclencher l'envoi automatique d'un SMS au client lors de l'annulation de sa réservation par l'administrateur. |
-| REQ-015 *(Modification de réservation admin)* | ajoutée *(nouvelle)* | Permettre à l'administrateur de modifier les quotas passagers (adultes/enfants) depuis le back-office. |
+| REQ-015 *(Modification de réservation admin)* | ajoutée *(nouvelle)* | Permettre à l'administrateur de réduire le nombre de passagers d'une réservation existante depuis le back-office (annulation partielle entraînant la libération synchrone des places sur le créneau, sans ajout de passager ni report de date). |
 | REQ-016 *(Privatisation matin et après-midi)* | ajoutée *(nouvelle)* | Permettre la réservation de formules de privatisation en demi-journée soit le matin (7h–12h), soit l'après-midi (dès 14h) à Saint-Gilles et à Saint-Leu. |
 | R-01 *(Planning standard)* | modifiée | Intégrer le créneau de 9h00 à Saint-Leu les mardis et jeudis pour le Tikap, et l'indisponibilité du Tikap à 07h00 et 10h00 ces mêmes jours à Saint-Gilles. |
 | R-03 / R-09 *(Flotte et jauges)* | modifiée | Fixer la jauge maximale du mardi et jeudi à 07h00 et 10h00 à Saint-Gilles à **24 places** (Grand Bleu uniquement). |
@@ -84,7 +84,7 @@ La contrainte d'encadrement du **naturaliste unique** est gérée dynamiquement 
 | SPEC-RES-02 *(Sélection créneaux & activités)* | modifiée | Prise en compte du navire Tikap exclusif à Saint-Leu (12 places) et intégration de la plage de privatisation du matin (7h–12h) au tarif forfaitaire de 600 € pour le Tikap (Saint-Gilles et Saint-Leu). |
 | SPEC-ANNUL-01 *(Annulation back-office administrateur)* | ajoutée *(nouvelle)* | Écran et bouton d'action d'annulation dans l'interface admin : confirmation, mise à jour du statut en `ANNULEE`, libération immédiate des places associées dans la jauge du créneau, et déclenchement d'un appel à la passerelle SMS d'information vers le client. Pas d'accès public/client. |
 | SPEC-ADM-02 *(Planning & Supervision back-office)* | modifiée | Planning filtrable par port (Saint-Gilles / Saint-Leu), prise en compte de la jauge réduite à 24 places le mar/jeu à 07h00 et 10h00 à Saint-Gilles, et suivi de l'affectation du naturaliste unique. |
-| SPEC-ADM-03 *(Modification de réservation par l'admin)* | ajoutée *(nouvelle)* | Formulaire d'édition admin d'une réservation : ajustement des passagers adultes/enfants, recalcul des places consommées sur le créneau, sans portail d'auto-modification client. |
+| SPEC-ADM-03 *(Modification de réservation par l'admin)* | ajoutée *(nouvelle)* | Formulaire d'édition admin d'une réservation : réduction du nombre de passagers adultes/enfants, recalcul et libération synchrone des places sur le créneau, sans possibilité d'ajouter des passagers ni de changer la date, sans portail client. |
 | SPEC-NOTIF-01 *(Système d'alertes & SMS)* | modifiée | Intégration d'un connecteur SMS transactionnel dédié à l'envoi du message d'information d'annulation au numéro du client. |
 | SPEC-PAY-01 *(Paiement en ligne CB)* | inchangée | Paiement intégral (100 %) en ligne avec facture PDF automatique. |
 | SPEC-REM-01 *(Remboursement bancaire)* | inchangée *(hors périmètre)* | Reste strictement hors système (gestion directe et manuelle par l'entreprise). |
@@ -95,8 +95,8 @@ La contrainte d'encadrement du **naturaliste unique** est gérée dynamiquement 
 
 | Artefact | Impact | Ce qui change |
 |---|---|---|
-| `uml/domain.puml` | modifié | - Ajout de l'entité `Lieu` (Saint-Gilles, Saint-Leu) liée à `Creneau`.<br>- Entité `Creneau` : ajout de l'horaire 9h00 St-Leu, de la règle d'indisponibilité du Tikap le mar/jeu à 07h00 et 10h00 à St-Gilles (capacité = 24 places sur Grand Bleu), et des plages de privatisation matin 7h–12h.<br>- Entité `Reservation` : statut (`CONFIRMEE`, `ANNULEE`, `MODIFIEE`), référence mobile, et indicateurs d'annulation/modification admin.<br>- Entité `Tarif` : tarification géographique (+ 10 € / billet individuel à Saint-Leu ; forfait privatisation Tikap fixe à 600 € sur les deux ports). |
-| `uml/sequences/` | modifié | - Diagramme de séquence : *Annulation de réservation par l'administrateur* (authentification admin, action annuler, libération synchrone du créneau, déclenchement webhook SMS vers le client).<br>- Diagramme de séquence : *Modification de réservation par l'administrateur* (ajustement passagers et recalcul de jauge). |
+| `uml/domain.puml` | modifié | - Ajout de l'entité `Lieu` (Saint-Gilles, Saint-Leu) liée à `Creneau`.<br>- Entité `Creneau` : ajout de l'horaire 9h00 St-Leu, de la règle d'indisponibilité du Tikap le mar/jeu à 07h00 et 10h00 à St-Gilles (capacité = 24 places sur Grand Bleu), et des plages de privatisation matin 7h–12h.<br>- Entité `Reservation` : statut (`CONFIRMEE`, `ANNULEE`, `MODIFIEE`), référence mobile, et indicateurs d'annulation/réduction admin.<br>- Entité `Tarif` : tarification géographique (+ 10 € / billet individuel à Saint-Leu ; forfait privatisation Tikap fixe à 600 € sur les deux ports). |
+| `uml/sequences/` | modifié | - Diagramme de séquence : *Annulation de réservation par l'administrateur* (authentification admin, action annuler, libération synchrone du créneau, déclenchement webhook SMS vers le client).<br>- Diagramme de séquence : *Modification de réservation par l'administrateur* (diminution passagers et libération de jauge). |
 | MCD / MLD / MPD | modifié | - Table `Lieux` (`id`, `nom`, `adresse`, `actif`).<br>- Table `Creneaux` : colonne `lieu_id`, capacité max (12 à St-Leu, 24 à St-Gilles mar/jeu 07h00 et 10h00, 36 le reste du temps).<br>- Table `Reservations` : colonne `statut` (ENUM : `CONFIRMED`, `CANCELLED`), `cancelled_at`, `modified_by_admin` (BOOLEAN).<br>- Table `Tarifs` : grille tarifaire `(activite_id, categorie_age_id, lieu_id, prix)`. |
 | Architecture | modifiée | - Passerelle SMS transactionnelle (`SmsNotificationService`) branchée sur les événements d'annulation admin.<br>- Moteur de calendrier multi-sites avec gestion des règles de flotte et de transit maritime. |
 
@@ -121,8 +121,8 @@ Question à traiter explicitement : la demande introduit-elle un **état nouveau
 | CASE-ANNUL-01 *(Annulation par l'administrateur dans le back-office et libération immédiate des places sur le créneau)* | à écrire *(nouveau)* |
 | CASE-ANNUL-02 *(Déclenchement et envoi de notification SMS au client suite à annulation par l'administrateur)* | à écrire *(nouveau)* |
 | CASE-ANNUL-03 *(Interdiction d'accès aux endpoints d'annulation pour les utilisateurs non authentifiés / clients)* | à écrire *(nouveau)* |
-| CASE-MODIF-01 *(Modification par l'administrateur de la répartition passagers d'une réservation existante)* | à écrire *(nouveau)* |
-| CASE-MODIF-02 *(Interdiction d'accès à la modification de réservation pour le client public)* | à écrire *(nouveau)* |
+| CASE-MODIF-01 *(Modification par l'administrateur : réduction du nombre de passagers et libération synchrone des places)* | à écrire *(nouveau)* |
+| CASE-MODIF-02 *(Interdiction d'ajouter des passagers, de modifier la date ou d'accéder à la modification pour le client public)* | à écrire *(nouveau)* |
 | CASE-NAT-01 *(Contrôle de non-conflit de planning pour le naturaliste unique entre Saint-Gilles et Saint-Leu)* | à écrire *(nouveau)* |
 
 ---
@@ -135,7 +135,7 @@ Question à traiter explicitement : la demande introduit-elle un **état nouveau
 | `PricingService` | Appliquer la majoration de + 10 € / personne sur les billets individuels à Saint-Leu ; maintenir le forfait de privatisation Tikap à 600 € sans majoration. |
 | `AdminCancellationService` | Développer la méthode d'annulation back-office : passage au statut `ANNULEE`, réincrémentation atomique des places du créneau, et appel au service SMS. |
 | `SmsNotificationService` | Développer le connecteur vers l'API SMS pour transmettre le message d'annulation au numéro de téléphone mobile du client. |
-| `AdminReservationService` | Implémenter l'édition des réservations dans le back-office (ajustement passagers et recalcul des jauges). |
+| `AdminReservationService` | Implémenter l'ajustement à la baisse des passagers d'une réservation dans le back-office (annulation partielle de places et libération de jauge). |
 | `AdminPlanningService` | Adapter le tableau de bord avec filtres par lieu et visualisation des capacités réelles (24 places le mar/jeu à 07h00 et 10h00 à Saint-Gilles). |
 | `PdfInvoiceGenerator` | Mentionner le port d'embarquement (Saint-Gilles / Saint-Leu) et le tarif applicable sur la facture PDF. |
 
@@ -147,9 +147,9 @@ Ce que la demande touche sans que le client l'ait envisagé :
 
 - **Jauge réduite à Saint-Gilles le mardi et le jeudi à 07h00 et 10h00 (la matinée) :** Le *Tikap* devant se rendre à Saint-Leu pour le départ de 09h00 (transit maritime aller matinal) puis effectuer la rotation et regagner Saint-Gilles (retour à quai ~11h-11h30 + transit maritime retour), il ne peut assurer ni le créneau de 07h00 ni celui de 10h00 à Saint-Gilles. La capacité des créneaux de 07h00 et 10h00 à Saint-Gilles ces jours-là doit être automatiquement plafonnée à **24 places** par le moteur de réservation (Grand Bleu uniquement).
 - **Sécurité et simplicité du modèle d'annulation :** L'absence d'auto-annulation client simplifie la sécurité (aucun besoin de portail ou de token public révocable). L'annulation est une opération d'administration sécurisée par l'authentification admin.
+- **Gestion simplifiée des modifications (pas d'ajout de passager ni de report de date) :** En limitant la modification administrative à la seule réduction du nombre de passagers (annulation partielle de places), le système évite toute complexité de paiement complémentaire ou de régularisation monétaire dans le back-office. Tout ajout ou changement de date nécessite une nouvelle réservation ou une annulation préalable.
 - **Règle de tarification forfaitaire vs individuelle :** La majoration géographique (+10 €) s'appliquant uniquement aux personnes physiques sur les billets individuels, le forfait de privatisation Tikap reste à 600 € à Saint-Leu comme à Saint-Gilles.
 - **Ressource critique du naturaliste unique :** Si une sortie baleines est programmée à 9h00 à Saint-Leu, le naturaliste y est mobilisé ; aucune sortie baleines ne peut avoir lieu en parallèle la matinée à Saint-Gilles.
-- **Régularisation financière lors d'une modification admin :** Si l'admin ajoute des passagers sur une réservation déjà réglée, le système enregistre la modification de jauge sans flux bancaire automatique, le solde résiduel étant géré manuellement hors outil par l'entreprise.
 
 ---
 
@@ -158,6 +158,8 @@ Ce que la demande touche sans que le client l'ait envisagé :
 Assumé, et à confirmer avec le client lors de la prochaine étape :
 
 - Aucun portail d'auto-annulation ou d'auto-modification par le client en ligne (tout passe par l'administrateur).
+- Aucun ajout de passagers sur une réservation existante déjà réglée (seule la réduction/annulation partielle est supportée).
+- Aucun report ou changement de date sur une commande existante.
 - Aucun remboursement bancaire automatisé via API (traitement manuel direct par l'entreprise).
 - Aucun compte client avec mot de passe (maintien du parcours invité).
 - Aucun calcul de transit maritime dynamique en temps réel.
@@ -169,12 +171,12 @@ Assumé, et à confirmer avec le client lors de la prochaine étape :
 
 | # | Étape | Qui |
 |---|---|---|
-| 1 | Mise à jour du Cahier des Charges Fonctionnel (`cahier-des-charges-v3.md` : intégration de Saint-Leu, jauge mar/jeu 07h00 et 10h00 à 24 places, privatisations St-Leu 600 €, annulation/modification admin avec SMS client) | Thomas & Loïc |
-| 2 | Rédaction des spécifications détaillées (`SPEC-ANNUL-01` admin, `SPEC-ADM-03`, `SPEC-RES-01` multi-sites) | Benjamin & Ivan |
-| 3 | Harmonisation des modèles UML (`domain.puml`, diagrammes de séquence annulation admin et modification) | Thomas & Ivan |
+| 1 | Mise à jour du Cahier des Charges Fonctionnel (`cahier-des-charges-v3.md` : intégration de Saint-Leu, jauge mar/jeu 07h00 et 10h00 à 24 places, privatisations St-Leu 600 €, annulation/modification à la baisse admin avec SMS client) | Thomas & Loïc |
+| 2 | Rédaction des spécifications détaillées (`SPEC-ANNUL-01` admin, `SPEC-ADM-03` réduction quotas, `SPEC-RES-01` multi-sites) | Benjamin & Ivan |
+| 3 | Harmonisation des modèles UML (`domain.puml`, diagrammes de séquence annulation admin et modification à la baisse) | Thomas & Ivan |
 | 4 | Mise à jour du MCD / MLD / MPD (table `Lieux`, jauges conditionnelles mar/jeu 07h/10h, statuts de réservation) | Benjamin |
 | 5 | Actualisation du plan de tests et rédaction des cas de test (`CASE-RES-06` à `08`, `CASE-RES-07bis`, `CASE-ANNUL-01` à `03`, `CASE-MODIF-01` à `02`, `CASE-NAT-01`) | Loïc |
 | 6 | Développement du moteur de réservation multi-sites, de la règle mar/jeu 07h00 et 10h00 (24 places) et de la majoration (+ 10 €) | Toute l'équipe |
 | 7 | Développement du module d'annulation back-office admin (libération de jauge synchrone, passerelle SMS client) | Toute l'équipe |
-| 8 | Développement de la modification de réservation et de la supervision multi-sites dans le back-office Desktop | Toute l'équipe |
+| 8 | Développement de la modification de réservation à la baisse et de la supervision multi-sites dans le back-office Desktop | Toute l'équipe |
 | 9 | Campagne globale de tests d'intégration, vérification des non-régressions et recette fonctionnelle | Toute l'équipe |
