@@ -235,7 +235,6 @@ Scénario : Login administrateur
 - [ ] AC-1 — L'administrateur peut se connecter au back-office avec un identifiant et un mot de passe valides (`CASE-ADMIN-07`)
 
 ### Revue IA
-### Revue IA
 Consigne utilisée :
 
 > Analyse cette spécification. Recherche les ambiguïtés, contradictions,
@@ -250,4 +249,47 @@ Les refus se reportent aussi dans `docs/journal.md`.
 
 ---
 
-## SPEC-ADMIN-05
+## SPEC-ADMIN-05 visualisation du taux de remplissage
+
+**Exigence :** REQ-010 
+**Statut :** brouillon
+**Version :** v1
+
+### Règle
+> L'administrateur peut visualiser le taux de remplissage des créneaux sur le planning.
+
+### Portée
+- Ne couvre pas la modification du taux de remplissage → `SPEC-ADMIN-0x` à venir.
+
+### Scénarios nominaux
+```gherkin
+Scénario : Visualisation du taux de remplissage
+  Étant donné l'administrateur connecté au back-office
+  Quand il consulte le planning des réservations
+  Alors il peut voir le taux de remplissage de chaque créneau (nombre de places réservées / capacité totale)
+```
+### Cas limites
+| # | Situation | Comportement attendu |
+|---|---|---|
+| 1 | Il y a plus de places réservées que la capacité du navire| Réservations bloqués après avoir ateinte le quota |
+| 2 | … | … |
+
+### Ce qui n'est pas défini
+
+### Critères d'acceptation
+- [ ] AC-1 — L'administrateur peut visualiser le taux de remplissage des créneaux sur le planning (`CASE-ADMIN-08`)
+
+### Revue IA
+Consigne utilisée :
+
+> Analyse cette spécification. Recherche les ambiguïtés, contradictions,
+> comportements non définis, cas limites oubliés et exigences impossibles à
+> tester. Ne réécris pas la spécification.
+
+| Remarque de l'IA | Décision | Motif |
+|---|---|---|
+| … | … | … |
+
+Les refus se reportent aussi dans `docs/journal.md`.
+
+---
