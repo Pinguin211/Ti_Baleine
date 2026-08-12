@@ -67,7 +67,7 @@ La contrainte d'encadrement du **naturaliste unique** est gérée dynamiquement 
 | REQ-011 *(Gestion des créneaux back-office)* | modifiée | Permettre à l'administrateur de gérer les créneaux multi-sites (Saint-Gilles et Saint-Leu) et d'assigner le naturaliste unique. |
 | REQ-013 *(Annulation back-office par l'admin)* | ajoutée *(nouvelle)* | Développer l'action d'annulation de réservation réservée à l'administrateur dans le back-office, déclenchant la libération synchrone des places sur le créneau. |
 | REQ-014 *(Notification SMS d'information client)* | ajoutée *(nouvelle)* | Déclencher l'envoi automatique d'un SMS au client lors de l'annulation de sa réservation par l'administrateur. |
-| REQ-015 *(Modification de réservation admin)* | ajoutée *(nouvelle)* | Permettre à l'administrateur de modifier les quotas passagers (adultes/enfants) ou la date d'une réservation depuis le back-office. |
+| REQ-015 *(Modification de réservation admin)* | ajoutée *(nouvelle)* | Permettre à l'administrateur de modifier les quotas passagers (adultes/enfants) depuis le back-office. |
 | REQ-016 *(Privatisation matin et après-midi)* | ajoutée *(nouvelle)* | Permettre la réservation de formules de privatisation en demi-journée soit le matin (7h–12h), soit l'après-midi (dès 14h) à Saint-Gilles et à Saint-Leu. |
 | R-01 *(Planning standard)* | modifiée | Intégrer le créneau de 9h00 à Saint-Leu les mardis et jeudis pour le Tikap, et l'indisponibilité du Tikap à 07h00 et 10h00 ces mêmes jours à Saint-Gilles. |
 | R-03 / R-09 *(Flotte et jauges)* | modifiée | Fixer la jauge maximale du mardi et jeudi à 07h00 et 10h00 à Saint-Gilles à **24 places** (Grand Bleu uniquement). |
