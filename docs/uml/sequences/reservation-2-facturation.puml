@@ -1,0 +1,54 @@
+@startuml reservation-2-facturation
+title Séquence 2/2 — Après paiement : confirmation → facture PDF → e-mail\n(SPEC-FAC-02)
+
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 240
+autonumber
+
+participant "Passerelle de\npaiement CB" as Paiement
+participant "Application\n(back-end)" as App
+database "Base de données" as BDD
+participant "Générateur de facture\nPDF (en mémoire)" as PDF
+participant "Service e-mail\n(SMTP transactionnel)" as Email
+actor "Client" as Client
+
+note over Paiement, Client
+  ⏮ Suite de la [[reservation-1-consultation-a-paiement.svg Séquence 1/2 (SPEC-RESERVATION-03)]],
+  reprise juste après « Lancement du paiement ».
+  Périmètre [[../../../specs/facturation.md SPEC-FAC-02]].
+end note
+
+Paiement -> App : Confirmation du paiement (webhook)
+App -> BDD : Vérifie l'indicateur d'émission de facture\n(idempotence — cas limite 4)
+BDD --> App : Facture déjà émise ? (oui / non)
+
+alt Paiement confirmé ET facture non émise
+    App -> BDD : Passe la réservation à « payée »\n+ décrémente les places du créneau
+    note right of App
+      SPEC-RESERVATION-03 AC-2 : réservation « payée », places décrémentées.
+      Cas limite 1 : dernière place → créneau « complet ».
+    end note
+    App -> PDF : Génère la facture acquittée à la volée (en mémoire)\n(date, sortie, lieu, personnes, suppléments, TTC)
+    PDF --> App : Facture PDF (identifiant unique, ex. FACT-2026-00123)
+    note right of App : AC-1 — génération à la volée, sans stockage disque
+    App -> Email : Envoie le courriel + facture PDF en pièce jointe
+    alt Envoi réussi
+        Email --> Client : Courriel avec facture PDF reçu
+        App -> BDD : Persiste « facture envoyée avec succès » + horodatage
+        note right of App : AC-2 / AC-4
+    else Échec d'envoi SMTP (cas limite 1)
+        Email --> App : Échec (serveur SMTP indisponible)
+        App -> BDD : Persiste « échec d'émission » + horodatage\n(renvoi ultérieur possible à la volée)
+        note right of App : AC-3
+    end
+    note over App : Idempotence garantie (AC-6) : une seule génération / un seul envoi
+else Paiement refusé / abandonné / en attente (cas limite 3)
+    Paiement --> App : Paiement KO (aucune confirmation)
+    App -> BDD : Libère les places (réservation non confirmée)
+    note right of App
+      AC-5 : aucune facture générée, aucun courriel émis.
+      SPEC-RESERVATION-03 cas limite 4 : places de nouveau disponibles.
+    end note
+end
+
+@enduml

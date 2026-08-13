@@ -1,0 +1,65 @@
+@startuml reservation-1-consultation-a-paiement
+title Séquence 1/2 — Réserver une sortie : consultation → lancement du paiement\n(SPEC-RESERVATION-03)
+
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 240
+autonumber
+
+actor "Client" as Client
+participant "Site de réservation" as Site
+participant "Application\n(back-end)" as App
+database "Base de données" as BDD
+participant "Passerelle de\npaiement CB" as Paiement
+
+note over Client, Paiement
+  Périmètre [[../../../specs/reservation.md SPEC-RESERVATION-03]] : « du lieu au paiement ».
+  Ne couvre pas la facturation → [[reservation-2-facturation.svg Séquence 2/2 (SPEC-FAC-02)]].
+end note
+
+== Consultation des créneaux ==
+Client -> Site : Arrive sur le site, consulte les disponibilités
+Site -> App : Demande les créneaux disponibles
+App -> BDD : Lit les créneaux et leur stock de places
+BDD --> App : Créneaux + places restantes + lieu (Saint-Gilles / Saint-Leu)
+App -> App : Filtre — créneaux avec ≥ 1 place libre\net non passés (date/heure future)
+App --> Site : Créneaux proposés (date, heure, prix)
+Site --> Client : Affiche les créneaux disponibles
+note right of App
+  AC-1 : seuls les créneaux avec ≥ 1 place libre sont proposés ;
+  chacun affiche date, heure et prix.
+  Cas limite 5 : créneau passé non proposé.
+end note
+
+== Sélection et saisie ==
+Client -> Site : Sélectionne un créneau + nombre de participants
+Site -> Site : Validation de saisie\n(participants > 0 — cas limite 7)
+Site -> App : Demande de réservation (créneau, participants)
+App -> App : Calcule le montant = participants × prix
+note right of App : AC-7 — montant = participants × prix
+
+== Contrôle de disponibilité (verrou) ==
+App -> BDD : Verrouille le créneau et relit le stock\n(concurrence — cas limites 1, 3, 8)
+alt Créneau complet / devenu complet / participants > places (cas limites 3, 6)
+    App --> Site : Refus « créneau complet »\n(aucune place décomptée)
+    Site --> Client : Message : choisir un autre créneau
+    note right of App : AC-5 — refus sur créneau complet, sans décompte
+else Places suffisantes
+    App -> BDD : Crée la réservation « en attente de paiement »\n+ réserve les places (hold temporaire)
+    BDD --> App : Identifiant de réservation (idempotent — cas limite 8)
+    App --> Site : Réservation en attente + montant à régler
+end
+
+== Lancement du paiement ==
+Client -> Site : Procède au paiement
+Site -> Paiement : Initie le paiement CB (montant = participants × prix)
+
+note over Site, Paiement #FEFFDD
+  ⏭ FIN Séquence 1/2. La confirmation du paiement puis la facture
+  (PDF + e-mail) sont traitées en
+  [[reservation-2-facturation.svg Séquence 2/2 — Facturation]]
+  (spec : [[../../../specs/facturation.md SPEC-FAC-02]]).
+  Rappel cas limite 4 : si le paiement échoue, la réservation n'est
+  pas confirmée et les places restent disponibles.
+end note
+
+@enduml

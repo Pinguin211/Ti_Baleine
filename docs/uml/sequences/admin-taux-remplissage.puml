@@ -1,0 +1,32 @@
+@startuml admin-taux-remplissage
+title Admin — Visualisation du taux de remplissage\n(SPEC-ADMIN-05)
+
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 240
+autonumber
+
+actor "Administrateur" as Admin
+participant "Back-office\n(desktop)" as BO
+participant "Application\n(back-end)" as App
+database "Base de données" as BDD
+
+note over Admin, BDD
+  Pré-requis : administrateur connecté →
+  [[admin-login.svg Connexion (SPEC-ADMIN-04)]].
+  Affiché sur le planning →
+  [[admin-consultation-planning.svg Consultation (SPEC-ADMIN-01)]].
+  Spec : [[../../../specs/admin.md SPEC-ADMIN-05]].
+end note
+
+Admin -> BO : Consulte le planning
+BO -> App : Demande les taux de remplissage
+App -> BDD : Lit places réservées et capacité par créneau
+BDD --> App : Réservées / capacité
+App --> BO : Taux de remplissage par créneau
+BO --> Admin : Affiche le taux (places réservées / capacité totale)
+note right of App
+  SPEC-ADMIN-05 AC-1 (CASE-ADMIN-08).
+  Cas limite : réservations bloquées une fois le quota atteint.
+end note
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml admin-login
+title Admin — Connexion au back-office\n(SPEC-ADMIN-04)
+
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 240
+autonumber
+
+actor "Administrateur" as Admin
+participant "Back-office\n(desktop)" as BO
+participant "Application\n(back-end)" as App
+database "Base de données" as BDD
+
+note over Admin, BDD
+  Spec : [[../../../specs/admin.md SPEC-ADMIN-04]].
+  Point d'entrée de toutes les actions admin.
+end note
+
+Admin -> BO : Saisit identifiant + mot de passe
+BO -> App : Demande d'authentification
+App -> BDD : Vérifie les identifiants
+BDD --> App : Résultat
+alt Identifiants valides
+    App --> BO : Connecté
+    BO --> Admin : Redirection vers le planning
+    note right of BO
+      ➡ Enchaîne sur
+      [[admin-consultation-planning.svg Consultation du planning (SPEC-ADMIN-01)]]
+    end note
+else Identifiants invalides / mot de passe oublié (cas limites 1, 2)
+    App --> BO : Connexion refusée
+    BO --> Admin : Message d'erreur
+end
+note right of App : SPEC-ADMIN-04 AC-1 (CASE-ADMIN-07)
+
+@enduml

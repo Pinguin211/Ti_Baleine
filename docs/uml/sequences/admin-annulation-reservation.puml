@@ -1,0 +1,45 @@
+@startuml admin-annulation-reservation
+title Admin — Annulation d'une réservation\n(SPEC-ADMIN-02)
+
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 240
+autonumber
+
+actor "Client" as Client
+actor "Administrateur" as Admin
+participant "Back-office\n(desktop)" as BO
+participant "Application\n(back-end)" as App
+database "Base de données" as BDD
+participant "Service SMS" as SMS
+
+note over Client, SMS
+  Pré-requis : administrateur connecté →
+  [[admin-login.svg Connexion (SPEC-ADMIN-04)]].
+  Spec : [[../../../specs/admin.md SPEC-ADMIN-02]].
+end note
+
+Client -> Admin : Appel téléphonique — demande d'annulation
+note over Client, Admin : Hors application (échange téléphonique)
+Admin -> BO : Recherche la réservation + demande l'annulation
+BO -> App : Annuler la réservation (identifiant)
+alt Départ trop proche — moins de 1 h avant (cas limite 1)
+    App --> BO : Refus : annulation impossible (trop proche du départ)
+    BO --> Admin : Information de refus
+else Annulation autorisée (ex. 48 h avant)
+    App -> BDD : Passe la réservation à « annulée » + libère les places
+    BDD --> App : Places remises à disposition
+    App -> SMS : Envoi du SMS d'annulation
+    SMS -> Client : SMS « réservation annulée » reçu
+    App --> BO : Réservation annulée
+    BO --> Admin : Confirmation
+end
+note right of App
+  SPEC-ADMIN-02 AC-1 « annulée » (CASE-ADMIN-02),
+  AC-2 places remises à disposition (CASE-ADMIN-03),
+  AC-3 client informé par SMS (CASE-ADMIN-04).
+  Places de nouveau réservables →
+  [[reservation-1-consultation-a-paiement.svg Interface de réservation (SPEC-RESERVATION-03)]].
+  Remboursement : hors système (manuel, entreprise).
+end note
+
+@enduml

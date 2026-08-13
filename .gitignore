@@ -9,3 +9,6 @@ node_modules/
 
 # Uml
 docs/uml/**/*.svg
+
+# Claude Code
+.claude/

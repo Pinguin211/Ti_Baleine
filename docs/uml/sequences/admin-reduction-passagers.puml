@@ -1,0 +1,36 @@
+@startuml admin-reduction-passagers
+title Admin — Réduction du nombre de passagers\n(SPEC-ADMIN-03)
+
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 240
+autonumber
+
+actor "Client" as Client
+actor "Administrateur" as Admin
+participant "Back-office\n(desktop)" as BO
+participant "Application\n(back-end)" as App
+database "Base de données" as BDD
+
+note over Client, BDD
+  Pré-requis : administrateur connecté →
+  [[admin-login.svg Connexion (SPEC-ADMIN-04)]].
+  Spec : [[../../../specs/admin.md SPEC-ADMIN-03]].
+end note
+
+Client -> Admin : Appel téléphonique — réduire le nombre de passagers
+note over Client, Admin : Hors application (échange téléphonique)
+Admin -> BO : Réduit le nombre de passagers de la réservation
+BO -> App : Met à jour le nombre de passagers (identifiant, nouveau nombre)
+App -> BDD : Met à jour le nombre de places réservées
+BDD --> App : Places libérées remises à disposition
+App --> BO : Réservation mise à jour
+BO --> Admin : Confirmation
+note right of App
+  SPEC-ADMIN-03 AC-1 places réservées mises à jour (CASE-ADMIN-05),
+  AC-2 places remises à disposition (CASE-ADMIN-06).
+  Places de nouveau réservables →
+  [[reservation-1-consultation-a-paiement.svg Interface de réservation (SPEC-RESERVATION-03)]].
+  Remboursement de la réduction : hors système.
+end note
+
+@enduml
