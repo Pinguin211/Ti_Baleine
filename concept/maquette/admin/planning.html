@@ -118,6 +118,12 @@
       <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-slate-500/20 border border-slate-400/30 inline-block"></span><span class="text-slate-400">Fermé</span></div>
     </div>
 
+    <!-- Note Ti Kap / Port de St-Leu -->
+    <div class="flex items-start gap-2.5 mb-5 text-xs bg-amber-500/10 border border-amber-400/20 text-amber-300 rounded-xl px-4 py-3">
+      <span class="text-base leading-none">⛵</span>
+      <span>Les mardis et jeudis, le <strong class="text-white">Ti Kap</strong> effectue un départ supplémentaire à <strong class="text-white">9h</strong> depuis le <strong class="text-white">Port de St-Leu</strong> (12 places), avant de rejoindre le Port de St-Gilles pour le créneau de 14h. Capacité réduite à <strong class="text-white">24 places</strong> sur les créneaux 7h et 10h au Port de St-Gilles ces jours-là.</span>
+    </div>
+
     <!-- Weekly grid -->
     <div id="week-view" class="fade-in">
 
@@ -131,6 +137,7 @@
         <div class="day-header text-center py-2 px-2">
           <div class="text-xs text-slate-400">Mar</div>
           <div class="font-bold text-sm text-slate-300">12</div>
+          <div class="text-[9px] text-amber-400 mt-0.5">⛵ St-Leu</div>
         </div>
         <div class="day-header text-center py-2 px-2">
           <div class="text-xs text-slate-400">Mer</div>
@@ -139,6 +146,7 @@
         <div class="day-header text-center py-2 px-2">
           <div class="text-xs text-slate-400">Jeu</div>
           <div class="font-bold text-sm text-slate-300">14</div>
+          <div class="text-[9px] text-amber-400 mt-0.5">⛵ St-Leu</div>
         </div>
         <div class="day-header text-center py-2 px-2">
           <div class="text-xs text-slate-400">Ven</div>
@@ -167,9 +175,9 @@
         </a>
         <!-- Tue -->
         <a href="reservation-detail.html" class="plan-cell dispo p-3">
-          <div class="text-xs font-bold text-emerald-400 mb-1 badge-dispo rounded px-1.5 py-0.5 inline-block">8/36</div>
-          <div class="text-xs text-slate-400">Dauphins</div>
-          <div class="gauge-bar mt-2"><div class="gauge-fill bg-emerald-500" style="width:22%"></div></div>
+          <div class="text-xs font-bold text-emerald-400 mb-1 badge-dispo rounded px-1.5 py-0.5 inline-block">14/24</div>
+          <div class="text-xs text-slate-400">Dauphins · St-Gilles</div>
+          <div class="gauge-bar mt-2"><div class="gauge-fill bg-emerald-500" style="width:58%"></div></div>
         </a>
         <!-- Wed -->
         <a href="reservation-detail.html" class="plan-cell partiel p-3">
@@ -179,9 +187,9 @@
         </a>
         <!-- Thu -->
         <a href="reservation-detail.html" class="plan-cell dispo p-3">
-          <div class="text-xs font-bold text-emerald-400 mb-1 badge-dispo rounded px-1.5 py-0.5 inline-block">15/36</div>
-          <div class="text-xs text-slate-400">Baleines</div>
-          <div class="gauge-bar mt-2"><div class="gauge-fill bg-emerald-500" style="width:42%"></div></div>
+          <div class="text-xs font-bold text-emerald-400 mb-1 badge-dispo rounded px-1.5 py-0.5 inline-block">15/24</div>
+          <div class="text-xs text-slate-400">Baleines · St-Gilles</div>
+          <div class="gauge-bar mt-2"><div class="gauge-fill bg-emerald-500" style="width:62%"></div></div>
         </a>
         <!-- Fri -->
         <a href="reservation-detail.html" class="plan-cell complet p-3">
@@ -203,6 +211,45 @@
         </a>
       </div>
 
+      <!-- Row 09h — Port de St-Leu (Ti Kap · Mar & Jeu uniquement) -->
+      <div class="grid grid-cols-8 gap-2 mb-2">
+        <div class="flex items-center justify-end pr-3 text-amber-400 text-sm font-semibold">
+          <span class="text-lg mr-1">⛵</span>09h
+        </div>
+        <!-- Mon -->
+        <div class="plan-cell ferme p-3 flex items-center justify-center">
+          <span class="text-slate-500 text-[11px] text-center">— St-Gilles seul</span>
+        </div>
+        <!-- Tue -->
+        <a href="reservation-detail.html" class="plan-cell dispo p-3" style="border-color: rgba(251,191,36,0.3);">
+          <div class="text-xs font-bold text-emerald-400 mb-1 badge-dispo rounded px-1.5 py-0.5 inline-block">7/12</div>
+          <div class="text-xs text-slate-400">Port St-Leu · Ti Kap</div>
+          <div class="gauge-bar mt-2"><div class="gauge-fill bg-emerald-500" style="width:58%"></div></div>
+        </a>
+        <!-- Wed -->
+        <div class="plan-cell ferme p-3 flex items-center justify-center">
+          <span class="text-slate-500 text-[11px] text-center">— St-Gilles seul</span>
+        </div>
+        <!-- Thu -->
+        <a href="reservation-detail.html" class="plan-cell partiel p-3" style="border-color: rgba(251,191,36,0.3);">
+          <div class="text-xs font-bold text-amber-400 mb-1 badge-partiel rounded px-1.5 py-0.5 inline-block">10/12</div>
+          <div class="text-xs text-slate-400">Port St-Leu · Ti Kap</div>
+          <div class="gauge-bar mt-2"><div class="gauge-fill bg-amber-500" style="width:83%"></div></div>
+        </a>
+        <!-- Fri -->
+        <div class="plan-cell ferme p-3 flex items-center justify-center">
+          <span class="text-slate-500 text-[11px] text-center">— St-Gilles seul</span>
+        </div>
+        <!-- Sat -->
+        <div class="plan-cell ferme p-3 flex items-center justify-center">
+          <span class="text-slate-500 text-[11px] text-center">— St-Gilles seul</span>
+        </div>
+        <!-- Sun -->
+        <div class="plan-cell ferme p-3 flex items-center justify-center">
+          <span class="text-slate-500 text-[11px] text-center">— St-Gilles seul</span>
+        </div>
+      </div>
+
       <!-- Row 10h -->
       <div class="grid grid-cols-8 gap-2 mb-2">
         <div class="flex items-center justify-end pr-3 text-slate-500 text-sm font-semibold">
@@ -214,8 +261,8 @@
           <div class="gauge-bar mt-2"><div class="gauge-fill bg-amber-500" style="width:89%"></div></div>
         </a>
         <a href="reservation-detail.html" class="plan-cell complet p-3">
-          <div class="text-xs font-bold text-red-400 mb-1 badge-complet rounded px-1.5 py-0.5 inline-block">36/36</div>
-          <div class="text-xs text-slate-400">Baleines</div>
+          <div class="text-xs font-bold text-red-400 mb-1 badge-complet rounded px-1.5 py-0.5 inline-block">24/24</div>
+          <div class="text-xs text-slate-400">Baleines · St-Gilles</div>
           <div class="gauge-bar mt-2"><div class="gauge-fill bg-red-500" style="width:100%"></div></div>
         </a>
         <a href="reservation-detail.html" class="plan-cell dispo p-3">
@@ -224,9 +271,9 @@
           <div class="gauge-bar mt-2"><div class="gauge-fill bg-emerald-500" style="width:50%"></div></div>
         </a>
         <a href="reservation-detail.html" class="plan-cell dispo p-3">
-          <div class="text-xs font-bold text-emerald-400 mb-1 badge-dispo rounded px-1.5 py-0.5 inline-block">26/36</div>
-          <div class="text-xs text-slate-400">Baleines</div>
-          <div class="gauge-bar mt-2"><div class="gauge-fill bg-emerald-500" style="width:72%"></div></div>
+          <div class="text-xs font-bold text-emerald-400 mb-1 badge-dispo rounded px-1.5 py-0.5 inline-block">17/24</div>
+          <div class="text-xs text-slate-400">Baleines · St-Gilles</div>
+          <div class="gauge-bar mt-2"><div class="gauge-fill bg-emerald-500" style="width:71%"></div></div>
         </a>
         <a href="reservation-detail.html" class="plan-cell partiel p-3">
           <div class="text-xs font-bold text-amber-400 mb-1 badge-partiel rounded px-1.5 py-0.5 inline-block">34/36</div>
