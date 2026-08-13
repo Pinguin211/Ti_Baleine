@@ -1,0 +1,215 @@
+@startuml domain
+title Diagramme de domaine — Ti'Baleine
+
+skinparam monochrome false
+skinparam roundcorner 8
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Arial
+
+class Client {
+  + nom : string
+  + prenom : string
+  + email : string
+  + telephone : string
+  --
+  + reserver(creneau, passagers) : Reservation
+}
+
+class Administrateur {
+  + identifiant : string
+  + motDePasse : string
+  --
+  + annulerReservation(reservation)
+  + reduirePassagers(reservation, nombre)
+  + consulterPlanning() : List<Creneau>
+}
+
+class Sortie {
+  + nom : string
+  + format : FormatSortie
+  + prixAdulte : float
+  + prixEnfant : float
+}
+
+enum FormatSortie {
+  SORTIE_BALEINES
+  SORTIE_DAUPHINS
+  PRIVATISATION_TIKAP
+  PRIVATISATION_GRAND_BLEU
+}
+
+class Navire {
+  + nom : string
+  + capacite : int
+}
+
+class Naturaliste {
+  + nom : string
+}
+
+class Port {
+  + nom : string
+  + supplementTarifaire : float
+  + joursOuverture : List<Jour>
+  + heuresDisponibles : List<HeureDepart>
+}
+
+class Creneau {
+  + date : Date
+  + heure : HeureDepart
+  + jauge : int
+  + placesReservees : int
+  + statut : StatutCreneau
+  --
+  + calculerTauxRemplissage() : float
+  + estComplet() : bool
+  + estPasse() : bool
+  + decrementerPlaces(nombre)
+  + remettrePlacesADisposition(nombre)
+}
+
+enum StatutCreneau {
+  NON_AFFECTE
+  TYPE_NON_RENSEIGNE
+  DISPONIBLE
+  COMPLET
+}
+
+enum HeureDepart {
+  H07
+  H09
+  H10
+  H14
+}
+
+class Reservation {
+  + reference : string
+  + statut : StatutReservation
+  + montantTotal : float
+  + dateCreation : DateTime
+  --
+  + calculerMontantTotal() : float
+  + annuler()
+  + reduireNombrePassagers(nombreAdultes, nombreEnfants)
+}
+
+enum StatutReservation {
+  EN_ATTENTE
+  CONFIRMEE
+  ANNULEE
+}
+
+class Passager {
+  + categorie : CategoriePassager
+  + prixUnitaire : float
+}
+
+enum CategoriePassager {
+  ADULTE
+  ENFANT
+  FORFAIT_PRIVATISATION
+}
+
+class Paiement {
+  + montant : float
+  + statut : StatutPaiement
+  + datePaiement : DateTime
+  --
+  + valider()
+}
+
+enum StatutPaiement {
+  REUSSI
+  ECHOUE
+  REMBOURSE
+}
+
+class Facture {
+  + numero : string
+  + statutEmission : StatutEmissionFacture
+  + dateEmission : DateTime
+  --
+  + genererPDF()
+  + envoyerParCourriel()
+}
+
+enum StatutEmissionFacture {
+  ENVOYEE_AVEC_SUCCES
+  ECHEC_EMISSION
+}
+
+class Notification {
+  + canal : CanalNotification
+  + message : string
+  + dateEnvoi : DateTime
+  --
+  + envoyer()
+}
+
+enum CanalNotification {
+  EMAIL
+  SMS
+}
+
+' --- Relations ---
+
+Client "1" -- "0..*" Reservation : effectue >
+Administrateur ..> Reservation : gère annulation / réduction >
+
+Reservation "1" --> "1" Creneau : concerne >
+Creneau "1" --> "1" Sortie : propose >
+Creneau "1" --> "1..*" Navire : affecté à >
+Creneau "1" --> "0..1" Naturaliste : encadré par >
+Creneau "1" --> "1" Port : départ depuis >
+
+Reservation "1" *-- "1..*" Passager : comprend >
+Passager --> CategoriePassager : type >
+
+Reservation "1" --> "0..1" Paiement : réglée par >
+Paiement "1" --> "0..1" Facture : génère >
+
+Reservation "1" --> "0..*" Notification : déclenche >
+
+note right of Creneau
+  Règle métier (SPEC-RESERVATION-03) :
+  un créneau n'est proposé que s'il a
+  au moins une place libre et n'est
+  pas passé.
+
+  Jauge variable selon port/jour/heure
+  (SPEC-ADMIN-01, R-10) :
+  - Saint-Gilles standard : 36 (Tikap + Grand Bleu)
+  - Saint-Gilles mar./jeu. 7h-10h : 24 (Grand Bleu seul,
+    Tikap en rotation vers Saint-Leu)
+  - Saint-Leu mar./jeu. 9h : 12 (Tikap seul)
+
+  R-12 : aucune mixité d'activité (type de
+  sortie) sur un même créneau/navire.
+end note
+
+note right of Reservation
+  Règle métier (SPEC-ADMIN-02) :
+  aucun délai minimal fixé pour une
+  annulation admin (hypothèse retenue,
+  CDC v3 Q1 §11). L'annulation remet les
+  places à disposition sur le créneau.
+
+  R-09 : sous 6 passagers payants sur le
+  navire, la décision de maintenir ou
+  annuler le départ reste manuelle,
+  hors système.
+
+  R-18 (SPEC-ADMIN-03) : une réduction ne
+  peut jamais augmenter le nombre de
+  passagers ni changer la date ; une
+  réduction à 0 déclenche la même
+  logique que l'annulation complète.
+end note
+
+note right of Navire
+  Capacités connues :
+  Tikap = 12 places
+  Grand Bleu = 24 places
+end note
+
+@enduml
