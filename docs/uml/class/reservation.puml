@@ -1,0 +1,55 @@
+@startuml diagramme_metier_reservation_precis
+title Cheminement de Réservation et Paiement (Précis) — Ti'Baleine
+
+skinparam monochrome false
+skinparam roundcorner 8
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Arial
+
+class "Client" as Client {
+  Prénom
+  Nom de famille
+  Adresse e-mail
+  Numéro de téléphone mobile
+}
+
+class "Réservation" as Reservation {
+  Référence de réservation
+  Lieu de départ (Saint-Gilles ou Saint-Leu)
+  Date de départ
+  Heure de départ (7h, 9h, 10h ou 14h)
+  Nombre d'adultes
+  Nombre d'enfants (4 à 11 ans)
+  Statut (Confirmée, Annulée)
+}
+
+class "Type de Sortie" as TypeSortie {
+  Nom de la prestation (Baleines, Dauphins, Privatisation)
+  Format (Billets individuels ou Forfait Privatisation)
+}
+
+class "Paiement" as Paiement {
+  Référence de la transaction
+  Montant total réglé
+  Date et heure du règlement
+  Statut du paiement (Réussi, Échoué)
+  Facture transmise au client (Oui / Non)
+}
+
+Client "1" -- "1..*" Reservation : " effectue > "
+Reservation "1" -- "1" TypeSortie : " concerne > "
+Reservation "1" -- "1" Paiement : " est réglée par > "
+
+note bottom of Paiement
+  - Aucun statut "Remboursé" : les remboursements
+    sont effectués manuellement hors système par l'entreprise.
+  - Le paiement est obligatoirement effectué à 100% en ligne.
+end note
+
+note bottom of Reservation
+  - Aucun enfant de moins de 4 ans n'est autorisé à bord.
+  - L'annulation est gérée exclusivement par l'administrateur
+    (libère les places + déclenche un SMS).
+end note
+
+@enduml
