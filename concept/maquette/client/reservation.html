@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ti'Baleine — Réservation</title>
-  <meta name="description" content="Réservez votre sortie en mer avec Ti'Baleine — Observation des baleines et dauphins en Martinique." />
+  <meta name="description" content="Réservez votre sortie en mer avec Ti'Baleine — Observation des baleines et dauphins à La Réunion." />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
@@ -211,15 +211,16 @@
         <div class="space-y-4">
           <h3 class="font-bold text-slate-700 text-sm tracking-widest uppercase">Créneaux disponibles</h3>
           <p class="text-slate-400 text-xs" id="slot-date-label">Sélectionnez une date →</p>
+          <p class="hidden text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2" id="slot-special-note">⛵ Mardi &amp; jeudi : départ supplémentaire 9h au <strong>Port de St-Leu</strong> (12 places, <strong>+10 €/passager</strong>). Capacité réduite à 24 places sur les créneaux 7h et 10h au Port de St-Gilles.</p>
 
           <div class="space-y-3" id="slot-container">
             <!-- 7h -->
-            <div class="slot-card border-2 border-slate-200 rounded-xl p-4 bg-white flex items-center justify-between" id="slot-7" onclick="selectSlot('07h00', this)">
+            <div class="slot-card border-2 border-slate-200 rounded-xl p-4 bg-white flex items-center justify-between" id="slot-7" onclick="selectSlot('07h00', 'Port de St-Gilles', this)">
               <div class="flex items-center gap-3">
                 <span class="text-2xl">🌅</span>
                 <div>
                   <div class="font-bold text-slate-900">07h00</div>
-                  <div class="text-xs text-slate-400">Départ matin</div>
+                  <div class="text-xs text-slate-400">Départ matin · 📍 Port de St-Gilles</div>
                 </div>
               </div>
               <div class="text-right">
@@ -229,12 +230,12 @@
             </div>
 
             <!-- 10h -->
-            <div class="slot-card border-2 border-slate-200 rounded-xl p-4 bg-white flex items-center justify-between" id="slot-10" onclick="selectSlot('10h00', this)">
+            <div class="slot-card border-2 border-slate-200 rounded-xl p-4 bg-white flex items-center justify-between" id="slot-10" onclick="selectSlot('10h00', 'Port de St-Gilles', this)">
               <div class="flex items-center gap-3">
                 <span class="text-2xl">☀️</span>
                 <div>
                   <div class="font-bold text-slate-900">10h00</div>
-                  <div class="text-xs text-slate-400">Départ milieu de matinée</div>
+                  <div class="text-xs text-slate-400">Départ milieu de matinée · 📍 Port de St-Gilles</div>
                 </div>
               </div>
               <div class="text-right">
@@ -249,7 +250,7 @@
                 <span class="text-2xl opacity-50">🌇</span>
                 <div>
                   <div class="font-bold text-slate-500">14h00</div>
-                  <div class="text-xs text-red-400">Complet</div>
+                  <div class="text-xs text-red-400">Complet · 📍 Port de St-Gilles</div>
                 </div>
               </div>
               <div class="text-right">
@@ -320,6 +321,12 @@
             <p class="text-red-700 text-xs leading-relaxed"><strong>Moins de 4 ans :</strong> non admis à bord, sans exception.</p>
           </div>
 
+          <!-- Supplément Port de St-Leu -->
+          <div id="stleu-surcharge-note" class="items-start gap-2 bg-amber-50 border border-amber-200 rounded-xl p-3 mt-3" style="display:none;">
+            <span class="text-amber-600 text-sm">⛵</span>
+            <p class="text-amber-700 text-xs leading-relaxed"><strong>Supplément Port de St-Leu :</strong> +10 € par passager pour ce départ (Ti Kap, mardi &amp; jeudi 9h).</p>
+          </div>
+
           <!-- Total -->
           <div class="mt-5 bg-blue-700 rounded-xl p-4 text-white flex justify-between items-center">
             <span class="font-semibold">Total estimé</span>
@@ -351,7 +358,7 @@
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-600 mb-1.5">Téléphone *</label>
-              <input type="tel" id="inp-tel" placeholder="+596 696 XX XX XX" class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-0 transition-colors" />
+              <input type="tel" id="inp-tel" placeholder="+262 692 XX XX XX" class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-0 transition-colors" />
             </div>
 
             <div class="flex items-start gap-2 pt-1">
@@ -445,12 +452,20 @@
               <span class="font-semibold" id="recap-slot">10h00</span>
             </div>
             <div class="flex justify-between">
+              <span class="text-slate-400">Point de départ</span>
+              <span class="font-semibold" id="recap-port">Port de St-Gilles</span>
+            </div>
+            <div class="flex justify-between">
               <span class="text-slate-400">Adultes</span>
               <span class="font-semibold" id="recap-adults">2 × 65 € = 130 €</span>
             </div>
             <div class="flex justify-between" id="recap-children-row">
               <span class="text-slate-400">Enfants</span>
               <span class="font-semibold" id="recap-children">0 × 40 € = 0 €</span>
+            </div>
+            <div class="flex justify-between" id="recap-surcharge-row" style="display:none;">
+              <span class="text-amber-400">Supplément Port de St-Leu</span>
+              <span class="font-semibold" id="recap-surcharge">2 × 10 € = 20 €</span>
             </div>
           </div>
 
@@ -490,10 +505,13 @@
   let selectedPrestation = null;
   let selectedDate = null;
   let selectedSlot = null;
+  let selectedPort = 'Port de St-Gilles';
+  let stLeuSurcharge = 0; // 10 €/passager quand le départ se fait au Port de St-Leu
   let adults = 2;
   let children = 0;
   const priceAdult = { baleines: 65, dauphins: 50, privatisation: 600 };
   const priceChild  = { baleines: 40, dauphins: 30, privatisation: 0 };
+  const ST_LEU_SURCHARGE_PER_PAX = 10;
 
   // Month state
   let calYear = 2026, calMonth = 7; // 0-indexed: 7=August
@@ -559,15 +577,31 @@
     if (!selectedPrestation) return;
     const pa = priceAdult[selectedPrestation];
     const pc = priceChild[selectedPrestation];
+    const totalPax = adults + children;
+    const surchargeTotal = stLeuSurcharge * totalPax;
+    const grandTotal = adults * pa + children * (pc || 0) + surchargeTotal;
+
     document.getElementById('adult-price').textContent = pa + ' €';
     document.getElementById('child-price').textContent = (pc > 0 ? pc + ' €' : 'N/A');
-    document.getElementById('total-price').textContent = (adults * pa + children * (pc || 0)) + ' €';
+    document.getElementById('total-price').textContent = grandTotal + ' €';
     document.getElementById('recap-type').textContent = selectedPrestation.charAt(0).toUpperCase() + selectedPrestation.slice(1);
     document.getElementById('recap-adults').textContent = adults + ' × ' + pa + ' € = ' + (adults * pa) + ' €';
     document.getElementById('recap-children').textContent = children + ' × ' + (pc || 0) + ' € = ' + (children * (pc || 0)) + ' €';
-    document.getElementById('recap-total').textContent = (adults * pa + children * (pc || 0)) + ' €';
+
+    const surchargeNote = document.getElementById('stleu-surcharge-note');
+    const surchargeRow = document.getElementById('recap-surcharge-row');
+    if (stLeuSurcharge > 0) {
+      surchargeNote.style.display = 'flex';
+      surchargeRow.style.display = 'flex';
+      document.getElementById('recap-surcharge').textContent = totalPax + ' × 10 € = ' + surchargeTotal + ' €';
+    } else {
+      surchargeNote.style.display = 'none';
+      surchargeRow.style.display = 'none';
+    }
+
+    document.getElementById('recap-total').textContent = grandTotal + ' €';
     const btn = document.querySelector('[onclick="confirmPayment()"]');
-    if (btn) btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg> Confirmer et payer ' + (adults * pa + children * (pc || 0)) + ' €';
+    if (btn) btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg> Confirmer et payer ' + grandTotal + ' €';
   }
 
   function changeCount(type, delta) {
@@ -581,12 +615,136 @@
     updatePrices();
   }
 
-  function selectSlot(slot, el) {
+  function selectSlot(slot, port, el) {
     if (el.classList.contains('slot-full') || el.classList.contains('slot-closed')) return;
     selectedSlot = slot;
+    selectedPort = port;
+    stLeuSurcharge = (port === 'Port de St-Leu') ? ST_LEU_SURCHARGE_PER_PAX : 0;
     document.querySelectorAll('.slot-card:not(.slot-full):not(.slot-closed)').forEach(c => c.classList.remove('slot-selected'));
     el.classList.add('slot-selected');
     document.getElementById('recap-slot').textContent = slot;
+    document.getElementById('recap-port').textContent = port;
+    updatePrices();
+  }
+
+  // Le Ti Kap part du Port de St-Leu à 9h les mardis et jeudis, avant de
+  // rejoindre le Port de St-Gilles pour le créneau de 14h. Ces jours-là,
+  // les créneaux 7h/10h à St-Gilles passent de 36 à 24 places.
+  function isStLeuDay(date) {
+    const day = date.getDay(); // 0=Dim ... 2=Mar, 4=Jeu
+    return day === 2 || day === 4;
+  }
+
+  function renderSlots(date) {
+    const container = document.getElementById('slot-container');
+    const note = document.getElementById('slot-special-note');
+    selectedSlot = null;
+    selectedPort = 'Port de St-Gilles';
+    stLeuSurcharge = 0;
+    document.getElementById('recap-slot').textContent = '—';
+    document.getElementById('recap-port').textContent = 'Port de St-Gilles';
+    updatePrices();
+
+    if (isStLeuDay(date)) {
+      note.classList.remove('hidden');
+      container.innerHTML = `
+        <div class="slot-card border-2 border-slate-200 rounded-xl p-4 bg-white flex items-center justify-between" onclick="selectSlot('07h00','Port de St-Gilles', this)">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">🌅</span>
+            <div>
+              <div class="font-bold text-slate-900">07h00</div>
+              <div class="text-xs text-slate-400">Départ matin · 📍 Port de St-Gilles</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-sm font-semibold text-emerald-600">14 / 24 places</div>
+            <div class="text-xs text-slate-400">disponibles</div>
+          </div>
+        </div>
+        <div class="slot-card border-2 border-amber-300 rounded-xl p-4 bg-amber-50 flex items-center justify-between" onclick="selectSlot('09h00','Port de St-Leu', this)">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">⛵</span>
+            <div>
+              <div class="font-bold text-slate-900 flex items-center gap-1.5">09h00 <span class="text-[10px] font-bold text-amber-700 bg-amber-200 px-1.5 py-0.5 rounded-full">Ti Kap</span></div>
+              <div class="text-xs text-slate-400">Départ spécial · 📍 Port de St-Leu</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-sm font-semibold text-emerald-600">5 / 12 places</div>
+            <div class="text-xs text-slate-400">disponibles</div>
+            <div class="text-[10px] font-bold text-amber-700 mt-1">+10 €/passager</div>
+          </div>
+        </div>
+        <div class="slot-card border-2 border-slate-200 rounded-xl p-4 bg-white flex items-center justify-between" onclick="selectSlot('10h00','Port de St-Gilles', this)">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">☀️</span>
+            <div>
+              <div class="font-bold text-slate-900">10h00</div>
+              <div class="text-xs text-slate-400">Départ milieu de matinée · 📍 Port de St-Gilles</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-sm font-semibold text-amber-600">22 / 24 places</div>
+            <div class="text-xs text-slate-400">disponibles</div>
+          </div>
+        </div>
+        <div class="slot-card border-2 border-slate-200 rounded-xl p-4 bg-white flex items-center justify-between" onclick="selectSlot('14h00','Port de St-Gilles', this)">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">🌇</span>
+            <div>
+              <div class="font-bold text-slate-900">14h00</div>
+              <div class="text-xs text-slate-400">Départ après-midi · 📍 Port de St-Gilles</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-sm font-semibold text-emerald-600">18 / 36 places</div>
+            <div class="text-xs text-slate-400">disponibles</div>
+          </div>
+        </div>
+      `;
+    } else {
+      note.classList.add('hidden');
+      container.innerHTML = `
+        <div class="slot-card border-2 border-slate-200 rounded-xl p-4 bg-white flex items-center justify-between" onclick="selectSlot('07h00','Port de St-Gilles', this)">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">🌅</span>
+            <div>
+              <div class="font-bold text-slate-900">07h00</div>
+              <div class="text-xs text-slate-400">Départ matin · 📍 Port de St-Gilles</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-sm font-semibold text-emerald-600">24 / 36 places</div>
+            <div class="text-xs text-slate-400">disponibles</div>
+          </div>
+        </div>
+        <div class="slot-card border-2 border-slate-200 rounded-xl p-4 bg-white flex items-center justify-between" onclick="selectSlot('10h00','Port de St-Gilles', this)">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">☀️</span>
+            <div>
+              <div class="font-bold text-slate-900">10h00</div>
+              <div class="text-xs text-slate-400">Départ milieu de matinée · 📍 Port de St-Gilles</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-sm font-semibold text-amber-600">8 / 36 places</div>
+            <div class="text-xs text-slate-400">disponibles</div>
+          </div>
+        </div>
+        <div class="slot-card slot-full border-2 border-red-200 rounded-xl p-4 bg-red-50 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl opacity-50">🌇</span>
+            <div>
+              <div class="font-bold text-slate-500">14h00</div>
+              <div class="text-xs text-red-400">Complet · 📍 Port de St-Gilles</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs font-bold text-red-500 bg-red-100 px-2 py-1 rounded-full">COMPLET</span>
+          </div>
+        </div>
+      `;
+    }
   }
 
   // Calendar
@@ -622,6 +780,7 @@
           selectedDate = `${d} ${monthNames[calMonth]} ${calYear}`;
           document.getElementById('slot-date-label').textContent = selectedDate;
           document.getElementById('recap-date').textContent = selectedDate;
+          renderSlots(date);
         };
       }
       grid.appendChild(el);

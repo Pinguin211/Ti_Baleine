@@ -1,62 +1,68 @@
-classDiagram
-    class Client {
-        +string nom
-        +string prenom
-        +string email
-        +string telephone
-        +reserverCreneau()
-    }
+@startuml
+title Diagramme de Classes — Ti'Baleine
 
-    class Administrateur {
-        +string identifiant
-        +string motDePasse
-        +string role
-        +annulerReservation(refReservation: string)
-    }
+' Configuration d'affichage
+skinparam roundcorner 8
+skinparam classAttributeIconSize 0
 
-    class Reservation {
-        +string reference
-        +DateTime dateDepart
-        +string heureDepart
-        +StatutReservation statut
-        +annuler()
-        +calculerMontantTotal() float
-    }
+class Client {
+    +nom : string
+    +prenom : string
+    +email : string
+    +telephone : string
+    +reserverCreneau()
+}
 
-    class Billet {
-        +CategoriePassager categorie
-        +float prixUnitaire
-    }
+class Administrateur {
+    +identifiant : string
+    +motDePasse : string
+    +role : string
+    +annulerReservation(refReservation : string)
+}
 
-    class TypeDeSortie {
-        +string nomPrestation
-        +string lieuDepart
-        +FormatSortie format
-    }
+class Reservation {
+    +reference : string
+    +dateDepart : DateTime
+    +heureDepart : string
+    +statut : StatutReservation
+    +annuler()
+    +calculerMontantTotal() : float
+}
 
-    class Notification {
-        +string message
-        +DateTime dateEnvoi
-        +TypeNotification type
-        +envoyer()
-    }
+class Billet {
+    +categorie : CategoriePassager
+    +prixUnitaire : float
+}
 
-    class StatutReservation {
-        <<enumeration>>
-        CONFIRMEE
-        ANNULEE
-    }
+class TypeDeSortie {
+    +nomPrestation : string
+    +lieuDepart : string
+    +format : FormatSortie
+}
 
-    class CategoriePassager {
-        <<enumeration>>
-        ADULTE
-        ENFANT_4_11
-    }
+class Notification {
+    +message : string
+    +dateEnvoi : DateTime
+    +type : TypeNotification
+    +envoyer()
+}
 
-    %% Relations
-    Client "1" -- "0..*" Reservation : effectue
-    Administrateur ..> Reservation : gère l'annulation
-    Reservation "1" *-- "1..*" Billet : contient
-    Reservation "1" --> "1" TypeDeSortie : concerne
-    Reservation "1" --> "0..*" Notification : déclenche
-    Billet --> CategoriePassager : type
+enum StatutReservation {
+    CONFIRMEE
+    ANNULEE
+}
+
+enum CategoriePassager {
+    ADULTE
+    ENFANT_4_11
+}
+
+' Relations
+Client "1" -- "0..*" Reservation : effectue >
+Administrateur ..> Reservation : gère l'annulation
+Reservation "1" *-- "1..*" Billet : contient >
+Reservation "1" --> "1" TypeDeSortie : concerne >
+Reservation "1" --> "0..*" Notification : déclenche >
+Billet --> CategoriePassager : type >
+
+@enduml
