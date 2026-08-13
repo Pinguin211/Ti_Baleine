@@ -1,0 +1,29 @@
+{
+    "name": "Node 24 Dev Sandbox",
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/app",
+
+    // 💡 Empêche JetBrains de surcharger ou de relancer une nouvelle instance
+    "overrideCommand": false,
+    "shutdownAction": "none",
+
+    // Extensions WebStorm/JetBrains recommandées automatiquement
+    "customizations": {
+        "jetbrains": {
+            "plugins": [
+                "JavaScript",
+                "TypeScript"
+            ]
+        },
+        "vscode": {
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "bradlc.vscode-tailwindcss",
+                "jebbs.plantuml"
+            ]
+        }
+    },
+    "remoteUser": "root"
+}
