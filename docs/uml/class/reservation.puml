@@ -1,55 +1,62 @@
-@startuml diagramme_metier_reservation_precis
-title Cheminement de Réservation et Paiement (Précis) — Ti'Baleine
+classDiagram
+    class Client {
+        +string nom
+        +string prenom
+        +string email
+        +string telephone
+        +reserverCreneau()
+    }
 
-skinparam monochrome false
-skinparam roundcorner 8
-skinparam classAttributeIconSize 0
-skinparam defaultFontName Arial
+    class Administrateur {
+        +string identifiant
+        +string motDePasse
+        +string role
+        +annulerReservation(refReservation: string)
+    }
 
-class "Client" as Client {
-  Prénom
-  Nom de famille
-  Adresse e-mail
-  Numéro de téléphone mobile
-}
+    class Reservation {
+        +string reference
+        +DateTime dateDepart
+        +string heureDepart
+        +StatutReservation statut
+        +annuler()
+        +calculerMontantTotal() float
+    }
 
-class "Réservation" as Reservation {
-  Référence de réservation
-  Lieu de départ (Saint-Gilles ou Saint-Leu)
-  Date de départ
-  Heure de départ (7h, 9h, 10h ou 14h)
-  Nombre d'adultes
-  Nombre d'enfants (4 à 11 ans)
-  Statut (Confirmée, Annulée)
-}
+    class Billet {
+        +CategoriePassager categorie
+        +float prixUnitaire
+    }
 
-class "Type de Sortie" as TypeSortie {
-  Nom de la prestation (Baleines, Dauphins, Privatisation)
-  Format (Billets individuels ou Forfait Privatisation)
-}
+    class TypeDeSortie {
+        +string nomPrestation
+        +string lieuDepart
+        +FormatSortie format
+    }
 
-class "Paiement" as Paiement {
-  Référence de la transaction
-  Montant total réglé
-  Date et heure du règlement
-  Statut du paiement (Réussi, Échoué)
-  Facture transmise au client (Oui / Non)
-}
+    class Notification {
+        +string message
+        +DateTime dateEnvoi
+        +TypeNotification type
+        +envoyer()
+    }
 
-Client "1" -- "1..*" Reservation : " effectue > "
-Reservation "1" -- "1" TypeSortie : " concerne > "
-Reservation "1" -- "1" Paiement : " est réglée par > "
+    class StatutReservation {
+        <<enumeration>>
+        CONFIRMEE
+        ANNULEE
+    }
 
-note bottom of Paiement
-  - Aucun statut "Remboursé" : les remboursements
-    sont effectués manuellement hors système par l'entreprise.
-  - Le paiement est obligatoirement effectué à 100% en ligne.
-end note
+    class CategoriePassager {
+        <<enumeration>>
+        ADULTE
+        ENFANT_4_11
+    }
 
-note bottom of Reservation
-  - Aucun enfant de moins de 4 ans n'est autorisé à bord.
-  - L'annulation est gérée exclusivement par l'administrateur
-    (libère les places + déclenche un SMS).
-end note
-
-@enduml
+    %% Relations
+    Client "1" -- "0..*" Reservation : effectue
+    Administrateur ..> Reservation : gère l'annulation
+    Reservation "1" *-- "1..*" Billet : contient
+    Reservation "1" --> "1" TypeDeSortie : concerne
+    Reservation "1" --> "0..*" Notification : déclenche
+    Billet --> CategoriePassager : type
