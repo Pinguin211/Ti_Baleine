@@ -16,7 +16,7 @@ L'activité s'articule autour de deux points d'embarquement :
 - **Saint-Gilles (port principal) :** exploité toute la semaine avec l'ensemble de la flotte sur trois créneaux quotidiens (7h, 10h et 14h), à l'exception des mardis et jeudis matin où seul le *Grand Bleu* opère (indisponibilité du *Tikap* à 07h00 et 10h00 pour cause de rotation à Saint-Leu).
 - **Saint-Leu (second point d'embarquement) :** ouvert le **mardi et le jeudi**, opéré exclusivement par le *Tikap* (12 places) avec un départ unique à **9h00** et une tarification majorée de + 10 € par personne sur les billets individuels.
 
-Les formules de privatisation de navire sont proposées en demi-journée : soit le matin (**07h00 – 12h00**), soit l'après-midi (**dès 14h00**), et sont accessibles à Saint-Gilles comme à Saint-Leu (sur le Tikap, au même tarif forfaitaire de 600 €).
+Les formules de privatisation de navire sont proposées en demi-journée : le matin (**07h00 – 12h00**) ou l'après-midi (**dès 14h00**) à Saint-Gilles, et le matin (**dès 09h00** les mardis et jeudis) à Saint-Leu (sur le Tikap, au même tarif forfaitaire de 600 €).
 
 Aujourd'hui, environ 60 % de la clientèle est étrangère, ce qui impose une interface multilingue. L'entreprise souhaite se doter d'une plateforme web sur-mesure (piste de nom de domaine `tibaleine.re`) pour moderniser la réservation, fiabiliser la gestion des capacités multi-sites, permettre une administration simple du planning et des réservations (annulations totales et modifications à la baisse du nombre de passagers gérées par l'administrateur avec information SMS envoyée au client lors d'une annulation), et intégrer un mécanisme d'alerte de pré-annulation la veille au soir à 18h par SMS ou e-mail (avec motif bilingue FR/EN personnalisable prérempli par des templates types codés en dur) assorti d'une politique de remboursement à 100 % en cas d'annulation effective ou par anticipation (« par peur ») du client suite à l'alerte, sans complexité inutile pour un usage non informaticien (*CR-01, CR-02, CR-03, CR-04*).
 
@@ -77,7 +77,7 @@ L'entreprise recherche un outil sur-mesure — sans passer par un SaaS tiers —
 - Sélection du lieu de départ : **Saint-Gilles** ou **Saint-Leu** (*CR-03/Q15*).
 - Parcours de commande fluide sans création de compte obligatoire (mode invité) (*CR-02/§3*).
 - Tarification dynamique selon le lieu (+ 10 € / personne sur billets individuels à Saint-Leu) et la tranche d'âge (*CR-03/Q09*).
-- Réservation de formules de privatisation en demi-journée le matin (7h–12h) et l'après-midi (dès 14h) à Saint-Gilles et à Saint-Leu (*CR-03/Q06, Q07, Q17*).
+- Réservation de formules de privatisation en demi-journée le matin (7h–12h) et l'après-midi (dès 14h) à Saint-Gilles, et le matin (dès 9h00 les mardis et jeudis) à Saint-Leu (*CR-03/Q06, Q07, Q17*).
 - Module de paiement en ligne 100 % sécurisé par carte bancaire (*CR-01/Q24, CR-01/Q25*).
 - Collecte et validation du numéro de téléphone mobile pour notifications d'urgence (*CR-03/Q01*).
 - Génération et envoi automatique de la facture PDF et de la confirmation par e-mail (*CR-01/Q47*).
@@ -132,7 +132,7 @@ L'entreprise recherche un outil sur-mesure — sans passer par un SaaS tiers —
 | 9 | Notification SMS transactionnelle envoyée automatiquement au client en cas d'annulation par l'admin | fonctionnelle / communication | CR-03/Q01, RM-31 |
 | 10 | Remboursements financiers entièrement manuels hors outil applicatif | opérationnelle | CR-02/Q02, CR-03/§3 |
 | 11 | Supplément tarifaire géographique de **+ 10 € / personne** sur les billets individuels à Saint-Leu | tarifaire | CR-03/Q09, C-26 |
-| 12 | Privatisation proposée le matin (7h–12h) et l'après-midi (dès 14h), tarif forfaitaire Tikap à 600 € à Saint-Leu et Saint-Gilles | métier / tarifaire | CR-03/Q06, CR-03/Q07, CR-03/Q17 |
+| 12 | Privatisation proposée le matin (7h–12h) et l'après-midi (dès 14h) à Saint-Gilles, et le matin (dès 9h00 les mardis et jeudis) à Saint-Leu, tarif forfaitaire Tikap à 600 € à Saint-Leu et Saint-Gilles | métier / tarifaire | CR-03/Q06, CR-03/Q07, CR-03/Q17 |
 | 13 | Interface multilingue intégrale (FR/EN) dès le lancement | métier | CR-01/Q07, CR-02/§3 |
 | 14 | Facture PDF émise automatiquement à chaque confirmation de commande | métier / légale | CR-01/Q47 |
 | 15 | Manifeste passagers hors périmètre applicatif (registre papier de bord) | réglementaire | CR-02/Q05 |
@@ -170,7 +170,7 @@ L'entreprise recherche un outil sur-mesure — sans passer par un SaaS tiers —
 | R-16 | L'annulation d'une réservation est effectuée exclusivement par l'administrateur depuis le back-office et libère automatiquement et immédiatement les places sur le créneau. | CR-03/Q01, CR-03/Q02, RM-31, RM-32 |
 | R-17 | L'annulation d'une réservation par l'administrateur déclenche l'envoi automatique d'un SMS d'information au client (remboursements financiers gérés manuellement hors système). | CR-03/Q01, RM-31 |
 | R-18 | La modification d'une réservation est effectuée exclusivement par l'administrateur et consiste uniquement en la réduction du nombre de passagers (annulation partielle libérant les places sur le créneau). Aucun ajout de passager ni report de date n'est autorisé. | CR-03/Q03, RM-33 |
-| R-19 | Les privatisations sont proposées en demi-journée : matin (7h00–12h00) ou après-midi (dès 14h00). | CR-03/Q06, CR-03/Q07, RM-34 |
+| R-19 | Les privatisations sont proposées en demi-journée : matin (7h00–12h00) ou après-midi (dès 14h00) à Saint-Gilles, et le matin (dès 9h00 les mardis et jeudis) à Saint-Leu. | CR-03/Q06, CR-03/Q07, RM-34 |
 | R-20 | Le client choisit son lieu de départ (Saint-Gilles ou Saint-Leu) lors de sa commande, avec affichage des informations propres au site. | CR-03/Q15, CR-03/Q16, RM-41, RM-42 |
 | R-21 | Le registre du manifeste de bord reste un document papier physique, hors système. | CR-02/Q05 |
 | R-22 | L'administrateur peut émettre une alerte de pré-annulation la veille au soir à 18h par SMS ou e-mail aux réservataires d'un créneau. | CR-04/Q01, CR-04/Q02, RM-44 |
@@ -202,7 +202,7 @@ L'entreprise recherche un outil sur-mesure — sans passer par un SaaS tiers —
 | REQ-013 | L'administrateur peut annuler totalement une réservation depuis le back-office, entraînant la libération immédiate et synchrone des places sur le créneau | Should | Administrateur | CR-03/Q01, CR-03/Q02 |
 | REQ-014 | Le système déclenche automatiquement l'envoi d'un SMS d'information au client lors de l'annulation de sa réservation par l'administrateur | Should | Client / Admin | CR-03/Q01 |
 | REQ-015 | L'administrateur peut réduire le nombre de passagers (adultes/enfants) d'une réservation existante depuis le back-office, entraînant la libération synchrone des places annulées sur le créneau (sans possibilité d'ajouter des passagers ni de changer la date) | Should | Administrateur | CR-03/Q03 |
-| REQ-016 | Le client peut sélectionner une formule de privatisation en demi-journée le matin (7h–12h) ou l'après-midi (dès 14h) à Saint-Gilles et à Saint-Leu | Should | Marc | CR-03/Q06, CR-03/Q07, CR-03/Q17 |
+| REQ-016 | Le client peut sélectionner une formule de privatisation en demi-journée le matin (7h–12h) ou l'après-midi (dès 14h) à Saint-Gilles, et le matin (dès 9h00 les mardis et jeudis) à Saint-Leu | Should | Marc | CR-03/Q06, CR-03/Q07, CR-03/Q17 |
 | REQ-017 | L'administrateur peut sélectionner un ou plusieurs créneaux du lendemain pour leur envoyer une alerte de pré-annulation groupée la veille au soir à 18h | Should | Administrateur | CR-04/Q01, CR-04/Q04 |
 | REQ-018 | L'administrateur peut préremplir le champ de message via des propositions de templates bilingues (FR+EN) codées en dur, personnaliser le texte, puis déclencher l'envoi par SMS ou e-mail à l'ensemble des passagers réservataires des créneaux ciblés | Should | Administrateur | CR-04/Q02, CR-04/Q03, CR-04/Q06 |
 | REQ-019 | Le système affiche un avertissement textuel clair (mention d'alerte) sur l'interface publique pour tout créneau sous alerte de pré-annulation dont la jauge n'est pas complète | Should | Sophie / Marc | CR-04/Q05 |
@@ -231,7 +231,7 @@ L'entreprise recherche un outil sur-mesure — sans passer par un SaaS tiers —
 
 | # | Question | Posée le | Réponse | Hypothèse retenue en attendant |
 |---|---|---|---|---|
-| 1 | Quel est le délai limite de notification d'annulation à respecter vis-à-vis du client ? | CR-03/§8 Q1 | en attente | Notification envoyée dès validation de l'annulation par l'administrateur, sans restriction horaire système |
+| 1 | Quel est le délai limite et la plage horaire d'annulation d'une réservation côté administrateur ? | CR-03/§8 Q1 | en attente | Annulation possible par l'admin jusqu'à l'heure exacte du départ (pas de délai minimal préalable) ; blocage strict de l'annulation après la date et l'heure du départ (en attente de confirmation client) |
 | 2 | Quel prestataire SMS (Twilio, OVH SMS, SMS Factor...) est privilégié pour l'envoi des notifications ? | CR-03/§8 Q2 | en attente | Passerelle SMS transactionnelle standard avec API REST |
 | 3 | Dans quel ordre précis se font les choix du client (lieu, date, activité) dans le tunnel de réservation ? | CR-03/§8 Q3 | en attente | Sélection par étape : 1. Type de sortie & lieu -> 2. Date & créneau -> 3. Passagers |
 | 4 | Quel hébergeur / type d'infrastructure est souhaité pour la mise en production ? | CR-02/§8 Q2 | en attente | Hébergement cloud standard infogéré, à dimensionner selon volumétrie |
@@ -242,6 +242,8 @@ L'entreprise recherche un outil sur-mesure — sans passer par un SaaS tiers —
 | 9 | Quel est le statut de remise en vente des places annulées « par peur » suite à une alerte ? | CR-04/§3 | en attente | Les places libérées sont automatiquement remises en vente sur le créneau sous alerte jusqu'à clôture à H-2 |
 | 10 | Quelle est l'articulation exacte entre l'alerte à J-1 18h et l'annulation météo définitive à H-2 le jour J ? | CR-04/§3 | en attente | L'alerte prévient d'un risque ; la décision finale d'annulation du créneau intervient au plus tard à H-2 |
 | 11 | Quelle est la liste définitive des propositions de templates bilingues (FR/EN) à intégrer en dur dans l'interface ? | CR-04/§3 | en attente | Intégration par défaut de deux templates types (ex : Météo défavorable et Problème technique) avec version FR suivie de la version EN |
+| 12 | Faut-il mettre en place un timer de verrouillage temporaire des places dans le panier pendant le paiement bancaire ? | Point relevé | en attente | Hypothèse retenue : verrouillage temporaire déduit (ex. 10 minutes) pendant le tunnel de paiement CB pour éviter le surbooking, libération automatique si abandon/rejet (à confirmer avec le client) |
+| 13 | Le canal SMS doit-il être l'unique canal de notification lors d'une annulation par l'administrateur ? | CR-03/Q01 | en attente | Hypothèse retenue : SMS systématique pour les annulations sèches par l'admin (choix déduit) ; possibilité SMS et/ou e-mail réservée aux alertes de pré-annulation (à reconfirmer avec le client) |
 
 ---
 
@@ -253,3 +255,4 @@ L'entreprise recherche un outil sur-mesure — sans passer par un SaaS tiers —
 | v2 | 11/08/2026 | oui | Validée avec demandes d'évolutions multi-sites et annulation |
 | v3 | 12/08/2026 | oui | Validée avec demande d'ajout d'une alerte de pré-annulation la veille (CR-04) |
 | v4 | 14/08/2026 | non | Intégration du CR-04 (alerte de pré-annulation à J-1 18h par SMS/email, templates bilingues FR+EN codés en dur avec personnalisation, mention créneau, et remboursement à 100 % en cas d'annulation effective ou par peur) |
+
