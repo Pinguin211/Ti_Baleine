@@ -1,215 +1,225 @@
-@startuml domain
-title Diagramme de domaine — Ti'Baleine
-
-skinparam monochrome false
-skinparam roundcorner 8
+@startuml
+!theme plain
+top to bottom direction
+skinparam roundcorner 10
 skinparam classAttributeIconSize 0
-skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam packageStyle rectangle
 
-class Client {
-  + nom : string
-  + prenom : string
-  + email : string
-  + telephone : string
-  --
-  + reserver(creneau, passagers) : Reservation
+title **Diagramme de Classes du Domaine — Ti'Baleine**\n//Traçabilité avec les Spécifications (specs/reservation.md, specs/facturation.md, specs/admin.md)//
+
+' ==========================================================
+' CONFIGURATIONS CONSTANTES (Fichiers en dur)
+' ==========================================================
+package "Configuration Constante (fichiers en dur)" as ConfigPkg #F8F9FA {
+    class ConfigBateau <<(C,#B0BEC5) Configuration>> {
+        +id: String
+        +nom: String
+        +capacite: Integer
+    }
+    note bottom of ConfigBateau
+      **SPEC-RESERVATION-03, SPEC-ADMIN-01, SPEC-ADMIN-05**
+      - TIKAP : 12 places (opère à St-Leu mar/jeu matin)
+      - GRAND BLEU : 24 places (opère à St-Gilles)
+      - Jauge max selon navire(s) mobilisé(s) (R-03, C-04)
+    end note
+
+    class ConfigPort <<(C,#B0BEC5) Configuration>> {
+        +id: String
+        +nom: String
+        +majorationIndividuelle: Float
+        +joursOuverts: List<String>
+    }
+    note bottom of ConfigPort
+      **SPEC-RESERVATION-03, SPEC-ADMIN-01**
+      - Saint-Gilles : 7j/7 (créneaux 7h, 10h, 14h), majoration 0 €
+      - Saint-Leu : mar/jeu matin (9h00), majoration +10 €/pers
+      - Référence : R-01, R-05, R-20, C-03, C-11
+    end note
+
+    class ConfigActivite <<(C,#B0BEC5) Configuration>> {
+        +id: String
+        +nom: String
+        +categorie: CategorieActivite
+        +tarifBaseAdulte: Float
+        +tarifBaseEnfant: Float
+        +forfait: Float
+        +necessiteNaturaliste: Boolean
+    }
+    note bottom of ConfigActivite
+      **SPEC-RESERVATION-03, SPEC-ADMIN-07**
+      - Baleines : 65 € / 40 €, naturaliste obligatoire unique (R-15)
+      - Dauphins : 50 € / 30 €, sans naturaliste
+      - Privatisation Tikap : forfait 600 €
+      - Privatisation Grand Bleu : forfait 1 100 €
+      - Référence : R-04, R-12, R-19, C-12, C-19
+    end note
 }
 
-class Administrateur {
-  + identifiant : string
-  + motDePasse : string
-  --
-  + annulerReservation(reservation)
-  + reduirePassagers(reservation, nombre)
-  + consulterPlanning() : List<Creneau>
+' ==========================================================
+' DOMAINE APPLICATIF (Entités dynamiques en Base)
+' ==========================================================
+package "Domaine Applicatif" as DomainPkg {
+
+    class User {
+        +id: UUID
+        +nom: String
+        +prenom: String
+        +email: String
+        +telephone: String
+        +role: Role
+        +motDePasse: String
+    }
+    note right of User
+      **SPEC-RESERVATION-03, SPEC-ADMIN-04**
+      - Role CLIENT : mode invité sans compte, mobile obligatoire pour SMS
+      - Role ADMIN : profil unique back-office desktop sécurisé (C-16, REQ-103)
+    end note
+
+    class Alerte {
+        +id: UUID
+        +message: String
+    }
+    note right of Alerte
+      **SPEC-ADMIN-06, SPEC-RESERVATION-03**
+      - Émission groupée J-1 18h par l'admin sur 1..* créneaux (SPEC-ADMIN-06)
+      - Message bilingue combiné FR + EN (R-26, C-23)
+      - Active la mention d'avertissement sur le créneau en ligne (REQ-019, R-25)
+      - Ouvre droit au remboursement 100 % (R-27, R-28, C-36)
+    end note
+
+    class Creneau {
+        +id: UUID
+        +date: Date
+        +heureDepart: Time
+        +typeActivite: TypeActivite
+        +estOuvert: Boolean
+        +calculerJauge(): Integer
+        +calculerPlacesReservees(): Integer
+        +placesRestantes(): Integer
+        +estReservable(): Boolean
+    }
+    note right of Creneau
+      **SPEC-RESERVATION-03, SPEC-ADMIN-01, SPEC-ADMIN-05, SPEC-ADMIN-07**
+      - Jauge max : 36 standard, 24 mar/jeu matin St-Gilles, 12 St-Leu
+      - Clôture automatique à H-2 (R-11, C-07)
+      - Fermeture annuelle : 25 déc & 1er janv (R-02, C-02)
+      - Seuil de maintien : 6 passagers payants (R-09)
+      - Exclusivité d'activité par créneau/navire (R-12, C-18)
+    end note
+
+    class Reservation {
+        +id: UUID
+        +reference: String
+        +statut: StatutReservation
+        +calculerMontantTotal(): Float
+    }
+    note right of Reservation
+      **SPEC-RESERVATION-03, SPEC-ADMIN-02, SPEC-ADMIN-03**
+      - Réservation en ligne grand public (SPEC-RESERVATION-03)
+      - Annulation admin : libération synchrone des places (SPEC-ADMIN-02)
+      - Réduction passagers admin : sans ajout ni report (SPEC-ADMIN-03)
+    end note
+
+    class Billet {
+        +id: UUID
+        +trancheAge: TrancheAge
+    }
+    note right of Billet
+      **SPEC-RESERVATION-03, SPEC-ADMIN-02, SPEC-ADMIN-03**
+      - ADULTE : >= 12 ans (plein tarif calculé par config)
+      - ENFANT : 4 à 11 ans inclus (tarif réduit calculé par config)
+      - Moins de 4 ans : accès strictement interdit (R-06)
+      - Tout billet présent est actif (supprimé lors d'annulation/réduction)
+    end note
+
+    class Notification {
+        +id: UUID
+        +message: String
+    }
+    note right of Notification
+      **SPEC-ADMIN-02, SPEC-ADMIN-03**
+      - Entité temporaire de notification au client
+      - Émise lors de l'annulation d'une réservation (SMS d'information avec motif saisi)
+    end note
+
+    class Paiement {
+        +id: UUID
+        +referenceTransaction: String
+        +montant: Float
+        +datePaiement: DateTime
+    }
+    note right of Paiement
+      **SPEC-RESERVATION-03, SPEC-FAC-02**
+      - Règlement 100 % par carte bancaire sécurisée (REQ-006, R-07)
+      - Présent uniquement si validé avec succès
+      - Déclenche la génération de facture acquittée à la volée (SPEC-FAC-02)
+    end note
 }
 
-class Sortie {
-  + nom : string
-  + format : FormatSortie
-  + prixAdulte : float
-  + prixEnfant : float
+' ==========================================================
+' ÉNUMÉRATIONS
+' ==========================================================
+package "Énumérations" as EnumPkg #ECEFF1 {
+    enum Role {
+        CLIENT
+        ADMIN
+    }
+
+    enum TypeActivite {
+        BALEINES_SAINT_GILLES
+        BALEINES_SAINT_LEU
+        DAUPHINS_SAINT_GILLES
+        DAUPHINS_SAINT_LEU
+        PRIVATISATION_TIKAP_ST_GILLES
+        PRIVATISATION_TIKAP_ST_LEU
+        PRIVATISATION_GRAND_BLEU_ST_GILLES
+    }
+
+    enum CategorieActivite {
+        INDIVIDUELLE
+        PRIVATISATION
+    }
+
+    enum TrancheAge {
+        ADULTE
+        ENFANT
+    }
+
+    enum StatutReservation {
+        EN_ATTENTE_PAIEMENT
+        CONFIRMEE
+        ANNULEE
+    }
 }
 
-enum FormatSortie {
-  SORTIE_BALEINES
-  SORTIE_DAUPHINS
-  PRIVATISATION_TIKAP
-  PRIVATISATION_GRAND_BLEU
-}
+' ==========================================================
+' ALIGNEMENT VERTICAL DES PACKAGES & ÉLÉMENTS
+' ==========================================================
+ConfigPkg -[hidden]down-> DomainPkg
+DomainPkg -[hidden]down-> EnumPkg
 
-class Navire {
-  + nom : string
-  + capacite : int
-}
+' ==========================================================
+' RELATIONS APPLICATIVES DU DOMAINE (Flux vertical)
+' ==========================================================
+Creneau "0..*" o-down-> "0..1" Alerte : est ciblé par > \n**SPEC-ADMIN-06, SPEC-RESERVATION-03**
+Creneau "1" *-down-> "0..*" Reservation : regroupe > \n**SPEC-RESERVATION-03, SPEC-ADMIN-01**
+User "1" -down-> "0..*" Reservation : effectue / gère > \n**SPEC-RESERVATION-03, SPEC-ADMIN-04**
+Reservation "1" *-down-> "0..*" Billet : contient > \n**SPEC-RESERVATION-03, SPEC-ADMIN-02, SPEC-ADMIN-03**
+Reservation "1" -down-> "0..*" Notification : déclenche > \n**SPEC-ADMIN-02, SPEC-ADMIN-03**
+Reservation "1" -down-> "0..1" Paiement : est réglée par > \n**SPEC-RESERVATION-03, SPEC-FAC-02**
 
-class Naturaliste {
-  + nom : string
-}
+' ==========================================================
+' LIENS DOMAINE <-> ENUMS & CONFIGURATIONS
+' ==========================================================
+Creneau .down.> ConfigActivite : s'appuie sur > \n**SPEC-RESERVATION-03 (Tarifs/Type)**
+Creneau .down.> ConfigPort : s'appuie sur > \n**SPEC-RESERVATION-03 (Jours/Majoration)**
+Creneau .down.> ConfigBateau : mobilise > \n**SPEC-ADMIN-01, SPEC-ADMIN-05 (Jauge)**
 
-class Port {
-  + nom : string
-  + supplementTarifaire : float
-  + joursOuverture : List<Jour>
-  + heuresDisponibles : List<HeureDepart>
-}
-
-class Creneau {
-  + date : Date
-  + heure : HeureDepart
-  + jauge : int
-  + placesReservees : int
-  + statut : StatutCreneau
-  --
-  + calculerTauxRemplissage() : float
-  + estComplet() : bool
-  + estPasse() : bool
-  + decrementerPlaces(nombre)
-  + remettrePlacesADisposition(nombre)
-}
-
-enum StatutCreneau {
-  NON_AFFECTE
-  TYPE_NON_RENSEIGNE
-  DISPONIBLE
-  COMPLET
-}
-
-enum HeureDepart {
-  H07
-  H09
-  H10
-  H14
-}
-
-class Reservation {
-  + reference : string
-  + statut : StatutReservation
-  + montantTotal : float
-  + dateCreation : DateTime
-  --
-  + calculerMontantTotal() : float
-  + annuler()
-  + reduireNombrePassagers(nombreAdultes, nombreEnfants)
-}
-
-enum StatutReservation {
-  EN_ATTENTE
-  CONFIRMEE
-  ANNULEE
-}
-
-class Passager {
-  + categorie : CategoriePassager
-  + prixUnitaire : float
-}
-
-enum CategoriePassager {
-  ADULTE
-  ENFANT
-  FORFAIT_PRIVATISATION
-}
-
-class Paiement {
-  + montant : float
-  + statut : StatutPaiement
-  + datePaiement : DateTime
-  --
-  + valider()
-}
-
-enum StatutPaiement {
-  REUSSI
-  ECHOUE
-  REMBOURSE
-}
-
-class Facture {
-  + numero : string
-  + statutEmission : StatutEmissionFacture
-  + dateEmission : DateTime
-  --
-  + genererPDF()
-  + envoyerParCourriel()
-}
-
-enum StatutEmissionFacture {
-  ENVOYEE_AVEC_SUCCES
-  ECHEC_EMISSION
-}
-
-class Notification {
-  + canal : CanalNotification
-  + message : string
-  + dateEnvoi : DateTime
-  --
-  + envoyer()
-}
-
-enum CanalNotification {
-  EMAIL
-  SMS
-}
-
-' --- Relations ---
-
-Client "1" -- "0..*" Reservation : effectue >
-Administrateur ..> Reservation : gère annulation / réduction >
-
-Reservation "1" --> "1" Creneau : concerne >
-Creneau "1" --> "1" Sortie : propose >
-Creneau "1" --> "1..*" Navire : affecté à >
-Creneau "1" --> "0..1" Naturaliste : encadré par >
-Creneau "1" --> "1" Port : départ depuis >
-
-Reservation "1" *-- "1..*" Passager : comprend >
-Passager --> CategoriePassager : type >
-
-Reservation "1" --> "0..1" Paiement : réglée par >
-Paiement "1" --> "0..1" Facture : génère >
-
-Reservation "1" --> "0..*" Notification : déclenche >
-
-note right of Creneau
-  Règle métier (SPEC-RESERVATION-03) :
-  un créneau n'est proposé que s'il a
-  au moins une place libre et n'est
-  pas passé.
-
-  Jauge variable selon port/jour/heure
-  (SPEC-ADMIN-01, R-10) :
-  - Saint-Gilles standard : 36 (Tikap + Grand Bleu)
-  - Saint-Gilles mar./jeu. 7h-10h : 24 (Grand Bleu seul,
-    Tikap en rotation vers Saint-Leu)
-  - Saint-Leu mar./jeu. 9h : 12 (Tikap seul)
-
-  R-12 : aucune mixité d'activité (type de
-  sortie) sur un même créneau/navire.
-end note
-
-note right of Reservation
-  Règle métier (SPEC-ADMIN-02) :
-  aucun délai minimal fixé pour une
-  annulation admin (hypothèse retenue,
-  CDC v3 Q1 §11). L'annulation remet les
-  places à disposition sur le créneau.
-
-  R-09 : sous 6 passagers payants sur le
-  navire, la décision de maintenir ou
-  annuler le départ reste manuelle,
-  hors système.
-
-  R-18 (SPEC-ADMIN-03) : une réduction ne
-  peut jamais augmenter le nombre de
-  passagers ni changer la date ; une
-  réduction à 0 déclenche la même
-  logique que l'annulation complète.
-end note
-
-note right of Navire
-  Capacités connues :
-  Tikap = 12 places
-  Grand Bleu = 24 places
-end note
+User -down-> Role
+Creneau -down-> TypeActivite
+Billet -down-> TrancheAge
+Reservation -down-> StatutReservation
+ConfigActivite -down-> CategorieActivite
 
 @enduml

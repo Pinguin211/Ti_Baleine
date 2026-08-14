@@ -74,7 +74,7 @@ Scénario : Détail d'un créneau et statut d'alerte
 
 ---
 
-## SPEC-ADMIN-02 — Annulation d'une réservation (suppression totale des billets) et traçabilité
+## SPEC-ADMIN-02 — Annulation d'une réservation (suppression totale des billets) et notification client
 
 **Exigence :** REQ-013, REQ-014, REQ-020 (avec R-16, R-17, R-27, R-28, Contraintes C-08, C-09, C-10, C-24, REQ-106, REQ-107)
 **Statut :** validée
@@ -82,19 +82,20 @@ Scénario : Détail d'un créneau et statut d'alerte
 
 ### Règle
 
-> L'administrateur peut annuler une réservation depuis le back-office via une action préconfigurée qui supprime l'intégralité des billets (`BOOKING_ITEMS`) rattachés à la commande, ce qui libère immédiatement et de façon synchrone toutes les places sur le créneau, consigne obligatoirement le motif d'annulation pour traçabilité (REQ-020), et déclenche l'envoi automatique d'un SMS d'information au client (REQ-014), tandis que la fiche de réservation est conservée (avec 0 billet actif) pour l'historique et la conformité comptable.
+> L'administrateur peut annuler une réservation depuis le back-office via une action préconfigurée qui supprime l'intégralité des billets (`BOOKING_ITEMS`) rattachés à la commande, ce qui libère immédiatement et de façon synchrone toutes les places sur le créneau, permet la saisie d'un motif d'annulation à titre informatif (REQ-020) pour composer et déclencher l'envoi automatique d'un SMS de notification au client (REQ-014), tandis que la fiche de réservation est conservée (avec 0 billet actif) pour l'historique et la conformité comptable.
 
 ### Portée
 
 - Couvre l'annulation d'une réservation à l'initiative de l'administrateur (motif météo/technique ou suite à demande d'un client).
 - **Architecture technique unifiée :** L'action d'annulation totale utilise la même fonction back-end de suppression de billets que la réduction (`SPEC-ADMIN-03`), préconfigurée pour retirer **la totalité des billets actifs (`BOOKING_ITEMS`)** de la réservation en une seule opération.
 - Couvre la conservation de l'entité réservation (`BOOKINGS`) en base de données avec son historique de paiement initial et 0 billet actif (aucun enregistrement détruit).
-- Couvre la sélection et la consignation obligatoire du motif d'annulation :
+- Couvre la saisie/sélection du motif d'annulation à des fins informatives pour composer le message de notification envoyé au client :
   - *Annulation administrative météo/technique suite à alerte* (remboursement dérogatoire à 100 % manuel hors système — R-27)
   - *Désistement / annulation « par peur » du client suite à alerte* (remboursement dérogatoire à 100 % manuel hors système — R-28)
   - *Annulation standard hors alerte*
+  - Le motif sert exclusivement à la notification client et n'est pas persisté sur l'entité réservation.
 - Couvre la libération synchrone et immédiate des places sur le créneau de réservation (remises en vente jusqu'à H-2).
-- Couvre le déclenchement automatique du SMS transactionnel d'information au numéro de téléphone mobile du client.
+- Couvre le déclenchement automatique de l'entité temporaire de notification (SMS transactionnel d'information) au numéro de téléphone mobile du client.
 - Ne couvre pas les opérations financières de remboursement bancaire (gérées 100 % manuellement hors système selon le CDC v4, C-10).
 
 ### Scénarios nominaux
@@ -106,15 +107,15 @@ Scénario : Annulation complète d'une réservation via suppression de tous ses 
   Quand l'administrateur clique sur le bouton « Annuler toute la réservation »
   Et sélectionne le motif « Annulation client par peur suite à alerte météo »
   Alors la fonction technique supprime les 2 billets (BOOKING_ITEMS) associés à la réservation
-  Et la réservation est conservée avec 0 billet actif et son motif consigné en base pour traçabilité (REQ-020, R-28)
+  Et la réservation est conservée avec 0 billet actif
   Et les 2 places sont immédiatement remises à disposition sur l'interface de réservation (REQ-013)
-  Et un SMS transactionnel d'information est automatiquement transmis au numéro mobile du client (REQ-014)
+  Et un SMS transactionnel de notification contenant le message informatif est automatiquement transmis au numéro mobile du client (REQ-014)
 
 Scénario : Annulation administrative d'office pour cause météo
   Étant donné une réservation confirmée avec 3 billets
   Quand l'administrateur déclenche l'annulation d'office pour cause météo
   Et renseigne le motif « Annulation administrative météo »
-  Alors les 3 billets sont supprimés de la réservation, les places sont libérées sur le créneau et le SMS d'information est envoyé au client
+  Alors les 3 billets sont supprimés de la réservation, les places sont libérées sur le créneau et la notification SMS d'information est envoyée au client
 ```
 
 ### Cas limites
@@ -137,7 +138,7 @@ Scénario : Annulation administrative d'office pour cause météo
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — L'annulation d'une réservation supprime la totalité de ses billets (`BOOKING_ITEMS`), conserve la réservation avec 0 billet et consigne obligatoirement le motif d'annulation sélectionné (REQ-013, REQ-020, `CASE-ADMIN-02`).
+- [ ] AC-1 — L'annulation d'une réservation supprime la totalité de ses billets (`BOOKING_ITEMS`), conserve la réservation avec 0 billet actif et déclenche la notification au client (REQ-013, REQ-020, `CASE-ADMIN-02`).
 - [ ] AC-2 — Les places correspondant aux billets supprimés sont immédiatement et synchroniquement remises à disposition sur la jauge du créneau (REQ-013, `CASE-ADMIN-03`).
 - [ ] AC-3 — L'annulation déclenche l'envoi immédiat d'un SMS d'information au numéro de téléphone mobile du client (REQ-014, `CASE-ADMIN-04`).
 
@@ -146,7 +147,7 @@ Scénario : Annulation administrative d'office pour cause météo
 | Remarque de l'IA | Décision | Motif |
 |---|---|---|
 | Clarifier la distinction entre entité Réservation (conservée) et Billets (supprimés) | Acceptée | Architecture unifiée conforme au MLD (`BOOKING_ITEMS`). |
-| Intégrer l'enregistrement du motif d'annulation (météo suite à alerte vs par peur) exigé par REQ-020 | Acceptée | Conforme au CDC v4 (REQ-020, R-27, R-28, CR-04). |
+| Intégrer l'enregistrement du motif d'annulation (météo suite à alerte vs par peur) exigé par REQ-020 | Acceptée | Motif demandé à l'admin pour la composition du SMS de notification client sans persistance sur la réservation. |
 | Mettre à jour les références vers le CDC v4 | Acceptée | Nettoyage des mentions CDC v3. |
 
 ---
@@ -169,7 +170,7 @@ Scénario : Annulation administrative d'office pour cause météo
 - Ne couvre pas l'ajout de billets sur une réservation existante (nécessite une nouvelle commande séparée selon R-18 et CDC v4 §6).
 - Ne couvre pas le report de date ou d'horaire (nécessite annulation préalable selon R-18).
 - Ne couvre pas le remboursement financier consécutif à la réduction (géré manuellement hors système).
-- Si la suppression de billets ramène le total de billets actifs à **0**, le système applique automatiquement la logique complète d'annulation de `SPEC-ADMIN-02` (consignation du motif et envoi du SMS d'information au client).
+- Si la suppression de billets ramène le total de billets actifs à **0**, le système applique automatiquement la logique complète d'annulation de `SPEC-ADMIN-02` (saisie du motif et envoi du SMS de notification au client).
 
 ### Scénarios nominaux
 
@@ -186,7 +187,7 @@ Scénario : Suppression de l'ensemble des billets via l'écran de réduction
   Étant donné une réservation confirmée détenant 2 billets
   Quand l'administrateur supprime les 2 billets (ramenant le nombre de billets à 0)
   Et sélectionne le motif d'annulation
-  Alors la réservation passe à 0 billet actif, le motif est consigné et le SMS d'annulation est automatiquement envoyé au client (SPEC-ADMIN-02)
+  Alors la réservation passe à 0 billet actif et le SMS de notification d'annulation est automatiquement envoyé au client (SPEC-ADMIN-02)
 ```
 
 ### Cas limites
@@ -194,7 +195,7 @@ Scénario : Suppression de l'ensemble des billets via l'écran de réduction
 | # | Situation | Comportement attendu |
 |---|---|---|
 | 1 | Tentative de rajouter un ou plusieurs billets sur la réservation | Rejet strict (R-18) : l'ajout de billets est impossible sur une commande existante. |
-| 2 | Suppression ramenant le nombre de billets restants à 0 | Traitement unifié identique à `SPEC-ADMIN-02` : la réservation conserve 0 billet, consigne le motif et déclenche le SMS. |
+| 2 | Suppression ramenant le nombre de billets restants à 0 | Traitement unifié identique à `SPEC-ADMIN-02` : la réservation conserve 0 billet et déclenche le SMS de notification. |
 | 3 | Réservation n'ayant déjà plus aucun billet actif (0 billet) | Aucune réduction supplémentaire applicable. |
 | 4 | Tentative de modification de la date ou du port de départ lors de la réduction | Rejet strict (R-18) : aucun report ni changement de date autorisé. |
 | 5 | Créneau concerné déjà passé | Modification rejetée. |
@@ -208,7 +209,7 @@ Scénario : Suppression de l'ensemble des billets via l'écran de réduction
 
 - [ ] AC-1 — L'administrateur peut supprimer sélectivement $N$ billets adultes et/ou enfants d'une réservation, libérant synchroniquement $N$ places sur le créneau (`CASE-ADMIN-05`, `CASE-ADMIN-06`).
 - [ ] AC-2 — Toute tentative d'ajout de billet ou de modification de date sur une réservation existante est strictement bloquée (R-18).
-- [ ] AC-3 — Une réduction supprimant la totalité des billets (0 billet restant) applique le traitement complet d'annulation avec motif et SMS d'information (`CASE-ADMIN-09`).
+- [ ] AC-3 — Une réduction supprimant la totalité des billets (0 billet restant) applique le traitement complet d'annulation avec motif informatif et SMS de notification (`CASE-ADMIN-09`).
 
 ---
 
