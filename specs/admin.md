@@ -82,7 +82,7 @@ Scénario : Détail d'un créneau et statut d'alerte
 
 ### Règle
 
-> L'administrateur peut annuler une réservation depuis le back-office via une action préconfigurée qui supprime l'intégralité des billets (`BOOKING_ITEMS`) rattachés à la commande, ce qui libère immédiatement et de façon synchrone toutes les places sur le créneau, permet la saisie d'un motif d'annulation à titre informatif (REQ-020) pour composer et déclencher l'envoi automatique d'un SMS de notification au client (REQ-014), tandis que la fiche de réservation est conservée (avec 0 billet actif) pour l'historique et la conformité comptable.
+> L'administrateur peut annuler une réservation depuis le back-office via une action préconfigurée qui supprime l'intégralité des billets (`BOOKING_ITEMS`) rattachés à la commande, ce qui libère immédiatement et de façon synchrone toutes les places sur le créneau, permet la saisie ou la sélection d'un motif d'annulation à la volée (REQ-020) pour composer le SMS de notification au client (REQ-014) — sans enregistrement durable du motif en base —, tandis que la fiche de réservation est conservée (avec 0 billet actif) pour l'historique et la conformité comptable.
 
 ### Portée
 
@@ -138,7 +138,7 @@ Scénario : Annulation administrative d'office pour cause météo
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — L'annulation d'une réservation supprime la totalité de ses billets (`BOOKING_ITEMS`), conserve la réservation avec 0 billet actif et déclenche la notification au client (REQ-013, REQ-020, `CASE-ADMIN-02`).
+- [ ] AC-1 — L'annulation d'une réservation supprime la totalité de ses billets (`BOOKING_ITEMS`), conserve la réservation avec 0 billet actif, propose la saisie du motif à la volée pour composer le SMS (REQ-020, sans persistance en base) et déclenche la notification au client (REQ-013, `CASE-ADMIN-02`).
 - [ ] AC-2 — Les places correspondant aux billets supprimés sont immédiatement et synchroniquement remises à disposition sur la jauge du créneau (REQ-013, `CASE-ADMIN-03`).
 - [ ] AC-3 — L'annulation déclenche l'envoi immédiat d'un SMS d'information au numéro de téléphone mobile du client (REQ-014, `CASE-ADMIN-04`).
 
@@ -309,7 +309,7 @@ Scénario : Visualisation du taux de remplissage le mardi matin à Saint-Gilles
 
 ## SPEC-ADMIN-06 — Envoi groupé d'alertes de pré-annulation la veille à 18h
 
-**Exigence :** REQ-017, REQ-018 (avec R-22, R-23, R-24, R-26, Contraintes C-21, C-22, C-23, REQ-106)
+**Exigence :** REQ-017, REQ-018, REQ-019 (avec R-22, R-23, R-24, R-26, Contraintes C-21, C-22, C-23, REQ-106)
 **Statut :** validée
 **Version :** v1
 
