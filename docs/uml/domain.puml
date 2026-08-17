@@ -6,14 +6,13 @@ skinparam classAttributeIconSize 0
 skinparam shadowing false
 skinparam packageStyle rectangle
 
-title **Diagramme de Classes du Domaine — Ti'Baleine**\n//Traçabilité avec les Spécifications (specs/reservation.md, specs/facturation.md, specs/admin.md)//
+title **Diagramme de Classes du Domaine Métier — Ti'Baleine**\n//Traçabilité avec les Spécifications (specs/reservation.md, specs/facturation.md, specs/admin.md)//
 
 ' ==========================================================
-' CONFIGURATIONS CONSTANTES (Fichiers en dur)
+' 1. CONFIGURATIONS CONSTANTES (Fichiers en dur / Invariants)
 ' ==========================================================
-package "Configuration Constante (fichiers en dur)" as ConfigPkg #F8F9FA {
-    class ConfigBateau <<(C,#B0BEC5) Configuration>> {
-        +id: String
+package "Configurations Constantes (fichiers en dur)" as ConfigPkg #F8F9FA {
+    class ConfigBateau <<(C,#B0BEC5) Constante>> {
         +nom: String
         +capacite: Integer
     }
@@ -24,8 +23,7 @@ package "Configuration Constante (fichiers en dur)" as ConfigPkg #F8F9FA {
       - Jauge max selon navire(s) mobilisé(s) (R-03, C-04)
     end note
 
-    class ConfigPort <<(C,#B0BEC5) Configuration>> {
-        +id: String
+    class ConfigPort <<(C,#B0BEC5) Constante>> {
         +nom: String
         +majorationIndividuelle: Float
         +joursOuverts: List<String>
@@ -37,8 +35,7 @@ package "Configuration Constante (fichiers en dur)" as ConfigPkg #F8F9FA {
       - Référence : R-01, R-05, R-20, C-03, C-11
     end note
 
-    class ConfigActivite <<(C,#B0BEC5) Configuration>> {
-        +id: String
+    class ConfigActivite <<(C,#B0BEC5) Constante>> {
         +nom: String
         +categorie: CategorieActivite
         +tarifBaseAdulte: Float
@@ -57,12 +54,11 @@ package "Configuration Constante (fichiers en dur)" as ConfigPkg #F8F9FA {
 }
 
 ' ==========================================================
-' DOMAINE APPLICATIF (Entités dynamiques en Base)
+' 2. ENTITÉS PERSISTÉES DU DOMAINE (État métier)
 ' ==========================================================
-package "Domaine Applicatif" as DomainPkg {
+package "Entités Persistées (état métier)" as PersistedPkg {
 
-    class User {
-        +id: UUID
+    class User <<(E,#90CAF9) Persistée>> {
         +nom: String
         +prenom: String
         +email: String
@@ -76,8 +72,7 @@ package "Domaine Applicatif" as DomainPkg {
       - Role ADMIN : profil unique back-office desktop sécurisé (C-16, REQ-103)
     end note
 
-    class Alerte {
-        +id: UUID
+    class Alerte <<(E,#90CAF9) Persistée>> {
         +message: String
     }
     note right of Alerte
@@ -88,8 +83,7 @@ package "Domaine Applicatif" as DomainPkg {
       - Ouvre droit au remboursement 100 % (R-27, R-28, C-36)
     end note
 
-    class Creneau {
-        +id: UUID
+    class Creneau <<(E,#90CAF9) Persistée>> {
         +date: Date
         +heureDepart: Time
         +typeActivite: TypeActivite
@@ -108,8 +102,7 @@ package "Domaine Applicatif" as DomainPkg {
       - Exclusivité d'activité par créneau/navire (R-12, C-18)
     end note
 
-    class Reservation {
-        +id: UUID
+    class Reservation <<(E,#90CAF9) Persistée>> {
         +reference: String
         +statut: StatutReservation
         +calculerMontantTotal(): Float
@@ -119,10 +112,10 @@ package "Domaine Applicatif" as DomainPkg {
       - Réservation en ligne grand public (SPEC-RESERVATION-03)
       - Annulation admin : libération synchrone des places (SPEC-ADMIN-02)
       - Réduction passagers admin : sans ajout ni report (SPEC-ADMIN-03)
+      - Conserve son enregistrement avec 0 billet actif si annulée
     end note
 
-    class Billet {
-        +id: UUID
+    class Billet <<(E,#90CAF9) Persistée>> {
         +trancheAge: TrancheAge
     }
     note right of Billet
@@ -133,18 +126,7 @@ package "Domaine Applicatif" as DomainPkg {
       - Tout billet présent est actif (supprimé lors d'annulation/réduction)
     end note
 
-    class Notification {
-        +id: UUID
-        +message: String
-    }
-    note right of Notification
-      **SPEC-ADMIN-02, SPEC-ADMIN-03**
-      - Entité temporaire de notification au client
-      - Émise lors de l'annulation d'une réservation (SMS d'information avec motif saisi)
-    end note
-
-    class Paiement {
-        +id: UUID
+    class Paiement <<(E,#90CAF9) Persistée>> {
         +referenceTransaction: String
         +montant: Float
         +datePaiement: DateTime
@@ -158,7 +140,22 @@ package "Domaine Applicatif" as DomainPkg {
 }
 
 ' ==========================================================
-' ÉNUMÉRATIONS
+' 3. ENTITÉS TEMPORAIRES (En transit / Événementielles)
+' ==========================================================
+package "Entités Temporaires (en transit)" as TempPkg #FFFDE7 {
+    class Notification <<(T,#FFE082) Temporaire>> {
+        +message: String
+    }
+    note right of Notification
+      **SPEC-ADMIN-02, SPEC-ADMIN-03**
+      - Entité temporaire éphémère de notification au client
+      - Émise lors de l'annulation d'une réservation (SMS d'information avec motif saisi)
+      - Non persistée durablement dans l'état de la réservation
+    end note
+}
+
+' ==========================================================
+' 4. ÉNUMÉRATIONS
 ' ==========================================================
 package "Énumérations" as EnumPkg #ECEFF1 {
     enum Role {
@@ -196,8 +193,9 @@ package "Énumérations" as EnumPkg #ECEFF1 {
 ' ==========================================================
 ' ALIGNEMENT VERTICAL DES PACKAGES & ÉLÉMENTS
 ' ==========================================================
-ConfigPkg -[hidden]down-> DomainPkg
-DomainPkg -[hidden]down-> EnumPkg
+ConfigPkg -[hidden]down-> PersistedPkg
+PersistedPkg -[hidden]down-> TempPkg
+TempPkg -[hidden]down-> EnumPkg
 
 ' ==========================================================
 ' RELATIONS APPLICATIVES DU DOMAINE (Flux vertical)
