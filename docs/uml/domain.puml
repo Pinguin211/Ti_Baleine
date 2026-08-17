@@ -120,19 +120,21 @@ package "Entités Persistées (état métier)" as PersistedPkg {
     }
     note right of Reservation
       **SPEC-RESERVATION-03, SPEC-ADMIN-02, SPEC-ADMIN-03**
-      - Réservation en ligne grand public (SPEC-RESERVATION-03)
+      - Réservation individuelle : regroupe 1..* billets (ADULTE / ENFANT)
+      - Privatisation : regroupe 1 billet forfaitaire (PRIVATISATION)
       - Annulation admin : libération synchrone des places (SPEC-ADMIN-02)
       - Réduction passagers admin : sans ajout ni report (SPEC-ADMIN-03)
       - Conserve son enregistrement avec 0 billet actif si annulée
     end note
 
     class Billet <<(E,#90CAF9) Persistée>> {
-        +trancheAge: TrancheAge
+        +typeBillet: TypeBillet
     }
     note right of Billet
       **SPEC-RESERVATION-03, SPEC-ADMIN-02, SPEC-ADMIN-03**
       - ADULTE : >= 12 ans (plein tarif calculé par config)
       - ENFANT : 4 à 11 ans inclus (tarif réduit calculé par config)
+      - PRIVATISATION : billet unique représentant le forfait du navire privatisé
       - Moins de 4 ans : accès strictement interdit (R-06)
       - Tout billet présent est actif (supprimé lors d'annulation/réduction)
     end note
@@ -141,12 +143,22 @@ package "Entités Persistées (état métier)" as PersistedPkg {
         +referenceTransaction: String
         +montant: Float
         +datePaiement: DateTime
+        +referenceFacture: String
+        +statutEmissionFacture: StatutEmissionFacture
+        +dateEmissionFacture: DateTime
     }
     note right of Paiement
       **SPEC-RESERVATION-03, SPEC-FAC-02**
       - Règlement 100 % par carte bancaire sécurisée (REQ-006, R-07)
       - Présent uniquement si validé avec succès
-      - Déclenche la génération de facture acquittée à la volée (SPEC-FAC-02)
+      - Déclenche la génération à la volée d'une facture acquittée PDF
+        (non stockée sur disque) et son envoi immédiat par e-mail (SPEC-FAC-02)
+      - referenceFacture : identifiant unique de la facture (ex. "FACT-2026-00123")
+      - statutEmissionFacture / dateEmissionFacture : persistés pour tracer
+        le succès ou l'échec d'envoi (AC-3) et garantir l'idempotence en cas
+        de webhook de paiement dupliqué (cas limite 4, AC-7)
+      - En cas d'échec SMTP, seul le statut passe à ECHEC_ENVOI ; un nouvel
+        essai d'envoi à la volée reste possible (cas limite 1, AC-4)
     end note
 }
 
@@ -154,14 +166,54 @@ package "Entités Persistées (état métier)" as PersistedPkg {
 ' 3. ENTITÉS TEMPORAIRES (En transit / Événementielles)
 ' ==========================================================
 package "Entités Temporaires (en transit)" as TempPkg #FFFDE7 {
-    class Notification <<(T,#FFE082) Temporaire>> {
-        +message: String
+    class Facture <<(T,#FFE082) Temporaire>> {
+        +referenceFacture: String
+        +referenceReservation: String
+        +referenceTransaction: String
+        +dateEmission: DateTime
+        +destinataireEmail: String
+        +nomClient: String
+        +portDepart: Port
+        +activite: Activite
+        +datePrestation: Date
+        +heurePrestation: Time
+        +nombreAdultes: Integer [0..1]
+        +nombreEnfants: Integer [0..1]
+        +forfaitPrivatisation: Float [0..1]
+        +montantTotalTTC: Float
+        +estAcquittee: Boolean
     }
-    note right of Notification
-      **SPEC-ADMIN-02, SPEC-ADMIN-03**
-      - Entité temporaire éphémère de notification au client
-      - Émise lors de l'annulation d'une réservation (SMS d'information avec motif saisi)
-      - Non persistée durablement dans l'état de la réservation
+    note right of Facture
+      **SPEC-FAC-02 (Facturation dynamique)**
+      - Facture acquittée PDF générée à la volée en mémoire (non stockée sur disque)
+      - Transmise immédiatement par courriel transactionnel lors du paiement réussi
+      - Détail complet : références (facture, réservation, transaction), port,
+        prestation, ventilation passagers (adultes/enfants) ou forfait privatisation,
+        tarifs TTC et mention acquittée (AC-1, AC-2)
+      - Traçabilité persistée dans l'entité Paiement (succès/échec SMTP)
+    end note
+
+    class NotificationSMS <<(T,#FFE082) Temporaire>> {
+        +destinataireTelephone: String
+        +message: String
+        +dateEnvoi: DateTime
+    }
+    note right of NotificationSMS
+      **SPEC-ADMIN-02, SPEC-ADMIN-03, SPEC-ADMIN-06**
+      - SMS d'information émis lors de l'annulation d'une réservation (avec motif)
+      - SMS d'alerte météo groupée diffusé la veille à 18h (message combiné FR + EN)
+    end note
+
+    class NotificationEmail <<(T,#FFE082) Temporaire>> {
+        +destinataireEmail: String
+        +sujet: String
+        +corpsMessage: String
+        +dateEnvoi: DateTime
+    }
+    note right of NotificationEmail
+      **SPEC-FAC-02, SPEC-ADMIN-06**
+      - Courriel transactionnel de confirmation avec Facture PDF en pièce jointe
+      - Courriel d'alerte météo groupée diffusé la veille à 18h (message combiné FR + EN)
     end note
 }
 
@@ -201,15 +253,22 @@ package "Énumérations" as EnumPkg #ECEFF1 {
         PRIVATISATION
     }
 
-    enum TrancheAge {
+    enum TypeBillet {
         ADULTE
         ENFANT
+        PRIVATISATION
     }
 
     enum StatutReservation {
         EN_ATTENTE_PAIEMENT
         CONFIRMEE
         ANNULEE
+    }
+
+    enum StatutEmissionFacture {
+        EN_ATTENTE
+        ENVOYEE_SUCCES
+        ECHEC_ENVOI
     }
 }
 
@@ -223,12 +282,18 @@ TempPkg -[hidden]down-> EnumPkg
 ' ==========================================================
 ' RELATIONS APPLICATIVES DU DOMAINE (Flux vertical)
 ' ==========================================================
-Creneau "1..*" o-down-> "0..1" Alerte : est ciblé par > \n**SPEC-ADMIN-06, SPEC-RESERVATION-03**
+Alerte "0..1" -down-> "1..*" Creneau : cible > \n**SPEC-ADMIN-06, SPEC-RESERVATION-03**
 Creneau "1" *-down-> "0..*" Reservation : regroupe > \n**SPEC-RESERVATION-03, SPEC-ADMIN-01**
 User "1" -down-> "0..*" Reservation : effectue / gère > \n**SPEC-RESERVATION-03, SPEC-ADMIN-04**
 Reservation "1" *-down-> "0..*" Billet : contient > \n**SPEC-RESERVATION-03, SPEC-ADMIN-02, SPEC-ADMIN-03**
-Reservation "1" -down-> "0..*" Notification : déclenche > \n**SPEC-ADMIN-02, SPEC-ADMIN-03**
 Reservation "1" -down-> "0..1" Paiement : est réglée par > \n**SPEC-RESERVATION-03, SPEC-FAC-02**
+
+' Flux de facturation à la volée et notifications
+Paiement "1" -down-> "1" Facture : génère à la volée > \n**SPEC-FAC-02**
+Facture "1" -down-> "1" NotificationEmail : est jointe à > \n**SPEC-FAC-02**
+Reservation "1" -down-> "0..*" NotificationSMS : déclenche (si annulation) > \n**SPEC-ADMIN-02, SPEC-ADMIN-03**
+Alerte "1" -down-> "0..*" NotificationSMS : diffuse par SMS > \n**SPEC-ADMIN-06**
+Alerte "1" -down-> "0..*" NotificationEmail : diffuse par Email > \n**SPEC-ADMIN-06**
 
 ' ==========================================================
 ' DÉPENDANCES MÉTIER VERS LES CONFIGURATIONS CONSTANTES
@@ -269,10 +334,13 @@ Creneau -down-> Port : localisé à >
 ' Prestation proposée sur le créneau : BALEINES, DAUPHINS, PRIVATISATION...
 Creneau -down-> Activite : propose >
 
-' Tranche d'âge du passager pour le calcul tarifaire : ADULTE (>=12 ans) ou ENFANT (4-11 ans)
-Billet -down-> TrancheAge : catégorisé par >
+' Typage du billet pour le calcul tarifaire : ADULTE (>=12 ans), ENFANT (4-11 ans) ou PRIVATISATION (forfait)
+Billet -down-> TypeBillet : catégorisé par >
 
 ' Cycle de vie de la commande : EN_ATTENTE_PAIEMENT, CONFIRMEE, ANNULEE
 Reservation -down-> StatutReservation : statut >
+
+' Statut d'émission de la facture acquittée par e-mail
+Paiement -down-> StatutEmissionFacture : statut émission >
 
 @enduml
