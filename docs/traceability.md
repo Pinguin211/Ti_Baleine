@@ -74,7 +74,7 @@ crée toute seule quand le client change d'avis.
 | `REQ-104` | — (non fonctionnelle) | Conformité PCI-DSS de la passerelle de paiement : dépend du choix du prestataire de paiement, non tranché à ce stade. |
 | `REQ-108` | — (non fonctionnelle) | Durée et politique de purge des données personnelles RGPD en attente de formalisation (Question ouverte n°6 §11 du CDC v4). |
 
-> **Note :** L'ensemble des 20 exigences fonctionnelles (`REQ-001` à `REQ-020`) est intégralement couvert par les 9 spécifications listées ci-dessus. Les exigences non fonctionnelles (`REQ-101` à `REQ-108`) ne sont pas toutes rattachées à une spécification : `REQ-101`, `REQ-103`, `REQ-105`, `REQ-106` et `REQ-107` sont couvertes en tant que critères secondaires dans une ou plusieurs specs ci-dessus ; `REQ-102`, `REQ-104` et `REQ-108` ne le sont pas encore, d'où leur présence ici. Ces exigences n'ayant pas de priorité Must/Should/Could dans le CDC (section 10), la colonne Priorité reste `—` pour elles.
+> **Note :** L'ensemble des 20 exigences fonctionnelles (`REQ-001` à `REQ-020`) est intégralement couvert par les 9 spécifications listées ci-dessus. Parmi les exigences non fonctionnelles (`REQ-101` à `REQ-108`) : `REQ-103` est rattachée en exigence principale à `SPEC-ADMIN-04` (et secondaire dans `SPEC-ADMIN-01`) ; `REQ-101`, `REQ-105`, `REQ-106` et `REQ-107` sont couvertes en tant que critères secondaires dans une ou plusieurs specs ci-dessus ; `REQ-102`, `REQ-104` et `REQ-108` ne le sont pas encore, d'où leur présence ici. Ces exigences n'ayant pas de priorité Must/Should/Could dans le CDC (section 10), la colonne Priorité reste `—` pour elles.
 
 ---
 
@@ -93,4 +93,4 @@ qui en annonce trois.
 | Prestataire et canal SMS (`SPEC-ADMIN-02`, `SPEC-ADMIN-06`) | 14/08/2026 | Prestataire SMS et modalités d'envoi (Questions ouvertes n°2 et n°13 §11 du CDC v4). | Hypothèse retenue : passerelle SMS REST standard (Twilio/OVH) ; SMS pour annulation sèche et SMS+Email pour pré-alerte. |
 | Rebonds d'e-mails de facturation (`SPEC-FAC-02`) | J3 | Boîte client pleine ou adresse erronée sans mécanisme de secours automatique. | Statut d'échec d'envoi consigné en base pour suivi de l'administrateur. |
 
-> **Repère :** les deux trous datés du 14/08/2026 (CDC v4 : `SPEC-ADMIN-06`, `SPEC-ADMIN-07`, verrouillage panier) n'ont pas encore d'entrée `J5` dans `docs/journal.md`, qui s'arrête à J4 (13/08/2026). À écrire avant le prochain rendu — cf. §6 du `README.md`.
+> **Repère :** l'entrée `J5` (17/08/2026) est consignée dans `docs/journal.md` et formalise les arbitrages CDC v4 / CR-04 (alignement REQ-012/019/020 et traçabilité associée).
