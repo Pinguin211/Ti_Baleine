@@ -13,7 +13,7 @@ title **Diagramme de Classes du Domaine Métier — Ti'Baleine**\n//Traçabilit�
 ' ==========================================================
 package "Configurations Constantes (fichiers en dur)" as ConfigPkg #F8F9FA {
     class ConfigBateau <<(C,#B0BEC5) Constante>> {
-        +nom: String
+        +bateau: Bateau
         +capacite: Integer
     }
     note bottom of ConfigBateau
@@ -23,8 +23,18 @@ package "Configurations Constantes (fichiers en dur)" as ConfigPkg #F8F9FA {
       - Jauge max selon navire(s) mobilisé(s) (R-03, C-04)
     end note
 
+    class ConfigSkipper <<(C,#B0BEC5) Constante>> {
+        +skipper: Skipper
+        +naturaliste: Boolean
+    }
+    note bottom of ConfigSkipper
+      **SPEC-ADMIN-07, R-15, C-19**
+      - Définit les qualifications des skippers de la flotte
+      - naturaliste = true : unique ressource habilitée à encadrer les sorties Baleines (R-15)
+    end note
+
     class ConfigPort <<(C,#B0BEC5) Constante>> {
-        +nom: String
+        +port: Port
         +majorationIndividuelle: Float
         +joursOuverts: List<String>
     }
@@ -36,7 +46,7 @@ package "Configurations Constantes (fichiers en dur)" as ConfigPkg #F8F9FA {
     end note
 
     class ConfigActivite <<(C,#B0BEC5) Constante>> {
-        +nom: String
+        +activite: Activite
         +categorie: CategorieActivite
         +tarifBaseAdulte: Float
         +tarifBaseEnfant: Float
@@ -64,12 +74,12 @@ package "Entités Persistées (état métier)" as PersistedPkg {
         +email: String
         +telephone: String
         +role: Role
-        +motDePasse: String
+        +motDePasse: String [0..1]
     }
     note right of User
       **SPEC-RESERVATION-03, SPEC-ADMIN-04**
-      - Role CLIENT : mode invité sans compte, mobile obligatoire pour SMS
-      - Role ADMIN : profil unique back-office desktop sécurisé (C-16, REQ-103)
+      - motDePasse = null : mode invité (client sans compte, mobile obligatoire pour SMS)
+      - motDePasse != null : utilisateur authentifiable (profil unique ADMIN desktop sécurisé - C-16, REQ-103)
     end note
 
     class Alerte <<(E,#90CAF9) Persistée>> {
@@ -86,7 +96,8 @@ package "Entités Persistées (état métier)" as PersistedPkg {
     class Creneau <<(E,#90CAF9) Persistée>> {
         +date: Date
         +heureDepart: Time
-        +typeActivite: TypeActivite
+        +port: Port
+        +activite: Activite
         +estOuvert: Boolean
         +calculerJauge(): Integer
         +calculerPlacesReservees(): Integer
@@ -163,14 +174,26 @@ package "Énumérations" as EnumPkg #ECEFF1 {
         ADMIN
     }
 
-    enum TypeActivite {
-        BALEINES_SAINT_GILLES
-        BALEINES_SAINT_LEU
-        DAUPHINS_SAINT_GILLES
-        DAUPHINS_SAINT_LEU
-        PRIVATISATION_TIKAP_ST_GILLES
-        PRIVATISATION_TIKAP_ST_LEU
-        PRIVATISATION_GRAND_BLEU_ST_GILLES
+    enum Port {
+        SAINT_GILLES
+        SAINT_LEU
+    }
+
+    enum Activite {
+        BALEINES
+        DAUPHINS
+        PRIVATISATION_TIKAP
+        PRIVATISATION_GRAND_BLEU
+    }
+
+    enum Bateau {
+        TIKAP
+        GRAND_BLEU
+    }
+
+    enum Skipper {
+        SKIPPER_1
+        SKIPPER_2
     }
 
     enum CategorieActivite {
@@ -200,7 +223,7 @@ TempPkg -[hidden]down-> EnumPkg
 ' ==========================================================
 ' RELATIONS APPLICATIVES DU DOMAINE (Flux vertical)
 ' ==========================================================
-Creneau "0..*" o-down-> "0..1" Alerte : est ciblé par > \n**SPEC-ADMIN-06, SPEC-RESERVATION-03**
+Creneau "1..*" o-down-> "0..1" Alerte : est ciblé par > \n**SPEC-ADMIN-06, SPEC-RESERVATION-03**
 Creneau "1" *-down-> "0..*" Reservation : regroupe > \n**SPEC-RESERVATION-03, SPEC-ADMIN-01**
 User "1" -down-> "0..*" Reservation : effectue / gère > \n**SPEC-RESERVATION-03, SPEC-ADMIN-04**
 Reservation "1" *-down-> "0..*" Billet : contient > \n**SPEC-RESERVATION-03, SPEC-ADMIN-02, SPEC-ADMIN-03**
@@ -208,16 +231,48 @@ Reservation "1" -down-> "0..*" Notification : déclenche > \n**SPEC-ADMIN-02, SP
 Reservation "1" -down-> "0..1" Paiement : est réglée par > \n**SPEC-RESERVATION-03, SPEC-FAC-02**
 
 ' ==========================================================
-' LIENS DOMAINE <-> ENUMS & CONFIGURATIONS
+' DÉPENDANCES MÉTIER VERS LES CONFIGURATIONS CONSTANTES
 ' ==========================================================
-Creneau .down.> ConfigActivite : s'appuie sur > \n**SPEC-RESERVATION-03 (Tarifs/Type)**
-Creneau .down.> ConfigPort : s'appuie sur > \n**SPEC-RESERVATION-03 (Jours/Majoration)**
-Creneau .down.> ConfigBateau : mobilise > \n**SPEC-ADMIN-01, SPEC-ADMIN-05 (Jauge)**
+' Le créneau lit la configuration de l'activité pour obtenir les tarifs de base et la contrainte de naturaliste
+Creneau .down.> ConfigActivite : s'appuie sur > \n**SPEC-RESERVATION-03 (Tarifs/Prestation)**
 
-User -down-> Role
-Creneau -down-> TypeActivite
-Billet -down-> TrancheAge
-Reservation -down-> StatutReservation
-ConfigActivite -down-> CategorieActivite
+' Le créneau lit la configuration du port pour connaître les jours d'ouverture et la majoration géographique (+10 € St-Leu)
+Creneau .down.> ConfigPort : s'appuie sur > \n**SPEC-RESERVATION-03 (Jours/Majoration)**
+
+' ==========================================================
+' LIAISONS DES CONFIGURATIONS AVEC LES ÉNUMÉRATIONS
+' ==========================================================
+' Clé de configuration reliant chaque bateau à son énumération
+ConfigBateau -down-> Bateau : identifié par >
+
+' Clé de configuration reliant chaque skipper à son énumération
+ConfigSkipper -down-> Skipper : identifié par >
+
+' Clé de configuration reliant chaque paramétrage de port à son énumération
+ConfigPort -down-> Port : identifié par >
+
+' Clé de configuration reliant chaque paramétrage d'activité à son énumération
+ConfigActivite -down-> Activite : identifié par >
+
+' Classification de l'activité (Individuelle ou Privatisation)
+ConfigActivite -down-> CategorieActivite : classé par >
+
+' ==========================================================
+' TYPAGE DES ENTITÉS DU DOMAINE PAR LES ÉNUMÉRATIONS
+' ==========================================================
+' Rôle de l'utilisateur : CLIENT (mode invité) ou ADMIN (back-office)
+User -down-> Role : typé par >
+
+' Port d'embarquement du créneau : SAINT_GILLES ou SAINT_LEU
+Creneau -down-> Port : localisé à >
+
+' Prestation proposée sur le créneau : BALEINES, DAUPHINS, PRIVATISATION...
+Creneau -down-> Activite : propose >
+
+' Tranche d'âge du passager pour le calcul tarifaire : ADULTE (>=12 ans) ou ENFANT (4-11 ans)
+Billet -down-> TrancheAge : catégorisé par >
+
+' Cycle de vie de la commande : EN_ATTENTE_PAIEMENT, CONFIRMEE, ANNULEE
+Reservation -down-> StatutReservation : statut >
 
 @enduml
