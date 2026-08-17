@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 #
-# Génère docs/traceability.md et vérifie la chaîne de traçabilité.
+# Vérifie la chaîne de traçabilité et peut régénérer docs/traceability.md.
 #
-#   ./tools/traceability.sh           régénère la matrice
-#   ./tools/traceability.sh --check   régénère et sort en erreur s'il y a une rupture
+#   ./tools/traceability.sh           vérifie la chaîne, n'écrit rien sur disque
+#   ./tools/traceability.sh --check   idem, et sort en erreur s'il y a une rupture (utilisé en CI/pre-commit)
+#   ./tools/traceability.sh --write   régénère réellement docs/traceability.md (écrase tout contenu existant)
+#
+# docs/traceability.md est actuellement maintenu à la main (colonne Source,
+# sections « Exigences non couvertes » et « Trous connus » que ce script ne
+# sait pas produire). Par sécurité, aucun mode n'écrase ce fichier sauf
+# --write, explicitement demandé.
 #
 # Conventions attendues (voir README §4) :
 #   docs/compte-rendu-entretien-nn.md  questions numérotées Qnn
-#   docs/cahier-des-charges.md         REQ-nnn, chacune citant CR-nn/Qnn ou « déduit »
+#   docs/cdc/cahier-des-charges-v4.md  REQ-nnn, chacune citant CR-nn/Qnn ou « déduit »
 #   specs/<domaine>.md                 sections titrées SPEC-<DOM>-nn, citant au moins un REQ
 #   tests/cases/CASE-<DOM>-nn.md       un fichier par cas, citant au moins un SPEC
 #   tests/**                           le nom du test contient l'ID CASE
@@ -21,15 +27,22 @@ set -u
 
 cd "$(dirname "$0")/.." || exit 1
 
-CDC="docs/cahier-des-charges.md"
+CDC="docs/cdc/cahier-des-charges-v4.md"
 OUT="docs/traceability.md"
 CHECK=0
-[ "${1:-}" = "--check" ] && CHECK=1
+WRITE=0
+case "${1:-}" in
+  --check) CHECK=1 ;;
+  --write) WRITE=1 ;;
+esac
+
+TMP=$(mktemp) || exit 1
+trap 'rm -f "$TMP"' EXIT
 
 RX_REQ='REQ-[0-9][0-9][0-9]'
 RX_SPEC='SPEC-[A-Z0-9]+-[0-9][0-9]'
 RX_CASE_ANY='CASE[-_][A-Z0-9]+[-_][0-9][0-9]'
-RX_SRC='CR-[0-9][0-9]/Q[0-9][0-9]'
+RX_SRC='CR-[0-9][0-9]/(Q[0-9][0-9]|§[0-9]+)'
 RX_DEDUIT='d[ée]duit'
 
 ruptures=0
@@ -99,7 +112,7 @@ specs=$(grep -rhoE "$RX_SPEC" specs 2>/dev/null | sort -u)
 
     printf '| %s | %s | %s | %s | %s |\n' "$spec" "$reqs" "$cases_cell" "$ntests" "$ncommits"
   done
-} > "$OUT"
+} > "$TMP"
 
 # --- Exigences non couvertes ------------------------------------------------
 if [ -f "$CDC" ]; then
@@ -123,6 +136,10 @@ if [ -f "$CDC" ]; then
       f="docs/compte-rendu-entretien-${cr#CR-}.md"
       if [ ! -f "$f" ]; then
         warn "$req cite $src, mais $f n'existe pas"
+      elif [ "${q#§}" != "$q" ]; then
+        # Référence de section (§N) : on vérifie qu'un titre « ## N. » existe.
+        n=${q#§}
+        grep -qE "^#{1,6}[[:space:]]+${n}\." "$f" || warn "$req cite $src, mais la section $n est absente de $f"
       elif ! grep -q "$q" "$f"; then
         warn "$req cite $src, mais $q est absent de $f"
       fi
@@ -141,7 +158,12 @@ for cid in $used; do
 done
 
 # --- Sortie -----------------------------------------------------------------
-echo "$OUT régénéré."
+if [ "$WRITE" -eq 1 ]; then
+  cp "$TMP" "$OUT"
+  echo "$OUT régénéré (--write) : contenu manuel (Source, sections narratives) écrasé."
+else
+  echo "Vérification effectuée, $OUT non modifié (utilisez --write pour régénérer)."
+fi
 if [ "$ndeduits" -gt 0 ]; then
   echo "$ndeduits exigence(s) marquée(s) « déduit » — à justifier, ce n'est pas une rupture."
 fi

@@ -21,7 +21,7 @@ montre les jours où il a été tenu.
 | Colonne | Ce qu'on y met | Où le trouver |
 |---|---|---|
 | SPEC | l'identifiant de la spécification | titre de section dans `specs/<domaine>.md` |
-| REQ | la ou les exigences qu'elle réalise | `docs/cahier-des-charges.md` |
+| REQ | la ou les exigences qu'elle réalise | `docs/cdc/cahier-des-charges-v4.md` |
 | Source | l'échange dont l'exigence est issue, ou `déduit` | `docs/compte-rendu-entretien-nn.md` |
 | Cas de test | le ou les cas qui la couvrent | `tests/cases/CASE-*.md` |
 | Tests | le nom du test automatisé | `tests/` |
@@ -62,9 +62,11 @@ crée toute seule quand le client change d'avis.
 
 | REQ | Priorité | Pourquoi elle n'est pas encore spécifiée |
 |---|---|---|
-| `REQ-108` | Should | Durée et politique de purge des données personnelles RGPD en attente de formalisation (Question ouverte n°6 §11 du CDC v4). |
+| `REQ-102` | — (non fonctionnelle) | Compatibilité desktop/tablette/mobile du parcours client : dépend des choix d'UI, pas encore rattachée à une spécification dédiée. |
+| `REQ-104` | — (non fonctionnelle) | Conformité PCI-DSS de la passerelle de paiement : dépend du choix du prestataire de paiement, non tranché à ce stade. |
+| `REQ-108` | — (non fonctionnelle) | Durée et politique de purge des données personnelles RGPD en attente de formalisation (Question ouverte n°6 §11 du CDC v4). |
 
-> **Note :** L'ensemble des 20 exigences fonctionnelles (`REQ-001` à `REQ-020`) est intégralement couvert par les 9 spécifications listées ci-dessus.
+> **Note :** L'ensemble des 20 exigences fonctionnelles (`REQ-001` à `REQ-020`) est intégralement couvert par les 9 spécifications listées ci-dessus. Les exigences non fonctionnelles (`REQ-101` à `REQ-108`) ne sont pas toutes rattachées à une spécification : `REQ-101`, `REQ-103`, `REQ-105`, `REQ-106` et `REQ-107` sont couvertes en tant que critères secondaires dans une ou plusieurs specs ci-dessus ; `REQ-102`, `REQ-104` et `REQ-108` ne le sont pas encore, d'où leur présence ici. Ces exigences n'ayant pas de priorité Must/Should/Could dans le CDC (section 10), la colonne Priorité reste `—` pour elles.
 
 ---
 
@@ -79,6 +81,8 @@ qui en annonce trois.
 | Quoi | Depuis | Pourquoi | Ce qu'on en fait |
 |---|---|---|---|
 | Remboursements bancaires (`SPEC-ADMIN-02`, `SPEC-ADMIN-03`) | J3 | Les remboursements suite à annulation ou réduction sont 100 % manuels hors système (R-27, R-28, C-10). | Assumé : aucun flux bancaire sortant dans le système, traitement manuel par la gérance. |
-| Verrouillage temporaire du panier (`SPEC-RESERVATION-03`) | J4 | Verrouillage anti-surbooking pendant le paiement CB (Question ouverte n°12 §11 du CDC v4). | Hypothèse retenue d'un timer de 10 min pour bloquer les places le temps du paiement, à valider avec le client. |
-| Prestataire et canal SMS (`SPEC-ADMIN-02`, `SPEC-ADMIN-06`) | J4 | Prestataire SMS et modalités d'envoi (Questions ouvertes n°2 et n°13 §11 du CDC v4). | Hypothèse retenue : passerelle SMS REST standard (Twilio/OVH) ; SMS pour annulation sèche et SMS+Email pour pré-alerte. |
-| Rebonds d'e-mails de facturation (`SPEC-FAC-02`) | J4 | Boîte client pleine ou adresse erronée sans mécanisme de secours automatique. | Statut d'échec d'envoi consigné en base pour suivi de l'administrateur. |
+| Verrouillage temporaire du panier (`SPEC-RESERVATION-03`) | 14/08/2026 | Verrouillage anti-surbooking pendant le paiement CB (Question ouverte n°12 §11 du CDC v4). | Hypothèse retenue d'un timer de 10 min pour bloquer les places le temps du paiement, à valider avec le client. |
+| Prestataire et canal SMS (`SPEC-ADMIN-02`, `SPEC-ADMIN-06`) | 14/08/2026 | Prestataire SMS et modalités d'envoi (Questions ouvertes n°2 et n°13 §11 du CDC v4). | Hypothèse retenue : passerelle SMS REST standard (Twilio/OVH) ; SMS pour annulation sèche et SMS+Email pour pré-alerte. |
+| Rebonds d'e-mails de facturation (`SPEC-FAC-02`) | J3 | Boîte client pleine ou adresse erronée sans mécanisme de secours automatique. | Statut d'échec d'envoi consigné en base pour suivi de l'administrateur. |
+
+> **Repère :** les deux trous datés du 14/08/2026 (CDC v4 : `SPEC-ADMIN-06`, `SPEC-ADMIN-07`, verrouillage panier) n'ont pas encore d'entrée `J5` dans `docs/journal.md`, qui s'arrête à J4 (13/08/2026). À écrire avant le prochain rendu — cf. §6 du `README.md`.

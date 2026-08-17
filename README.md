@@ -58,7 +58,7 @@ travail ; **après** la génération, vous critiquez le travail de l'IA.
 │   ├── delegation-GABARIT.md          gabarit — à copier, pas à remplir
 │   ├── delegation-<SPEC>.md           À CRÉER — J7, avant de lancer l'agent
 │   ├── journal.md                     une entrée par jour, obligatoire
-│   ├── traceability.md                GÉNÉRÉ — ne pas éditer
+│   ├── traceability.md                maintenu à la main ; `tools/traceability.sh` (sans --write) sert de vérificateur
 │   ├── uml/
 │   │   ├── use-cases.puml
 │   │   ├── domain.puml
@@ -132,8 +132,9 @@ test_CASE_BOOKING_17_annulation_moins_48h_retient_50_pourcent
 ### Vérifier la chaîne
 
 ```bash
-./tools/traceability.sh            # régénère docs/traceability.md
-./tools/traceability.sh --check    # même chose, mais sort en erreur si rupture
+./tools/traceability.sh            # vérifie la chaîne, n'écrit rien sur disque
+./tools/traceability.sh --check    # idem, et sort en erreur si rupture (avant chaque commit)
+./tools/traceability.sh --write    # régénère réellement docs/traceability.md (écrase le contenu manuel)
 ```
 
 Une rupture est un maillon vide : une exigence sans source, une source citée qui
