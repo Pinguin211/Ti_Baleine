@@ -130,12 +130,22 @@ package "Entités Persistées (état métier)" as PersistedPkg {
         +referenceTransaction: String
         +montant: Float
         +datePaiement: DateTime
+        +referenceFacture: String
+        +statutEmissionFacture: StatutEmissionFacture
+        +dateEmissionFacture: DateTime
     }
     note right of Paiement
       **SPEC-RESERVATION-03, SPEC-FAC-02**
       - Règlement 100 % par carte bancaire sécurisée (REQ-006, R-07)
       - Présent uniquement si validé avec succès
-      - Déclenche la génération de facture acquittée à la volée (SPEC-FAC-02)
+      - Déclenche la génération à la volée d'une facture acquittée PDF
+        (non stockée sur disque) et son envoi immédiat par e-mail (SPEC-FAC-02)
+      - referenceFacture : identifiant unique de la facture (ex. "FACT-2026-00123")
+      - statutEmissionFacture / dateEmissionFacture : persistés pour tracer
+        le succès ou l'échec d'envoi (AC-3) et garantir l'idempotence en cas
+        de webhook de paiement dupliqué (cas limite 4, AC-7)
+      - En cas d'échec SMTP, seul le statut passe à ECHEC_ENVOI ; un nouvel
+        essai d'envoi à la volée reste possible (cas limite 1, AC-4)
     end note
 }
 
@@ -188,6 +198,12 @@ package "Énumérations" as EnumPkg #ECEFF1 {
         CONFIRMEE
         ANNULEE
     }
+
+    enum StatutEmissionFacture {
+        EN_ATTENTE
+        ENVOYEE_SUCCES
+        ECHEC_ENVOI
+    }
 }
 
 ' ==========================================================
@@ -218,6 +234,7 @@ User -down-> Role
 Creneau -down-> TypeActivite
 Billet -down-> TrancheAge
 Reservation -down-> StatutReservation
+Paiement -down-> StatutEmissionFacture
 ConfigActivite -down-> CategorieActivite
 
 @enduml
