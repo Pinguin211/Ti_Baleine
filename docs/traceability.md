@@ -42,13 +42,15 @@ part.
 
 | SPEC | REQ | Source | Cas de test | Tests | Commits |
 |---|---|---|---|---|---|
-| `SPEC-CANCEL-03` | `REQ-014` | `CR-02/Q11` | `CASE-CANCEL-11` | `test_CASE_CANCEL_11_annulation_moins_48h_retient_50_pourcent` | `a3f1c2e` |
-| `SPEC-CANCEL-04` | `REQ-015` | `déduit` | — | — | — |
-| | | | | | |
-| | | | | | |
-| | | | | | |
-
-> Les deux premières lignes sont des exemples de forme. Remplacez-les.
+| `SPEC-ADMIN-01` | `REQ-009, REQ-010` | `CR-02/Q01, CR-02/Q03, CR-03/Q13` | — | — | — |
+| `SPEC-ADMIN-02` | `REQ-013, REQ-014, REQ-020` | `CR-03/Q01, CR-03/Q02, CR-04/Q07, CR-04/Q08` | — | — | — |
+| `SPEC-ADMIN-03` | `REQ-015` | `CR-03/Q03` | — | — | — |
+| `SPEC-ADMIN-04` | `REQ-103` | `CR-02/Q06` | — | — | — |
+| `SPEC-ADMIN-05` | `REQ-010, REQ-012` | `CR-02/Q01, CR-03/Q13` | — | — | — |
+| `SPEC-ADMIN-06` | `REQ-017, REQ-018` | `CR-04/Q01, CR-04/Q02, CR-04/Q03, CR-04/Q04, CR-04/Q06` | — | — | — |
+| `SPEC-ADMIN-07` | `REQ-011` | `CR-02/Q12` | — | — | — |
+| `SPEC-FAC-02` | `REQ-008` | `CR-01/Q47, CR-03/Q16` | — | — | — |
+| `SPEC-RESERVATION-03` | `REQ-001, REQ-002, REQ-003, REQ-004, REQ-005, REQ-006, REQ-007, REQ-012, REQ-016, REQ-019` | `CR-01/Q02, CR-01/Q07, CR-01/Q09, CR-01/Q24, CR-01/Q25, CR-01/Q35, CR-02/§3, CR-02/Q01, CR-02/Q04, CR-03/Q01, CR-03/Q06, CR-03/Q07, CR-03/Q09, CR-03/Q11, CR-03/Q13, CR-03/Q15, CR-03/Q17, CR-04/§3, CR-04/Q05` | — | — | — |
 
 ---
 
@@ -60,7 +62,9 @@ crée toute seule quand le client change d'avis.
 
 | REQ | Priorité | Pourquoi elle n'est pas encore spécifiée |
 |---|---|---|
-| | | |
+| `REQ-108` | Should | Durée et politique de purge des données personnelles RGPD en attente de formalisation (Question ouverte n°6 §11 du CDC v4). |
+
+> **Note :** L'ensemble des 20 exigences fonctionnelles (`REQ-001` à `REQ-020`) est intégralement couvert par les 9 spécifications listées ci-dessus.
 
 ---
 
@@ -74,7 +78,7 @@ qui en annonce trois.
 
 | Quoi | Depuis | Pourquoi | Ce qu'on en fait |
 |---|---|---|---|
-| `SPEC-PAYMENT-02` sans cas de test | J6 | régime de remboursement pas tranché avec le client | question posée au prochain passage |
-| | | | |
-
-> Ligne d'exemple. Remplacez-la.
+| Remboursements bancaires (`SPEC-ADMIN-02`, `SPEC-ADMIN-03`) | J3 | Les remboursements suite à annulation ou réduction sont 100 % manuels hors système (R-27, R-28, C-10). | Assumé : aucun flux bancaire sortant dans le système, traitement manuel par la gérance. |
+| Verrouillage temporaire du panier (`SPEC-RESERVATION-03`) | J4 | Verrouillage anti-surbooking pendant le paiement CB (Question ouverte n°12 §11 du CDC v4). | Hypothèse retenue d'un timer de 10 min pour bloquer les places le temps du paiement, à valider avec le client. |
+| Prestataire et canal SMS (`SPEC-ADMIN-02`, `SPEC-ADMIN-06`) | J4 | Prestataire SMS et modalités d'envoi (Questions ouvertes n°2 et n°13 §11 du CDC v4). | Hypothèse retenue : passerelle SMS REST standard (Twilio/OVH) ; SMS pour annulation sèche et SMS+Email pour pré-alerte. |
+| Rebonds d'e-mails de facturation (`SPEC-FAC-02`) | J4 | Boîte client pleine ou adresse erronée sans mécanisme de secours automatique. | Statut d'échec d'envoi consigné en base pour suivi de l'administrateur. |
