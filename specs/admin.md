@@ -12,14 +12,14 @@
 
 ### Règle
 
-> L'administrateur peut consulter le planning consolidé des réservations par port, jour et créneau horaire, visualiser les jauges réelles et identifier immédiatement les créneaux complets ou placés sous alerte de pré-annulation.
+> L'administrateur peut consulter le planning consolidé des réservations par port, jour et créneau horaire, et identifier immédiatement les créneaux placés sous alerte de pré-annulation.
 
 ### Portée
 
 - Couvre l'affichage consolidé de la grille de planning multi-sites : Saint-Gilles (7h, 10h, 14h tous les jours) et Saint-Leu (9h les mardis et jeudis).
-- Couvre la visualisation des jauges réelles (12 places à Saint-Leu, 24 places le mardi et jeudi matin à Saint-Gilles, 36 places standard à Saint-Gilles).
 - Couvre l'affichage de l'état d'alerte de pré-annulation sur les créneaux ciblés la veille à 18h.
 - Ne couvre pas la décision manuelle d'annuler un départ sous le seuil de maintien (6 passagers) : reste manuelle, hors système.
+- Ne couvre pas le calcul et la visualisation du taux de remplissage / jauges réelles (12, 24 ou 36 places) → `SPEC-ADMIN-05`.
 - Ne couvre pas l'authentification au back-office → `SPEC-ADMIN-04`.
 - Ne couvre pas l'annulation d'une réservation → `SPEC-ADMIN-02`.
 - Ne couvre pas l'émission de l'alerte de pré-annulation → `SPEC-ADMIN-06`.
@@ -36,7 +36,7 @@ Scénario : Affichage de la grille du planning consolidé
 Scénario : Détail d'un créneau et statut d'alerte
   Étant donné un créneau affiché sur le planning
   Quand l'administrateur le consulte
-  Alors il voit le type de sortie affecté, les navires mobilisés (Tikap et/ou Grand Bleu), le nombre de places réservées sur la jauge réelle (12, 24 ou 36 places — R-10) et un indicateur visuel explicite si le créneau est sous alerte de pré-annulation (R-25)
+  Alors il voit le type de sortie affecté, les navires mobilisés (Tikap et/ou Grand Bleu) et un indicateur visuel explicite si le créneau est sous alerte de pré-annulation (R-25)
 ```
 
 ### Cas limites
@@ -46,23 +46,13 @@ Scénario : Détail d'un créneau et statut d'alerte
 | 1 | Aucun créneau programmé pour la journée consultée | Le planning affiche un état vide explicite (aucun écran figé ni liste factice). |
 | 2 | Créneau sans navire affecté | Le créneau est affiché avec un statut distinctif « non affecté ». |
 | 3 | Créneau sans type de sortie renseigné | Le créneau est affiché avec un statut « type non renseigné ». |
-| 4 | Créneau au remplissage 0 (aucune réservation) | Le remplissage s'affiche normalement à 0, sans traitement particulier. |
-| 5 | Créneau complet (remplissage = jauge du créneau) | Un libellé distinctif « complet » est affiché avec un badge visuel. |
-| 6 | Nombre de réservations supérieur à la jauge du créneau (incohérence de données) | Une alerte visuelle d'incohérence est affichée. |
-| 7 | Consultation du planning à toute heure de la journée | Le planning reste consultable en permanence sans restriction horaire. |
-| 8 | Perte de connexion réseau pendant le chargement | Un message d'erreur explicite est affiché avec un bouton permettant de réessayer. |
-| 9 | Créneau du mardi ou jeudi 7h/10h à Saint-Gilles | Jauge affichée plafonnée à 24 places (Grand Bleu seul, rotation Tikap vers Saint-Leu — R-01, R-10). |
-| 10 | Créneau à Saint-Leu (mardi ou jeudi 9h) | Jauge affichée fixée à 12 places (Tikap seul — R-03, R-10). |
-| 11 | Créneau standard à Saint-Gilles (hors mar/jeu matin) | Jauge à 36 places (Tikap et Grand Bleu — R-10). |
-| 12 | Créneau sous alerte de pré-annulation émise la veille | Un badge visuel distinctif « Sous pré-alerte » apparaît sur la carte du créneau. |
-
-### Ce qui n'est pas défini
-
-- Format visuel exact d'affichage du remplissage (pourcentage, fraction ex. 18/24, ou les deux) — relève du design UI.
+| 4 | Consultation du planning à toute heure de la journée | Le planning reste consultable en permanence sans restriction horaire. |
+| 5 | Perte de connexion réseau pendant le chargement | Un message d'erreur explicite est affiché avec un bouton permettant de réessayer. |
+| 6 | Créneau sous alerte de pré-annulation émise la veille | Un badge visuel distinctif « Sous pré-alerte » apparaît sur la carte du créneau. |
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — Le planning affiche les créneaux consolidés par port, avec navire, type de sortie, jauge réelle (12, 24 ou 36 places) et statut de remplissage (`CASE-ADMIN-01`).
+- [ ] AC-1 — Le planning affiche les créneaux consolidés par port, avec navire et type de sortie (`CASE-ADMIN-01`).
 - [ ] AC-2 — Tout créneau ayant fait l'objet d'une alerte de pré-annulation affiche un indicateur visuel clair sur la grille de planning.
 
 ### Revue IA
@@ -82,7 +72,7 @@ Scénario : Détail d'un créneau et statut d'alerte
 
 ### Règle
 
-> L'administrateur peut annuler une réservation depuis le back-office via une action préconfigurée qui supprime l'intégralité des billets (`BOOKING_ITEMS`) rattachés à la commande, ce qui libère immédiatement et de façon synchrone toutes les places sur le créneau, permet la saisie d'un motif d'annulation à titre informatif (REQ-020) pour composer et déclencher l'envoi automatique d'un SMS de notification au client (REQ-014), tandis que la fiche de réservation est conservée (avec 0 billet actif) pour l'historique et la conformité comptable.
+> L'administrateur peut annuler une réservation depuis le back-office via une action préconfigurée qui supprime l'intégralité des billets (`BOOKING_ITEMS`) rattachés à la commande, ce qui libère immédiatement et de façon synchrone toutes les places sur le créneau, permet la saisie ou la sélection d'un motif d'annulation à la volée (REQ-020) pour composer le SMS de notification au client (REQ-014) — sans enregistrement durable du motif en base —, tandis que la fiche de réservation est conservée (avec 0 billet actif) pour l'historique et la conformité comptable.
 
 ### Portée
 
@@ -138,7 +128,7 @@ Scénario : Annulation administrative d'office pour cause météo
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — L'annulation d'une réservation supprime la totalité de ses billets (`BOOKING_ITEMS`), conserve la réservation avec 0 billet actif et déclenche la notification au client (REQ-013, REQ-020, `CASE-ADMIN-02`).
+- [ ] AC-1 — L'annulation d'une réservation supprime la totalité de ses billets (`BOOKING_ITEMS`), conserve la réservation avec 0 billet actif, propose la saisie du motif à la volée pour composer le SMS (REQ-020, sans persistance en base) et déclenche la notification au client (REQ-013, `CASE-ADMIN-02`).
 - [ ] AC-2 — Les places correspondant aux billets supprimés sont immédiatement et synchroniquement remises à disposition sur la jauge du créneau (REQ-013, `CASE-ADMIN-03`).
 - [ ] AC-3 — L'annulation déclenche l'envoi immédiat d'un SMS d'information au numéro de téléphone mobile du client (REQ-014, `CASE-ADMIN-04`).
 
@@ -309,7 +299,7 @@ Scénario : Visualisation du taux de remplissage le mardi matin à Saint-Gilles
 
 ## SPEC-ADMIN-06 — Envoi groupé d'alertes de pré-annulation la veille à 18h
 
-**Exigence :** REQ-017, REQ-018 (avec R-22, R-23, R-24, R-26, Contraintes C-21, C-22, C-23, REQ-106)
+**Exigence :** REQ-017, REQ-018, REQ-019 (avec R-22, R-23, R-24, R-26, Contraintes C-21, C-22, C-23, REQ-106)
 **Statut :** validée
 **Version :** v1
 

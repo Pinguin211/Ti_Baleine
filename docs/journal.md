@@ -147,3 +147,33 @@ Loïc, Thomas, Benjamin et Ivan.
 **Questions ouvertes pour le client.**
 - Cf. question n°9 ajoutée au §11 du `cahier-des-charges-v3.md` : le prestataire est-il ouvert à transférer une partie de l'annulation/réduction de passagers vers l'application plutôt que de tout gérer par téléphone + back-office, pour fiabiliser le suivi (SMS, annulations) ?
 
+## J5 — 17/08/2026
+
+**Présents.**
+Équipe RageGit - KohLanta.
+
+**Décisions.**
+- Reformulation de REQ-020 dans le CDC v4 : le motif d'annulation est saisi à la volée pour composer le SMS client, sans persistance en base — aligné avec le comportement déjà décrit dans SPEC-ADMIN-02.
+- Correction de la matrice de traçabilité : retrait de REQ-012 sur SPEC-ADMIN-05, ajout de REQ-019 sur SPEC-ADMIN-06, exemple en tête et chemin CDC v4 corrigés.
+
+**Critiques de l'IA acceptées.**
+- REQ-012 incorrectement rattachée à SPEC-ADMIN-05 dans `docs/traceability.md` → retirée ; REQ-012 reste sur SPEC-RESERVATION-03 uniquement → `docs/traceability.md`
+- REQ-019 absente de la ligne SPEC-ADMIN-06 alors que la spec la couvre déjà (AC-4) → ajoutée dans la matrice et l'en-tête de spec → `docs/traceability.md`, `specs/admin.md`
+- Formulation CDC v4 de REQ-020 (« consigne en back-office ») en contradiction avec la spec (motif pour SMS, non persisté) → reformulée → `docs/cdc/cahier-des-charges-v4.md`, `docs/impact-CR-004.md`, `specs/admin.md`
+
+**Critiques de l'IA refusées, et pourquoi.**
+- Chevauchement SPEC-ADMIN-01 / SPEC-ADMIN-05 sur REQ-010 → non traité : correction retirée du périmètre, les deux specs restent telles quelles.
+
+**Erreurs produites par l'IA et détectées.**
+- Sans objet.
+
+**Ce qui a été généré aujourd'hui.**
+- `docs/traceability.md` — corrections matrice, exemple, chemin CDC v4, notes REQ-012/019/020
+- `docs/cdc/cahier-des-charges-v4.md` — reformulation REQ-020
+- `specs/admin.md` — clarification REQ-020 (SPEC-ADMIN-02), REQ-019 (SPEC-ADMIN-06)
+- `docs/impact-CR-004.md` — alignement description REQ-020
+- `docs/journal.md` — présente entrée
+
+**Questions ouvertes pour le client.**
+- Sans objet.
+

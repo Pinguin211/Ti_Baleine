@@ -206,7 +206,7 @@ L'entreprise recherche un outil sur-mesure — sans passer par un SaaS tiers —
 | REQ-017 | L'administrateur peut sélectionner un ou plusieurs créneaux du lendemain pour leur envoyer une alerte de pré-annulation groupée la veille au soir à 18h | Should | Administrateur | CR-04/Q01, CR-04/Q04 |
 | REQ-018 | L'administrateur peut préremplir le champ de message via des propositions de templates bilingues (FR+EN) codées en dur, personnaliser le texte, puis déclencher l'envoi par SMS ou e-mail à l'ensemble des passagers réservataires des créneaux ciblés | Should | Administrateur | CR-04/Q02, CR-04/Q03, CR-04/Q06 |
 | REQ-019 | Le système affiche un avertissement textuel clair (mention d'alerte) sur l'interface publique pour tout créneau sous alerte de pré-annulation dont la jauge n'est pas complète | Should | Sophie / Marc | CR-04/Q05 |
-| REQ-020 | L'administrateur consigne le motif d'annulation d'une réservation (annulation effective météo suite à alerte ou annulation « par peur » du client suite à l'alerte) à titre de traçabilité dans le back-office (les remboursements restant 100 % manuels hors système) | Should | Administrateur | CR-04/Q07, CR-04/Q08 |
+| REQ-020 | Lors d'une annulation par l'administrateur, le système propose la saisie ou la sélection d'un motif (annulation météo/technique suite à alerte, annulation « par peur » du client suite à alerte, ou annulation standard) utilisé pour composer le SMS de notification au client ; le motif n'est pas persisté en base (les remboursements restent 100 % manuels hors système) | Should | Administrateur | CR-04/Q07, CR-04/Q08 |
 
 **Rappel :** le client plafonne le *Must have* à 3 cas d'usage principaux (Sélection & Consultation, Parcours bilingue / Paiement CB, Respect strict des jauges).
 

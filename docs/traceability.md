@@ -4,8 +4,10 @@ Reprise au créneau 16h15, avec le journal. C'est le seul endroit où l'état de
 chaîne se lit d'un coup d'œil.
 
 ```text
-CR-01/Q07 → REQ-012 → SPEC-BOOKING-04 → CASE-BOOKING-17 → test → code → commit
+CR-01/Q47 → REQ-008 → SPEC-FAC-02 → — → — → —
 ```
+
+Exemple illustratif du projet Ti'Baleine — les `—` marquent les maillons pas encore créés (cas de test, tests auto, commits).
 
 Une ligne par spécification. La remplir n'est pas une formalité de fin de
 journée : c'est parcourir votre propre chaîne et voir où elle s'arrête. Personne
@@ -30,6 +32,8 @@ montre les jours où il a été tenu.
 Un maillon qui n'existe pas encore se note `—`. Plusieurs valeurs dans une case se
 séparent par une virgule.
 
+> Référentiel actuel : CDC v4. Les versions v2/v3 dans `docs/cdc/` sont archivées.
+
 **Les six ruptures à surveiller :** une exigence sans source · une source citée
 qui n'existe pas dans vos comptes rendus · une spécification qu'aucun cas de test
 ne couvre · un cas de test sans test automatisé · une exigence que plus aucune
@@ -46,11 +50,15 @@ part.
 | `SPEC-ADMIN-02` | `REQ-013, REQ-014, REQ-020` | `CR-03/Q01, CR-03/Q02, CR-04/Q07, CR-04/Q08` | — | — | — |
 | `SPEC-ADMIN-03` | `REQ-015` | `CR-03/Q03` | — | — | — |
 | `SPEC-ADMIN-04` | `REQ-103` | `CR-02/Q06` | — | — | — |
-| `SPEC-ADMIN-05` | `REQ-010, REQ-012` | `CR-02/Q01, CR-03/Q13` | — | — | — |
-| `SPEC-ADMIN-06` | `REQ-017, REQ-018` | `CR-04/Q01, CR-04/Q02, CR-04/Q03, CR-04/Q04, CR-04/Q06` | — | — | — |
+| `SPEC-ADMIN-05` | `REQ-010` | `CR-02/Q01, CR-03/Q13` | — | — | — |
+| `SPEC-ADMIN-06` | `REQ-017, REQ-018, REQ-019` | `CR-04/Q01, CR-04/Q02, CR-04/Q03, CR-04/Q04, CR-04/Q05, CR-04/Q06` | — | — | — |
 | `SPEC-ADMIN-07` | `REQ-011` | `CR-02/Q12` | — | — | — |
 | `SPEC-FAC-02` | `REQ-008` | `CR-01/Q47, CR-03/Q16` | — | — | — |
 | `SPEC-RESERVATION-03` | `REQ-001, REQ-002, REQ-003, REQ-004, REQ-005, REQ-006, REQ-007, REQ-012, REQ-016, REQ-019` | `CR-01/Q02, CR-01/Q07, CR-01/Q09, CR-01/Q24, CR-01/Q25, CR-01/Q35, CR-02/§3, CR-02/Q01, CR-02/Q04, CR-03/Q01, CR-03/Q06, CR-03/Q07, CR-03/Q09, CR-03/Q11, CR-03/Q13, CR-03/Q15, CR-03/Q17, CR-04/§3, CR-04/Q05` | — | — | — |
+
+> `REQ-012` est couverte exclusivement par `SPEC-RESERVATION-03`.
+> `REQ-019` est répartie : `SPEC-ADMIN-06` (déclenche le statut) + `SPEC-RESERVATION-03` (affiche la mention côté public).
+> `REQ-020` : le motif d'annulation est saisi à la volée pour composer le SMS client ; il n'est pas enregistré en base. Formulation CDC v4 alignée le 17/08/2026.
 
 ---
 
