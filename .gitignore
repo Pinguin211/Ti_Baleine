@@ -12,3 +12,6 @@ docs/uml/**/*.svg
 
 # Claude Code
 .claude/
+
+# macOS
+.DS_Store
