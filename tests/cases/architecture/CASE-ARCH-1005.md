@@ -49,15 +49,15 @@ Et aucune erreur de dépassement de limite de lignes n'est levée
 
 **Nom attendu :**  
 `test_CASE_ARCH_1005_validation_derogation_en_tete_fichier_superieur_500_lignes`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1005.test.ts](../../tests-unitaires/architecture/spec-arch-01/CASE-ARCH-1005.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test configure un fichier de plus de 500 lignes avec un bloc TSDoc d'en-tête contenant `@need_more_lines` et un motif.
-- [ ] Le test vérifie que l'analyseur accepte le fichier sans lever d'erreur.
-- [ ] Le test vérifie que le motif textuel est obligatoire.
-- [ ] Le nom du test contient `CASE_ARCH_1005`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test configure un fichier de plus de 500 lignes avec un bloc TSDoc d'en-tête contenant `@need_more_lines` et un motif.
+- [x] Le test vérifie que l'analyseur accepte le fichier sans lever d'erreur.
+- [x] Le test vérifie que le motif textuel est obligatoire.
+- [x] Le nom du test contient `CASE_ARCH_1005`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

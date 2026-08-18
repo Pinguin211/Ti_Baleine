@@ -47,15 +47,15 @@ Et si un schéma nécessite une valeur dynamique d'environnement, il est instanc
 
 **Nom attendu :**  
 `test_CASE_ARCH_1011_hierarchie_socle_bas_et_isomorphisme_schemas`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1011.test.ts](../../tests-unitaires/architecture/spec-arch-02/CASE-ARCH-1011.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test vérifie que `src/utils/` n'importe aucun module autre que `src/config/`.
-- [ ] Le test vérifie que `src/schemas/` n'importe aucun module autre que `src/config/` et `src/utils/`.
-- [ ] Le test s'assure qu'aucun import de `src/env/` n'existe dans `src/schemas/`.
-- [ ] Le nom du test contient `CASE_ARCH_1011`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test vérifie que `src/utils/` n'importe aucun module autre que `src/config/`.
+- [x] Le test vérifie que `src/schemas/` n'importe aucun module autre que `src/config/` et `src/utils/`.
+- [x] Le test s'assure qu'aucun import de `src/env/` n'existe dans `src/schemas/`.
+- [x] Le nom du test contient `CASE_ARCH_1011`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

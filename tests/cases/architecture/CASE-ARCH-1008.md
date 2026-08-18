@@ -44,15 +44,15 @@ Et tout fichier nommé avec une autre casse (ex: « BookingCard.tsx », « user_
 
 **Nom attendu :**  
 `test_CASE_ARCH_1008_respect_nommage_fichiers_sources_kebab_case`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1008.test.ts](../../tests-unitaires/architecture/spec-arch-01/CASE-ARCH-1008.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test scanne l'arborescence des fichiers sous `src/`.
-- [ ] Le test vérifie que chaque nom de fichier (hors extension) valide l'expression régulière kebab-case (`^[a-z0-9]+(-[a-z0-9]+)*(\.[a-z0-9]+)*$`).
-- [ ] Le test échoue si un fichier comme `BookingCard.tsx` est présent.
-- [ ] Le nom du test contient `CASE_ARCH_1008`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test scanne l'arborescence des fichiers sous `src/`.
+- [x] Le test vérifie que chaque nom de fichier (hors extension) valide l'expression régulière kebab-case (`^[a-z0-9]+(-[a-z0-9]+)*(\.[a-z0-9]+)*$`).
+- [x] Le test échoue si un fichier comme `BookingCard.tsx` est présent.
+- [x] Le nom du test contient `CASE_ARCH_1008`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

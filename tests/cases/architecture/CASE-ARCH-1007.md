@@ -50,15 +50,15 @@ Et toute déviation de casse (ex. fonction en PascalCase, variable en snake_case
 
 **Nom attendu :**  
 `test_CASE_ARCH_1007_respect_conventions_nommage_symboles_code`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1007.test.ts](../../tests-unitaires/architecture/spec-arch-01/CASE-ARCH-1007.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test vérifie la casse des variables, fonctions, types et composants via ESLint ou l'AST.
-- [ ] Le test rejette les fonctions nommées en PascalCase ou snake_case.
-- [ ] Le test rejette les types et composants nommés en camelCase.
-- [ ] Le nom du test contient `CASE_ARCH_1007`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test vérifie la casse des variables, fonctions, types et composants via ESLint ou l'AST.
+- [x] Le test rejette les fonctions nommées en PascalCase ou snake_case.
+- [x] Le test rejette les types et composants nommés en camelCase.
+- [x] Le nom du test contient `CASE_ARCH_1007`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

@@ -48,15 +48,15 @@ Et les intitulés de spécifications correspondent exactement aux définitions d
 
 **Nom attendu :**  
 `test_CASE_ARCH_1026_presence_tableau_synthese_chiffre_par_specification`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1026.test.ts](../../tests-unitaires/architecture/spec-arch-03/CASE-ARCH-1026.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test vérifie que le rapport généré contient la section `## 1. Synthèse par Spécification`.
-- [ ] Le test parse le tableau Markdown et valide les décomptes par spécification.
-- [ ] Le test s'assure que la somme des infractions par spécification correspond au nombre global.
-- [ ] Le nom du test contient `CASE_ARCH_1026`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test vérifie que le rapport généré contient la section `## 1. Synthèse par Spécification`.
+- [x] Le test parse le tableau Markdown et valide les décomptes par spécification.
+- [x] Le test s'assure que la somme des infractions par spécification correspond au nombre global.
+- [x] Le nom du test contient `CASE_ARCH_1026`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

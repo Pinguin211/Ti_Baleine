@@ -46,15 +46,15 @@ Et aucun fichier en infraction n'est omis ou masqué dans le répertoire
 
 **Nom attendu :**  
 `test_CASE_ARCH_1024_repertoire_exhaustif_unitaire_fichiers_en_infraction`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1024.test.ts](../../tests-unitaires/architecture/spec-arch-03/CASE-ARCH-1024.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test injecte des violations sur 2 fichiers distincts.
-- [ ] Le test vérifie que les 2 fichiers sont présents dans la section 2 du rapport.
-- [ ] Le test s'assure qu'un fichier conforme n'apparaît pas dans la section des infractions.
-- [ ] Le nom du test contient `CASE_ARCH_1024`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test injecte des violations sur 2 fichiers distincts.
+- [x] Le test vérifie que les 2 fichiers sont présents dans la section 2 du rapport.
+- [x] Le test s'assure qu'un fichier conforme n'apparaît pas dans la section des infractions.
+- [x] Le nom du test contient `CASE_ARCH_1024`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

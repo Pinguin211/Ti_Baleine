@@ -45,15 +45,15 @@ Et toute tentative d'import de code serveur dans un module client déclenche un 
 
 **Nom attendu :**  
 `test_CASE_ARCH_1016_etancheite_stricte_server_only_modules_client`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1016.test.ts](../../tests-unitaires/architecture/spec-arch-02/CASE-ARCH-1016.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test identifie tous les fichiers annotés `"use client"` et ceux situés dans les dossiers `client/` et `hooks/`.
-- [ ] Le test vérifie qu'aucun de ces fichiers n'importe un chemin contenant `/server/` ou `src/env/server.ts`.
-- [ ] Le test simule un import de `src/services/server/auth.service.ts` dans un composant client et vérifie le blocage.
-- [ ] Le nom du test contient `CASE_ARCH_1016`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test identifie tous les fichiers annotés `"use client"` et ceux situés dans les dossiers `client/` et `hooks/`.
+- [x] Le test vérifie qu'aucun de ces fichiers n'importe un chemin contenant `/server/` ou `src/env/server.ts`.
+- [x] Le test simule un import de `src/services/server/auth.service.ts` dans un composant client et vérifie le blocage.
+- [x] Le nom du test contient `CASE_ARCH_1016`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

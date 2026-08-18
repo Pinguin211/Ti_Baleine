@@ -44,15 +44,15 @@ Et aucun nom de dossier ne comporte de majuscules (« CamelCase ») ni de tirets
 
 **Nom attendu :**  
 `test_CASE_ARCH_1009_respect_nommage_dossiers_kebab_case`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1009.test.ts](../../tests-unitaires/architecture/spec-arch-01/CASE-ARCH-1009.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test liste tous les répertoires récursivement sous `src/`.
-- [ ] Le test valide le pattern `^[a-z0-9]+(-[a-z0-9]+)*$` pour chaque segment de dossier.
-- [ ] Le test échoue si un dossier comme `src/components/DomainCard/` existe.
-- [ ] Le nom du test contient `CASE_ARCH_1009`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test liste tous les répertoires récursivement sous `src/`.
+- [x] Le test valide le pattern `^[a-z0-9]+(-[a-z0-9]+)*$` pour chaque segment de dossier.
+- [x] Le test échoue si un dossier comme `src/components/DomainCard/` existe.
+- [x] Le nom du test contient `CASE_ARCH_1009`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

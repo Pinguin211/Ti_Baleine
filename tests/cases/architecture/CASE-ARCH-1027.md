@@ -49,15 +49,15 @@ Et la section « 2. Répertoire des Fichiers en Infraction » indique explicitem
 
 **Nom attendu :**  
 `test_CASE_ARCH_1027_generation_rapport_conformite_totale_zero_violation`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1027.test.ts](../../tests-unitaires/architecture/spec-arch-03/CASE-ARCH-1027.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test exécute l'audit sur un projet ou sous-ensemble entièrement conforme.
-- [ ] Le test vérifie que le rapport est généré avec le badge `🟢 CONFORME`.
-- [ ] Le test s'assure que le code de retour est 0 et qu'aucune infraction n'est listée.
-- [ ] Le nom du test contient `CASE_ARCH_1027`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test exécute l'audit sur un projet ou sous-ensemble entièrement conforme.
+- [x] Le test vérifie que le rapport est généré avec le badge `🟢 CONFORME`.
+- [x] Le test s'assure que le code de retour est 0 et qu'aucune infraction n'est listée.
+- [x] Le nom du test contient `CASE_ARCH_1027`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

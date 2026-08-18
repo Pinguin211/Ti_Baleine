@@ -49,15 +49,15 @@ Et le rapport impose l'extraction de la fonction utilitaire dans un fichier sous
 
 **Nom attendu :**  
 `test_CASE_ARCH_1022_rejet_fonctions_utilitaires_auxiliaires_fichier_tsx`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1022.test.ts](../../tests-unitaires/architecture/spec-arch-01/CASE-ARCH-1022.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test analyse le nombre de déclarations de fonctions (`FunctionDeclaration`, `ArrowFunction` de premier niveau) dans les fichiers `.tsx`.
-- [ ] Le test vérifie qu'un fichier `.tsx` contenant une fonction utilitaire en plus de son composant principal est rejeté.
-- [ ] Le test s'assure que le composant unique reste valide si la fonction utilitaire est importée depuis `src/utils/`.
-- [ ] Le nom du test contient `CASE_ARCH_1022`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test analyse le nombre de déclarations de fonctions (`FunctionDeclaration`, `ArrowFunction` de premier niveau) dans les fichiers `.tsx`.
+- [x] Le test vérifie qu'un fichier `.tsx` contenant une fonction utilitaire en plus de son composant principal est rejeté.
+- [x] Le test s'assure que le composant unique reste valide si la fonction utilitaire est importée depuis `src/utils/`.
+- [x] Le nom du test contient `CASE_ARCH_1022`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

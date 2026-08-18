@@ -44,15 +44,15 @@ Et toute tentative d'importer un hook dans « src/services/ », « src/actions/ 
 
 **Nom attendu :**  
 `test_CASE_ARCH_1019_encapsulation_stricte_hooks_reserves_exclusivement_components`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1019.test.ts](../../tests-unitaires/architecture/spec-arch-02/CASE-ARCH-1019.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test liste tous les fichiers du projet important des modules de `src/hooks/`.
-- [ ] Le test vérifie que chaque fichier consommateur est localisé sous `src/components/`.
-- [ ] Le test simule un import d'un hook dans un fichier de `src/services/` et s'assure du rejet.
-- [ ] Le nom du test contient `CASE_ARCH_1019`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test liste tous les fichiers du projet important des modules de `src/hooks/`.
+- [x] Le test vérifie que chaque fichier consommateur est localisé sous `src/components/`.
+- [x] Le test simule un import d'un hook dans un fichier de `src/services/` et s'assure du rejet.
+- [x] Le nom du test contient `CASE_ARCH_1019`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest
