@@ -110,11 +110,11 @@ Scénario : Dérogation exceptionnelle sur un fichier dépassant 500 lignes
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — 100 % des fonctions des fichiers `.ts` et `.js` comptent $\le 30$ lignes utiles ou disposent d'un flag TSDoc `@need_more_lines - "motif"` valide (`CASE-ARCH-001`, `CASE-ARCH-002`, `CASE-ARCH-003`).
-- [ ] AC-2 — 100 % des fichiers `.tsx` et `.jsx` ne contiennent qu'une seule fonction / composant par fichier (`CASE-ARCH-004`).
-- [ ] AC-3 — 100 % des fichiers (`.ts`, `.tsx`, `.js`, `.jsx`) comptent $\le 500$ lignes au total ou disposent d'un flag TSDoc d'en-tête `@need_more_lines - "motif"` valide (`CASE-ARCH-005`, `CASE-ARCH-006`).
-- [ ] AC-4 — Le fichier `tsdoc.json` à la racine du projet déclare formellement la balise personnalisée `@need_more_lines` (`CASE-ARCH-007`).
-- [ ] AC-5 — L'ensemble des variables, fonctions, types, classes, composants et noms de fichiers respectent la table des conventions de nommage (`CASE-ARCH-008`, `CASE-ARCH-009`, `CASE-ARCH-010`).
+- [ ] AC-1 — 100 % des fonctions des fichiers `.ts` et `.js` comptent $\le 30$ lignes utiles ou disposent d'un flag TSDoc `@need_more_lines - "motif"` valide (`CASE-ARCH-1000`, `CASE-ARCH-1001`, `CASE-ARCH-1002`).
+- [ ] AC-2 — 100 % des fichiers `.tsx` et `.jsx` ne contiennent qu'une seule fonction / composant par fichier (`CASE-ARCH-1003`, `CASE-ARCH-1022`).
+- [ ] AC-3 — 100 % des fichiers (`.ts`, `.tsx`, `.js`, `.jsx`) comptent $\le 500$ lignes au total ou disposent d'un flag TSDoc d'en-tête `@need_more_lines - "motif"` valide (`CASE-ARCH-1004`, `CASE-ARCH-1005`, `CASE-ARCH-1021`).
+- [ ] AC-4 — Le fichier `tsdoc.json` à la racine du projet déclare formellement la balise personnalisée `@need_more_lines` (`CASE-ARCH-1006`).
+- [ ] AC-5 — L'ensemble des variables, fonctions, types, classes, composants et noms de fichiers respectent la table des conventions de nommage (`CASE-ARCH-1007`, `CASE-ARCH-1008`, `CASE-ARCH-1009`).
 
 ---
 
@@ -296,14 +296,17 @@ Scénario : Encapsulation de la couche lib par les services
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — Le dossier `src/config/` ne contient aucun import relatif pointant vers des modules internes du projet (`CASE-ARCH-011`).
-- [ ] AC-2 — Le dossier `src/utils/` n'importe en interne que `src/config/`, et `src/schemas/` n'importe en interne que `src/config/` et `src/utils/` à l'exclusion stricte de `src/env/` (`CASE-ARCH-012`).
-- [ ] AC-3 — Le module `src/env/client.ts` n'est importé que par `src/services/`, `src/lib/`, `src/hooks/`, `src/actions/`, `src/app/` et `src/env/server.ts` (`CASE-ARCH-013`).
-- [ ] AC-4 — Le module `src/env/server.ts` n'est importé que par `src/services/server/`, `src/lib/server/`, `src/actions/` et `src/app/`, à l'exclusion stricte de `src/hooks/` et des modules client (`CASE-ARCH-014`).
-- [ ] AC-5 — Le dossier `src/lib/` est exclusivement importé par le dossier `src/services/` (`CASE-ARCH-015`).
-- [ ] AC-6 — Les fichiers sous `src/app/` n'importent aucun module interne en dehors de `src/components/`, `src/services/server/`, `src/actions/`, `src/schemas/` et `src/env/` (`CASE-ARCH-016`).
-- [ ] AC-7 — Aucun fichier situé dans un sous-dossier `server/` ou `src/env/server.ts` n'est importé dans un composant client (`"use client"`) ou dans un dossier `client/` (`CASE-ARCH-017`).
-- [ ] AC-8 — L'analyseur statique de graphe ne détecte aucune dépendance circulaire sur l'ensemble du projet (`CASE-ARCH-018`).
+- [ ] AC-1 — Le dossier `src/config/` ne contient aucun import relatif pointant vers des modules internes du projet (`CASE-ARCH-1010`).
+- [ ] AC-2 — Le dossier `src/utils/` n'importe en interne que `src/config/`, et `src/schemas/` n'importe en interne que `src/config/` et `src/utils/` à l'exclusion stricte de `src/env/` (`CASE-ARCH-1011`).
+- [ ] AC-3 — Le module `src/env/client.ts` n'est importé que par `src/services/`, `src/lib/`, `src/hooks/`, `src/actions/`, `src/app/` et `src/env/server.ts` (`CASE-ARCH-1012`).
+- [ ] AC-4 — Le module `src/env/server.ts` n'est importé que par `src/services/server/`, `src/lib/server/`, `src/actions/` et `src/app/`, à l'exclusion stricte de `src/hooks/` et des modules client (`CASE-ARCH-1013`).
+- [ ] AC-5 — Le dossier `src/lib/` est exclusivement importé par le dossier `src/services/` (`CASE-ARCH-1014`).
+- [ ] AC-6 — Les fichiers sous `src/app/` n'importent aucun module interne en dehors de `src/components/`, `src/services/server/`, `src/actions/`, `src/schemas/` et `src/env/` (`CASE-ARCH-1015`).
+- [ ] AC-7 — Aucun fichier situé dans un sous-dossier `server/` ou `src/env/server.ts` n'est importé dans un composant client (`"use client"`) ou dans un dossier `client/` (`CASE-ARCH-1016`).
+- [ ] AC-8 — L'analyseur statique de graphe ne détecte aucune dépendance circulaire sur l'ensemble du projet (`CASE-ARCH-1017`).
+- [ ] AC-9 — La couche `src/components/` n'importe jamais directement `src/services/` (`CASE-ARCH-1018`).
+- [ ] AC-10 — Le dossier `src/hooks/` est exclusivement importé par le dossier `src/components/` (`CASE-ARCH-1019`).
+- [ ] AC-11 — Le dossier `src/actions/` n'est importé que par `src/components/` et `src/app/` (`CASE-ARCH-1020`).
 
 ---
 
