@@ -23,7 +23,8 @@
   "homepage": "https://github.com/Pinguin211/Ti_Baleine#readme",
   "devDependencies": {
     "@playwright/test": "^1.62.1",
-    "@types/node": "^26.2.0"
+    "@types/node": "^26.2.0",
+    "vitest": "^4.1.10"
   },
   "dependencies": {
     "plantuml-encoder": "^1.4.0"

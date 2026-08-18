@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   app:
-    image: node:24-alpine
+    # Utilisation d'une image basée sur Debian (Bookworm) avec glibc et bash natifs
+    image: node:24-bookworm
 
     container_name: nextjs_sandbox
     working_dir: /app
@@ -12,8 +13,10 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     volumes:
-      # Tout le dossier racine est synchronisé avec le conteneur
+      # Synchronisation du dossier racine
       - .:/app
+      # Volume anonyme recommandé pour isoler les dépendances compilées du conteneur
+      - /app/node_modules
     # Maintient le conteneur actif sans rien exécuter au démarrage
     command: tail -f /dev/null
     stdin_open: true
