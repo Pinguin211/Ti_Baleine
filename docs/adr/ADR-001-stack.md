@@ -20,7 +20,7 @@ le choix.
       le temps de l'analyse et de la conception.
       → qui, et sur quoi l'ont-ils pratiquée : …
 - [ ] **Runner de tests exécutable en une commande.**
-      → la commande : `npx playwright test` 
+      → la commande : `npm test` (exécute `vitest run` pour les tests unitaires/intégration et `playwright test` pour les tests E2E)
 - [ ] **Mécanisme de migration ou de schéma versionné.**
       → lequel : …
 - [ ] **Intégration possible d'un prestataire de paiement.**
@@ -48,12 +48,12 @@ avec un masquage/blocage dynamique des créneaux complets ou clos à moins de 2h
 
 ## 4. Options envisagées
 
-### Option A — …
+### Option A — Next.js / TypeScript + Vitest & Playwright
 
 | | |
 |---|---|
 | Compétences de l'équipe | 2 membres expérimentés, 2 membres ayant des bases solides en React/TS. |
-| Ce qu'elle facilite pour ce problème | Unification du langage (TypeScript) |
+| Ce qu'elle facilite pour ce problème | Unification du langage (TypeScript). Séparation claire de la stratégie de test : Vitest pour l'exécution ultra-rapide des règles métier/facturation en mémoire, Playwright pour la validation des parcours utilisateurs E2E. |
 | Ce qu'elle coûte | Gestion rigoureuse des composants Server/Client pour éviter les fuites de logique. |
 | Coût d'hébergement estimé | 1-10 €/mois (VPS) |
 | Ce qu'elle rend difficile plus tard | … |
@@ -61,7 +61,7 @@ avec un masquage/blocage dynamique des créneaux complets ou clos à moins de 2h
 ### Option B — …
 | | |
 |---|---|
-| Compétences de l'équipe | Les membres de l'équipe ne pratiquent pas régulierèment la technologie.|
+| Compétences de l'équipe | Les membres de l'équipe ne pratiquent pas régulièrement la technologie.|
 | Ce qu'elle facilite pour ce problème | Structure très cadrée, sécurité et intégration backend robuste. |
 | Coût d'hébergement estimé | ~5 à 15 €/mois (VPS ou hébergement mutualisé). |
 | Ce qu'elle coûte | 3 jours de remise à niveau en 10 jours de projet. |
@@ -71,7 +71,7 @@ avec un masquage/blocage dynamique des créneaux complets ou clos à moins de 2h
 
 ## 5. Décision
 
-Nous choisissons la stack **Next.js / TypeScript**.
+Nous choisissons la stack **Next.js / TypeScript**, complétée par **Vitest** pour les tests unitaires / d'intégration et **Playwright** pour les tests de bout en bout (E2E).
 
 ## 6. Raisons
 
@@ -82,11 +82,15 @@ ce que deux d'entre nous savons déjà exploiter » en est une.
 
 1. **Compétences disponibles :** Au moins deux membres maîtrisent la stack.
 2. **Unification du langage :** TypeScript côté serveur et côté client.
-3. **Coût d'hébergement :** VPS à 1-10 €/mois
+3. **Stratégie de test adaptée :** 
+   - **Vitest** assure une exécution instantanée en mémoire de la logique métier (calculs tarifaires, règles de validation, génération des données de facturation).
+   - **Playwright** garantit la conformité des parcours de réservation complets dans les conditions réelles d'un navigateur.
+4. **Coût d'hébergement :** VPS à 1-10 €/mois.
 
 ## 7. Conséquences acceptées
 
-- Nécessité de bien séparer le code métier de la couche de rendu Next.js pour garder une application testable.
+- Nécessité de bien séparer le code métier de la couche de rendu Next.js pour garder une application testable avec Vitest sans dépendance au DOM.
+- Gestion de deux configurations d'outils de test unifiées sous des scripts `package.json` (`npm run test:unit`, `npm run test:e2e`, et `npm test`).
 - Montée en compétence rapide nécessaire pour les membres moins à l'aise avec TypeScript strict.
 
 ## 8. Ce qui nous ferait revenir dessus
