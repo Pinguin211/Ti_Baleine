@@ -1,0 +1,73 @@
+# CASE-FAC-702 — Facturation d'une réservation standard au départ de Saint-Gilles
+
+**Spécification :** `SPEC-FAC-02`  
+**Critère d'acceptation :** `AC-2`  
+**Type :** acceptation  
+**Niveau de risque :** moyen
+
+## Ce que ce cas protège
+
+Ce cas protège l'exactitude du calcul tarifaire et des mentions sur la facture PDF pour une réservation standard au départ du port principal de Saint-Gilles. Si la règle se casse, un supplément géographique indu pourrait être appliqué à tort ou le port d'embarquement pourrait être erroné sur la facture émise.
+
+## Cas
+
+```gherkin
+Étant donné une réservation individuelle pour une sortie « Baleines » au départ du port de « Saint-Gilles »
+Et un nombre de participants de 1 adulte
+Et un tarif de base standard de 65 € par adulte sans supplément géographique (0 €)
+Quand le paiement en ligne de 65 € est validé avec succès
+Alors une facture PDF acquittée est générée à la volée
+Et la facture PDF mentionne explicitement le port d'embarquement « Saint-Gilles »
+Et la facture PDF détaille la ligne tarifaire 1 adulte à 65 € avec un montant total TTC de 65 € sans aucune majoration géographique
+```
+
+## Données
+
+| Élément | Valeur |
+|---|---:|
+| Prestation | Sortie Baleines |
+| Port d'embarquement | Saint-Gilles |
+| Participants | 1 adulte |
+| Tarif de base adulte | 65 € |
+| Majoration géographique | 0 € |
+| Statut du paiement bancaire | validé avec succès |
+| Montant total réglé | 65 € |
+
+## Résultat attendu, calculé à la main
+
+| Grandeur | Valeur attendue | Calcul |
+|---|---:|---|
+| Montant base adulte | 65 € | 1 adulte × 65 € |
+| Supplément géographique | 0 € | Départ de Saint-Gilles (non applicable) |
+| Montant total TTC facturé | 65 € | 65 € + 0 € |
+| Port mentionné sur PDF | Saint-Gilles | Donnée issue de la réservation |
+| Mention d'acquittement | Acquittée | Validation du paiement |
+
+## Ce que ce cas ne vérifie pas
+
+- la majoration géographique applicable à Saint-Leu (couvert par `CASE-FAC-700`, `CASE-FAC-705`, `CASE-FAC-712`) ;
+- la tarification spécifique « Dauphins » (couvert par `CASE-FAC-703`) ;
+- la ventilation de profils enfants ou mixtes (couvert par `CASE-FAC-704`) ;
+- la transmission du courriel et la pièce jointe (couvert par `CASE-FAC-714`, `CASE-FAC-715`) ;
+- le statut d'émission en base de données (couvert par `CASE-FAC-717`).
+
+---
+
+## Test automatisé
+
+**Nom attendu :**
+`test_CASE_FAC_702_facturation_reservation_standard_saint_gilles_sans_supplement`  
+**Fichier :** à renseigner après automatisation
+
+## Revue du test automatisé
+
+- [ ] Le test configure une réservation pour 1 adulte à Saint-Gilles au tarif de 65 €.
+- [ ] Le test simule la validation du paiement en ligne de 65 €.
+- [ ] Le test vérifie que la facture PDF mentionne « Saint-Gilles ».
+- [ ] Le test vérifie qu'aucun supplément géographique n'est facturé.
+- [ ] Le test vérifie que le total TTC sur la facture est de 65 €.
+- [ ] Le nom du test contient `CASE_FAC_702`.
+- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+
+**Relu par :** à renseigner  
+**Remarques :** à renseigner
