@@ -1,7 +1,7 @@
 # Tests unitaires — stratégie
 
-**Statut :** brouillon, à valider en équipe
-**Date :** 2026-08-13
+**Statut :** décision prise — Vitest retenu et configuré
+**Date :** 2026-08-13 · mis à jour 2026-08-18
 
 Ce document ne décrit pas des tests déjà écrits — aucun n'existe encore. Il cadre
 ce que seront les tests unitaires du projet, pour que leur écriture (déléguée à
@@ -52,33 +52,53 @@ Ce que les tests unitaires **ne couvrent pas** : l'affichage, la navigation, la
 soumission d'un vrai formulaire, l'envoi réel d'un SMS ou d'un paiement — ça
 reste le rôle de Playwright et de [tests/cases/](../cases/).
 
-## 3. Outillage — à trancher
+## 3. Outillage — décision prise : Vitest + jsdom + React
 
-Aucun outil de test unitaire n'est installé. Deux options compatibles avec la
-stack Next.js/TypeScript (ADR-001) :
+**Vitest** a été retenu (2026-08-18). Installé en `devDependency` (`vitest ^4.1.10`)
+et configuré dans [`vitest.config.ts`](../../vitest.config.ts) à la racine du projet.
 
-| | Vitest | Jest |
+Packages installés :
+
+| Package | Rôle |
+|---|---|
+| `vitest` | runner de tests |
+| `jsdom` | émulation DOM dans Node |
+| `@vitejs/plugin-react` | transformation JSX pour les tests React |
+| `@testing-library/react` | utilitaires de rendu de composants React |
+| `@testing-library/jest-dom` | matchers DOM (`toBeInTheDocument`, `toHaveTextContent`…) |
+
+Points clés de la configuration :
+
+| Paramètre | Valeur | Raison |
 |---|---|---|
-| Ce qu'il apporte | rapide (ESM natif, pas de transpilation lourde), API proche de Jest | standard historique, très documenté, intégration Next.js officielle |
-| Ce qu'il coûte | plus récent, écosystème un peu moins large | plus lent sur ce type de stack (config CJS/ESM plus lourde) |
+| `environment` | `jsdom` | DOM disponible, tests de composants React possibles |
+| `include` | `tests/tests-unitaires/**/*.test.{ts,tsx}` | dossier dédié, non colocalisé |
+| `setupFiles` | `tests/tests-unitaires/setup.ts` | charge `@testing-library/jest-dom` pour tous les tests |
+| `globals` | `false` | imports explicites (`import { describe, it, expect } from 'vitest'`) |
 
-Décision à prendre par l'équipe avant la première installation — pas dans ce
-document. Si retenu, ce choix devrait faire l'objet d'un ADR (ou d'un
-complément à ADR-001), pas d'une installation silencieuse.
+Scripts disponibles :
 
-## 4. Convention (proposée, alignée sur la règle déjà en vigueur pour Playwright)
+```bash
+npm test           # vitest run — exécution unique (CI)
+npm run test:watch # vitest     — mode watch (développement)
+```
+
+## 4. Convention
 
 - Même règle de traçabilité que le reste du projet : l'ID `CASE-<DOM>-nn` dans le
   nom du test, ex. `CASE_RESERVATION_07_montant_egal_participants_fois_prix`.
-- Emplacement : colocalisé avec le fichier testé (`*.test.ts` à côté du module),
-  pour que `tools/traceability.sh` continue de trouver un test par `CASE`.
+- **Emplacement : dossier dédié** `tests/tests-unitaires/`, organisé en
+  sous-dossiers par domaine (ex. `reservation/`, `facturation/`).
+- Extension : `.test.ts` pour la logique pure, `.test.tsx` pour les composants React.
 - Un test unitaire ne remplace pas un cas de test défini dans
   [tests/cases/](../cases/) : il en est une déclinaison technique, pas une source
   supplémentaire de vérité métier.
 
 ## 5. Ce qui n'est pas défini
 
-- *2026-08-13* — Outil retenu (Vitest ou Jest) : en attente de décision d'équipe.
-- *2026-08-13* — Emplacement définitif des fichiers de test unitaires
+- ~~*2026-08-13* — Outil retenu (Vitest ou Jest) : en attente de décision d'équipe.~~
+  → *2026-08-18* — **Vitest retenu et configuré.**
+- ~~*2026-08-13* — Emplacement définitif des fichiers de test unitaires
   (colocalisés vs dossier dédié) : proposition à confirmer une fois `src/`
-  scaffoldé.
+  scaffoldé.~~
+  → *2026-08-18* — **Dossier dédié** `tests/tests-unitaires/`, organisé par domaine.

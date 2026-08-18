@@ -1,0 +1,3 @@
+// Importe les matchers DOM de @testing-library/jest-dom
+// Exemples : toBeInTheDocument(), toHaveTextContent(), toBeVisible()...
+import '@testing-library/jest-dom';
