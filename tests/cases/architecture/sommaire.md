@@ -4,6 +4,7 @@
 **Spécifications couvertes :**
 - [`SPEC-ARCH-01`](../../specs/architecture.md#spec-arch-01--règles-de-codage-volumétrie-et-conventions-de-nommage) — Règles de codage, volumétrie et conventions de nommage (`ADR-001`, `REQ-ARCH-001`)
 - [`SPEC-ARCH-02`](../../specs/architecture.md#spec-arch-02--arborescence-modulaire-étanchéité-serverclient-et-flux-strict-des-dépendances) — Arborescence modulaire, étanchéité Server/Client et flux strict des dépendances (`ADR-001`, `REQ-ARCH-002`)
+- [`SPEC-ARCH-03`](../../specs/architecture.md#spec-arch-03--génération-et-structure-du-rapport-markdown-daudit-de-conformité) — Génération et structure du rapport Markdown d'audit de conformité (`ADR-001`, `REQ-ARCH-003`)
 
 ---
 
@@ -32,3 +33,8 @@
 | 1020 | CASE-ARCH-1020.md | Encapsulation stricte de `src/actions/` : autorisation d'import réservée exclusivement à `src/components/` et `src/app/` (interdiction pour `services/`, `lib/`, `utils/`, `schemas/`) | `SPEC-ARCH-02`, `Matrice d'import`, `AC-11`, `Rôle actions/` |
 | 1021 | CASE-ARCH-1021.md | Rejet d'une dérogation `@need_more_lines` sur fichier (> 500 lignes) si la balise n'est pas placée strictement en en-tête (ex. placée en milieu ou fin de fichier) | `SPEC-ARCH-01`, `AC-3`, `Portée §6`, `Scénario 4`, `Cas limite #4` |
 | 1022 | CASE-ARCH-1022.md | Rejet de la déclaration de multiples fonctions auxiliaires / sous-fonctions utilitaires non exportées dans un fichier `.tsx` (garantir la règle stricte d'une seule fonction/composant par fichier) | `SPEC-ARCH-01`, `AC-2`, `Règle §2`, `Portée §3` |
+| 1023 | CASE-ARCH-1023.md | Production automatique et systématique d'un rapport de conformité au format Markdown (`reports/arch-compliance-report.md`) à chaque exécution des tests | `SPEC-ARCH-03`, `AC-1`, `Scénario 1 & 2`, `Portée §1`, `REQ-ARCH-003` |
+| 1024 | CASE-ARCH-1024.md | Répertoire exhaustif et individuel de 100 % des fichiers non conformes avec leur chemin d'accès relatif dans la section dédiée du rapport | `SPEC-ARCH-03`, `AC-2`, `Règle`, `Scénario 1`, `Cas limite #1` |
+| 1025 | CASE-ARCH-1025.md | Présence pour chaque fichier en faute de la ligne exacte, de la règle transgressée (`SPEC-ARCH-01`/`02`), du cas de test associé (`CASE-ARCH-xxxx`) et de l'explication | `SPEC-ARCH-03`, `AC-3`, `Règle`, `Scénario 1`, `Gabarit` |
+| 1026 | CASE-ARCH-1026.md | Présence obligatoire du tableau de synthèse chiffré récapitulant le nombre de violations par spécification (`SPEC-ARCH-01` et `SPEC-ARCH-02`) | `SPEC-ARCH-03`, `AC-4`, `Portée §2`, `Gabarit §1` |
+| 1027 | CASE-ARCH-1027.md | Génération du rapport en situation de conformité totale (0 violation) avec mention explicite du statut « CONFORME » | `SPEC-ARCH-03`, `AC-5`, `Scénario 2` |

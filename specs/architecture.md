@@ -10,6 +10,7 @@
 |---|---|---|
 | **`SPEC-ARCH-01`** | **Règles de codage, volumétrie et conventions de nommage** | Limite de 30 lignes utiles/fonction dans les fichiers `.ts`/`.js`, règle de mono-composant sans limite de lignes internes dans les fichiers `.tsx`/`.jsx`, plafond global de 500 lignes/fichier, dérogations TSDoc `@need_more_lines` et conventions de nommage. |
 | **`SPEC-ARCH-02`** | **Arborescence modulaire, étanchéité Server/Client et flux strict des dépendances** | Organisation sous `src/`, hiérarchie transversale (`config/` $\rightarrow$ `utils/` $\rightarrow$ `schemas/`), isolation de `env/`, capacités de data-fetching de `app/`, étanchéité `server-only` et matrice stricte d'imports unidirectionnels. |
+| **`SPEC-ARCH-03`** | **Génération et structure du rapport Markdown d'audit de conformité** | Génération systématique de `reports/arch-compliance-report.md`, bilan chiffré par spécification et répertoire exhaustif unitaire de chaque fichier en infraction avec numéro de ligne, spécification, cas de test et motif. |
 
 ---
 
@@ -319,3 +320,122 @@ Scénario : Encapsulation de la couche lib par les services
 | Restreindre `hooks/` à `env/client.ts` uniquement | Acceptée | Empêche formellement l'inclusion de secrets et variables privées serveur dans les hooks d'état exécutés côté client. |
 | Restreindre les imports de `env/` à `services/`, `lib/`, `hooks/` (client), `actions/` et `app/` | Acceptée | Permet aux mutations et orchestrations backend (`actions/`) d'accéder directement à la configuration d'environnement tout en protégeant les composants purs et utilitaires. |
 | Autoriser `app/` à importer `services/server/`, `actions/`, `schemas/` et `env/` | Acceptée | Aligné sur le modèle officiel Next.js App Router (RSC) pour le fetching de données initial et l'orchestration des mutations sans sacrifier l'encapsulation de `lib/`. |
+
+---
+
+## SPEC-ARCH-03 — Génération et structure du rapport Markdown d'audit de conformité
+
+**Exigence :** ADR-001, REQ-ARCH-003  
+**Statut :** proposé  
+**Version :** v1
+
+### Règle
+
+> Lors de l'exécution des tests de conformité architecturale et technique (`SPEC-ARCH-01` et `SPEC-ARCH-02`), le moteur d'audit / suite de tests doit **systématiquement générer un rapport de synthèse au format Markdown (`.md`)**.  
+> En cas de non-conformité, ce rapport doit **répertorier de manière exhaustive chaque fichier en infraction**, en précisant le chemin exact du fichier, les numéros de ligne incriminés, la spécification violée, l'identifiant du cas de test associé ainsi que l'explication précise de l'erreur.
+
+### Portée
+
+- Couvre la création ou la mise à jour automatique d'un fichier de rapport Markdown (ex. `reports/arch-compliance-report.md` ou `arch-audit.md`) à chaque lancement des tests d'architecture (en local ou dans la pipeline CI/CD).
+- Couvre la structure normalisée du rapport :
+  1. **Synthèse globale :** Statut d'exécution (`CONFORME` / `ÉCHEC`), date d'exécution, volume total de fichiers scannés et nombre global d'infractions constatées.
+  2. **Bilan par spécification :** Décompte des violations pour `SPEC-ARCH-01` (volumétrie/nommage) et `SPEC-ARCH-02` (flux/imports).
+  3. **Répertoire exhaustif des fichiers en faute :** Section dédiée regroupant par fichier toutes les infractions relevées (avec numéros de lignes, règle violée, cas de test `CASE-ARCH-xxxx` et message explicatif).
+- Couvre le formatage direct pour affichage dans les consoles CI, en commentaire de Pull Request (GitHub / GitLab) ou dans le Step Summary d'une action CI.
+
+---
+
+### Gabarit normalisé du rapport généré (`reports/arch-compliance-report.md`)
+
+````markdown
+# Rapport d'Audit — Conformité Architecture & Qualité (`ARCH`)
+
+- **Date d'exécution :** YYYY-MM-DD HH:mm:ss
+- **Statut global :** 🔴 ÉCHEC (X violation(s) détectée(s))  *(ou 🟢 CONFORME (0 violation))*
+- **Fichiers scannés :** N fichiers
+
+---
+
+## 1. Synthèse par Spécification
+
+| Spécification | Intitulé | Statut | Nombre d'infractions |
+|---|---|---|---|
+| **`SPEC-ARCH-01`** | Règles de codage, volumétrie et nommage | 🔴 Échec / 🟢 Conforme | X |
+| **`SPEC-ARCH-02`** | Arborescence, étanchéité & flux d'imports | 🔴 Échec / 🟢 Conforme | Y |
+
+---
+
+## 2. Répertoire des Fichiers en Infraction
+
+> *Cette section liste chaque fichier ne respectant pas les critères d'architecture, avec la localisation précise de la faute et le correctif attendu.*
+
+### 📁 `src/chemin/vers/fichier-en-faute.ts`
+- **Règle transgressée :** `SPEC-ARCH-01`
+- **Cas de test associé :** `CASE-ARCH-1000` (Limite de 30 lignes utiles par fonction)
+- **Localisation :** Ligne 45 (fonction `calculatePricingMatrix`)
+- **Détail de l'erreur :** La fonction compte 48 lignes utiles (seuil max : 30) sans balise TSDoc `@need_more_lines`.
+
+### 📁 `src/components/domain/booking-card.tsx`
+- **Règle transgressée :** `SPEC-ARCH-01`
+- **Cas de test associé :** `CASE-ARCH-1003` (Mono-composant par fichier .tsx)
+- **Localisation :** Ligne 82 (composant `BookingBadge`)
+- **Détail de l'erreur :** Déclaration d'un sous-composant `BookingBadge` dans le fichier. Il doit être extrait dans son propre fichier.
+
+### 📁 `src/components/ui/user-button.tsx`
+- **Règle transgressée :** `SPEC-ARCH-02`
+- **Cas de test associé :** `CASE-ARCH-1018` (Interdiction d'importer services/ dans components/)
+- **Localisation :** Ligne 4
+- **Détail de l'erreur :** Import direct interdit de `src/services/server/auth.service.ts` au sein de la couche présentation.
+````
+
+---
+
+### Scénarios nominaux
+
+```gherkin
+Scénario : Génération d'un rapport avec répertoire des fichiers en faute
+  Étant donné un fichier « src/utils/pricing.ts » contenant une fonction de 45 lignes sans dérogation
+  Et un fichier « src/hooks/domain/use-auth.ts » important « src/env/server.ts »
+  Quand la suite de tests de conformité architecturale est exécutée
+  Alors le test se termine en échec
+  Et le fichier de rapport « reports/arch-compliance-report.md » est créé
+  Et le rapport contient une entrée distincte pour « src/utils/pricing.ts » avec la ligne et la règle SPEC-ARCH-01
+  Et le rapport contient une entrée distincte pour « src/hooks/domain/use-auth.ts » avec la ligne et la règle SPEC-ARCH-02
+
+Scénario : Génération d'un rapport pour une base de code 100 % conforme
+  Étant donné une base de code respectant l'ensemble des règles SPEC-ARCH-01 et SPEC-ARCH-02
+  Quand la suite de tests de conformité architecturale est exécutée
+  Alors le test se termine avec succès
+  Et le fichier de rapport « reports/arch-compliance-report.md » est créé
+  Et le statut global affiche « CONFORME » avec 0 infraction
+  Et la section « Répertoire des Fichiers en Infraction » indique qu'aucune violation n'a été détectée
+```
+
+---
+
+### Cas limites
+
+| # | Situation | Comportement attendu |
+|---|---|---|
+| 1 | Un fichier cumule plusieurs violations distinctes (ex. taille > 500 lignes et mauvais nommage) | **Répertoire exhaustif :** le fichier est listé une seule fois en en-tête de section, mais toutes ses infractions sont détaillées ligne par ligne. |
+| 2 | Le répertoire de destination du rapport (ex. `reports/`) n'existe pas | **Gestion automatique :** l'exécuteur de test crée l'arborescence requise avant l'écriture du fichier `.md`. |
+| 3 | Exécution en environnement CI sans système de fichiers persistant | **Sortie double :** le fichier Markdown est écrit sur le disque et son contenu est également injecté dans le log/sommaire de CI (`$GITHUB_STEP_SUMMARY`). |
+
+---
+
+### Critères d'acceptation
+
+- [ ] AC-1 — Chaque exécution du banc de test de conformité architecturale produit automatiquement un rapport au format Markdown (`CASE-ARCH-1023`).
+- [ ] AC-2 — 100 % des fichiers présentant au moins une non-conformité sont individuellement répertoriés dans le rapport avec leur chemin relatif (`CASE-ARCH-1024`).
+- [ ] AC-3 — Pour chaque fichier en faute, le rapport indique la ligne précise, la spécification (`SPEC-ARCH-01` ou `SPEC-ARCH-02`), le cas de test associé (`CASE-ARCH-xxxx`) et le motif détaillé du rejet (`CASE-ARCH-1025`).
+- [ ] AC-4 — Le rapport présente un tableau de synthèse chiffré récapitulant le nombre de fautes par spécification (`CASE-ARCH-1026`).
+- [ ] AC-5 — En cas de conformité totale (0 erreur), le rapport est tout de même généré avec la mention explicite `CONFORME` (`CASE-ARCH-1027`).
+
+---
+
+### Revue IA
+
+| Remarque de l'IA | Décision | Motif |
+|---|---|---|
+| Répertorier chaque fichier en faute de façon unitaire avec localisation (ligne) et cas de test | Acceptée | Permet aux développeurs et aux agents d'assistance de corriger immédiatement les violations sans avoir à relancer manuellement un débogage. |
+| Standardiser le fichier de sortie en Markdown (.md) | Acceptée | Format universel, lisible en local et directement compatible avec les plateformes CI/CD (GitHub Step Summary, GitLab MR comments). |
