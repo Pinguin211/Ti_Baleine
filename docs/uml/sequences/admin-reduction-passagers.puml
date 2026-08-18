@@ -26,8 +26,8 @@ BDD --> App : Places libérées remises à disposition
 App --> BO : Réservation mise à jour
 BO --> Admin : Confirmation
 note right of App
-  SPEC-ADMIN-03 AC-1 places réservées mises à jour (CASE-ADMIN-05),
-  AC-2 places remises à disposition (CASE-ADMIN-06).
+  SPEC-ADMIN-03 AC-1 places réservées mises à jour (CASE-ADMIN-023, CASE-ADMIN-024),
+  AC-1 / AC-2 places remises à disposition (CASE-ADMIN-015).
   Places de nouveau réservables →
   [[reservation-1-consultation-a-paiement.svg Interface de réservation (SPEC-RESERVATION-03)]].
   Remboursement de la réduction : hors système.

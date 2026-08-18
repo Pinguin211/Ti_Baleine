@@ -52,8 +52,8 @@ Scénario : Détail d'un créneau et statut d'alerte
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — Le planning affiche les créneaux consolidés par port, avec navire et type de sortie (`CASE-ADMIN-01`).
-- [ ] AC-2 — Tout créneau ayant fait l'objet d'une alerte de pré-annulation affiche un indicateur visuel clair sur la grille de planning.
+- [ ] AC-1 — Le planning affiche les créneaux consolidés par port, avec navire et type de sortie, gère les états vides, les créneaux incomplets, la consultation 24h/24, la résilience réseau et le seuil de rentabilité (`CASE-ADMIN-001`, `CASE-ADMIN-002`, `CASE-ADMIN-004`, `CASE-ADMIN-005`, `CASE-ADMIN-006`, `CASE-ADMIN-007`, `CASE-ADMIN-008`, `CASE-ADMIN-009`).
+- [ ] AC-2 — Tout créneau ayant fait l'objet d'une alerte de pré-annulation affiche un indicateur visuel clair sur la grille de planning (`CASE-ADMIN-003`).
 
 ### Revue IA
 
@@ -128,9 +128,9 @@ Scénario : Annulation administrative d'office pour cause météo
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — L'annulation d'une réservation supprime la totalité de ses billets (`BOOKING_ITEMS`), conserve la réservation avec 0 billet actif, propose la saisie du motif à la volée pour composer le SMS (REQ-020, sans persistance en base) et déclenche la notification au client (REQ-013, `CASE-ADMIN-02`).
-- [ ] AC-2 — Les places correspondant aux billets supprimés sont immédiatement et synchroniquement remises à disposition sur la jauge du créneau (REQ-013, `CASE-ADMIN-03`).
-- [ ] AC-3 — L'annulation déclenche l'envoi immédiat d'un SMS d'information au numéro de téléphone mobile du client (REQ-014, `CASE-ADMIN-04`).
+- [ ] AC-1 — L'annulation d'une réservation supprime la totalité de ses billets (`BOOKING_ITEMS`), conserve la réservation avec 0 billet actif, propose la saisie du motif à la volée pour composer le SMS (REQ-020, sans persistance en base), gère les règles temporelles (jusqu'à H-0, rejet après départ), les blocages de résa à 0 billet, la cohérence transactionnelle et l'absence de flux financier automatique (REQ-013, `CASE-ADMIN-010`, `CASE-ADMIN-011`, `CASE-ADMIN-012`, `CASE-ADMIN-013`, `CASE-ADMIN-014`, `CASE-ADMIN-016`, `CASE-ADMIN-017`, `CASE-ADMIN-018`, `CASE-ADMIN-021`, `CASE-ADMIN-022`).
+- [ ] AC-2 — Les places correspondant aux billets supprimés sont immédiatement et synchroniquement remises à disposition sur la jauge du créneau (REQ-013, `CASE-ADMIN-015`).
+- [ ] AC-3 — L'annulation déclenche l'envoi immédiat d'un SMS d'information au numéro de téléphone mobile du client avec gestion des erreurs de délivrance (REQ-014, `CASE-ADMIN-010`, `CASE-ADMIN-011`, `CASE-ADMIN-012`, `CASE-ADMIN-019`, `CASE-ADMIN-020`).
 
 ### Revue IA
 
@@ -197,9 +197,9 @@ Scénario : Suppression de l'ensemble des billets via l'écran de réduction
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — L'administrateur peut supprimer sélectivement $N$ billets adultes et/ou enfants d'une réservation, libérant synchroniquement $N$ places sur le créneau (`CASE-ADMIN-05`, `CASE-ADMIN-06`).
-- [ ] AC-2 — Toute tentative d'ajout de billet ou de modification de date sur une réservation existante est strictement bloquée (R-18).
-- [ ] AC-3 — Une réduction supprimant la totalité des billets (0 billet restant) applique le traitement complet d'annulation avec motif informatif et SMS de notification (`CASE-ADMIN-09`).
+- [ ] AC-1 — L'administrateur peut supprimer sélectivement $N$ billets adultes et/ou enfants d'une réservation, libérant synchroniquement $N$ places sur le créneau, dans le respect de l'intégrité des quantités, de l'atomicité transactionnelle et sans remboursement automatique (`CASE-ADMIN-023`, `CASE-ADMIN-024`, `CASE-ADMIN-025`, `CASE-ADMIN-031`, `CASE-ADMIN-032`, `CASE-ADMIN-069`).
+- [ ] AC-2 — Toute tentative d'ajout de billet, de modification de date/port, de réduction sur réservation à 0 billet ou sur créneau passé est strictement bloquée (R-18, `CASE-ADMIN-027`, `CASE-ADMIN-028`, `CASE-ADMIN-029`, `CASE-ADMIN-030`).
+- [ ] AC-3 — Une réduction supprimant la totalité des billets (0 billet restant) applique le traitement complet d'annulation avec motif informatif et SMS de notification (`CASE-ADMIN-026`).
 
 ---
 
@@ -237,6 +237,7 @@ Scénario : Connexion administrateur réussie
 | 2 | Champs laissés vides | Blocage à la validation du formulaire côté client. |
 | 3 | Tentatives de connexion infructueuses répétées | Application d'un ralentissement / blocage temporaire contre les attaques par force brute. |
 | 4 | Session expirée après inactivité prolongée | Déconnexion automatique et redirection vers la mire d'authentification. |
+| 5 | Déconnexion manuelle par l'administrateur | Destruction immédiate de la session active et redirection vers la mire d'authentification. |
 
 ### Ce qui n'est pas défini
 
@@ -244,8 +245,9 @@ Scénario : Connexion administrateur réussie
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — L'administrateur peut se connecter avec ses identifiants valides et accéder au tableau de bord (`CASE-ADMIN-07`).
-- [ ] AC-2 — Tout accès non authentifié aux URL du back-office est intercepté et redirigé vers l'écran de connexion.
+- [ ] AC-1 — L'administrateur peut se connecter avec ses identifiants valides, accéder au tableau de bord, maintenir sa session lors de la navigation et respecter la contrainte d'administrateur unique (`CASE-ADMIN-033`, `CASE-ADMIN-034`, `CASE-ADMIN-040`, `CASE-ADMIN-071`).
+- [ ] AC-2 — Tout accès non authentifié aux URL du back-office est intercepté et redirigé, les identifiants erronés ou champs vides sont rejetés, et les mécanismes de protection (anti-bruteforce, expiration de session) sont actifs (`CASE-ADMIN-035`, `CASE-ADMIN-036`, `CASE-ADMIN-037`, `CASE-ADMIN-038`, `CASE-ADMIN-039`).
+- [ ] AC-3 — L'administrateur peut se déconnecter manuellement à tout moment, entraînant la clôture immédiate de la session (`CASE-ADMIN-070`).
 
 ---
 
@@ -293,7 +295,7 @@ Scénario : Visualisation du taux de remplissage le mardi matin à Saint-Gilles
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — Le calcul du taux de remplissage s'effectue sur la base du nombre de billets actifs existants (`BOOKING_ITEMS`) rapporté à la jauge réelle du créneau (12, 24 ou 36 places) et se met à jour en temps réel lors de toute modification (`CASE-ADMIN-08`).
+- [ ] AC-1 — Le calcul du taux de remplissage s'effectue sur la base du nombre de billets actifs existants (`BOOKING_ITEMS`) rapporté à la jauge réelle du créneau (12, 24 ou 36 places) et se met à jour en temps réel lors de toute modification (`CASE-ADMIN-041`, `CASE-ADMIN-042`, `CASE-ADMIN-043`, `CASE-ADMIN-044`, `CASE-ADMIN-045`, `CASE-ADMIN-046`, `CASE-ADMIN-047`, `CASE-ADMIN-072`).
 
 ---
 
@@ -341,6 +343,7 @@ Scénario : Envoi groupé d'une alerte météo bilingue sur deux créneaux du le
 | 3 | Texte du message effacé ou vide | Validation bloquée : le corps du message est obligatoire. |
 | 4 | Échec de délivrance sur un destinataire (numéro erroné ou bounce e-mail) | L'échec individuel est journalisé sans bloquer l'envoi aux autres destinataires de la file d'attente (REQ-106). |
 | 5 | Envoi simultané sur plusieurs créneaux (multi-créneaux) | Traitement groupé en une seule action administrative (R-24). |
+| 6 | Ré-émission d'une alerte sur un créneau déjà « sous pré-alerte » | Envoi du message actualisé aux destinataires avec maintien idempotent du statut « sous pré-alerte » du créneau. |
 
 ### Ce qui n'est pas défini
 
@@ -349,10 +352,10 @@ Scénario : Envoi groupé d'une alerte météo bilingue sur deux créneaux du le
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — L'administrateur peut sélectionner plusieurs créneaux du lendemain et leur envoyer une alerte groupée par SMS et/ou e-mail (REQ-017, R-22, R-24).
-- [ ] AC-2 — L'interface propose des templates bilingues codés en dur qui préremplissent automatiquement le champ de texte modifiable au clic (REQ-018, R-23).
-- [ ] AC-3 — Le message transmis regroupe obligatoirement la version française suivie de la version anglaise dans un corps de message unique (REQ-018, R-26).
-- [ ] AC-4 — L'émission de l'alerte active immédiatement l'affichage de la mention d'avertissement sur les créneaux concernés en ligne s'ils restent ouverts avec des places disponibles (REQ-019, R-25).
+- [ ] AC-1 — L'administrateur peut sélectionner plusieurs créneaux du lendemain et leur envoyer une alerte groupée par SMS et/ou e-mail, avec contrôle de sélection, gestion des échecs individuels et ré-émission idempotente (REQ-017, R-22, R-24, `CASE-ADMIN-048`, `CASE-ADMIN-049`, `CASE-ADMIN-050`, `CASE-ADMIN-051`, `CASE-ADMIN-058`, `CASE-ADMIN-061`, `CASE-ADMIN-073`).
+- [ ] AC-2 — L'interface propose des templates bilingues codés en dur qui préremplissent automatiquement le champ de texte modifiable au clic, avec personnalisation libre et blocage en cas de texte vide (REQ-018, R-23, `CASE-ADMIN-052`, `CASE-ADMIN-053`, `CASE-ADMIN-054`, `CASE-ADMIN-060`).
+- [ ] AC-3 — Le message transmis regroupe obligatoirement la version française suivie de la version anglaise dans un corps de message unique (REQ-018, R-26, `CASE-ADMIN-055`).
+- [ ] AC-4 — L'émission de l'alerte active immédiatement l'affichage de la mention d'avertissement sur les créneaux concernés en ligne s'ils restent ouverts avec des places disponibles ou sans réservation (REQ-019, R-25, `CASE-ADMIN-056`, `CASE-ADMIN-057`, `CASE-ADMIN-059`).
 
 ---
 
@@ -391,5 +394,5 @@ Scénario : Fermeture administrative d'un créneau
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — L'administrateur peut modifier la disponibilité et la configuration d'un créneau depuis son tableau de bord (REQ-011, R-13).
-- [ ] AC-2 — Le système empêche toute mixité d'activités sur un même créneau et navire (R-12).
+- [ ] AC-1 — L'administrateur peut modifier la disponibilité et la configuration d'un créneau depuis son tableau de bord (REQ-011, R-13, `CASE-ADMIN-062`, `CASE-ADMIN-063`, `CASE-ADMIN-064`, `CASE-ADMIN-065`, `CASE-ADMIN-068`).
+- [ ] AC-2 — Le système empêche toute mixité d'activités sur un même créneau et navire ou conflit de naturaliste (R-12, R-15, `CASE-ADMIN-066`, `CASE-ADMIN-067`).
