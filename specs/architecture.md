@@ -195,25 +195,30 @@ src/
 |---|---|---|
 | **`config/`** | `node_modules` uniquement *(0 import interne — constantes pures)* | **`utils/`**, **`schemas/`**, **`env/`**, **`lib/`**, **`services/`**, **`hooks/`**, **`actions/`**, **`components/`** |
 | **`utils/`** | **`config/`**, `node_modules` | **`schemas/`**, **`env/`**, **`lib/`**, **`services/`**, **`hooks/`**, **`actions/`**, **`components/`** |
-| **`schemas/`** | **`config/`**, **`utils/`**, `node_modules` | **`lib/`**, **`services/`**, **`hooks/`**, **`actions/`**, **`components/`**, **`app/`** |
-| **`env/`** | **`config/`**, **`utils/`**, `node_modules` *(+ `env/client.ts` pour `env/server.ts`)* | **`services/`**, **`lib/`**, **`hooks/`**, **`actions/`**, **`app/`** *(exclusivement, selon étanchéité client/server)* |
+| **`schemas/`** | **`config/`**, **`utils/`**, `node_modules` *(aucun import de `env/`)* | **`lib/`**, **`services/`**, **`hooks/`**, **`actions/`**, **`components/`**, **`app/`** |
+| **`env/client.ts`** | **`config/`**, **`utils/`**, `node_modules` | **`services/`**, **`lib/`**, **`hooks/`**, **`actions/`**, **`app/`**, **`env/server.ts`** |
+| **`env/server.ts`** | **`config/`**, **`utils/`**, **`env/client.ts`**, `node_modules` | **`services/server/`**, **`lib/server/`**, **`actions/`**, **`app/`** *(strictement interdit aux `hooks/` et `client/`)* |
 | **`lib/`** | `utils/`, `schemas/`, `config/`, `env/` *(selon client/server)*, `node_modules` | **`services/` uniquement** |
 | **`services/`** | `lib/`, `utils/`, `schemas/`, `config/`, `env/` *(selon client/server)*, `node_modules` | **`actions/`**, **`hooks/`**, **`app/`** *(Server Components pour `services/server/`)* |
-| **`actions/`** | `services/`, `utils/`, `schemas/`, `config/`, **`env/`**, `node_modules` | **`components/`**, **`app/`** |
-| **`hooks/`** | `services/`, `utils/`, `schemas/`, `config/`, **`env/`**, `node_modules` | **`components/` uniquement** |
+| **`actions/`** | `services/`, `utils/`, `schemas/`, `config/`, `env/` *(client & server)*, `node_modules` | **`components/`**, **`app/`** |
+| **`hooks/`** | `services/client/`, `utils/`, `schemas/`, `config/`, **`env/client.ts` uniquement**, `node_modules` | **`components/` uniquement** |
 | **`components/`** | `hooks/`, `actions/`, `utils/`, `schemas/`, `config/`, `components/` | **`app/`**, **`components/`** |
 | **`app/`** | **`components/`**, **`services/server/`**, **`actions/`**, **`env/`**, **`schemas/`** *(+ Next.js router/layouts)* | Racine de l'application (Next.js) |
 
 ---
 
-### Règle d'étanchéité Client / Serveur & Rôle de `src/app/`
+### Règle d'étanchéité Client / Serveur, Rôle de `src/app/` & Isomorphisme des Schémas
 
 * **Sous-dossiers `client/` (`services/client/`, `lib/client/`) & module `src/env/client.ts` :** Code **isomorphe** exécutable sur le navigateur et le serveur. Seules les variables publiques (`NEXT_PUBLIC_*`) y sont exposées.
-* **Sous-dossiers `server/` (`services/server/`, `lib/server/`) & module `src/env/server.ts` :** Code **strictement serveur** (accès DB, secrets, SDK privés). Tout import de ces fichiers dans un composant client (`"use client"`) ou un module client/isomorphe déclenche une erreur bloquante immédiate (`import 'server-only'`).
+* **Sous-dossiers `server/` (`services/server/`, `lib/server/`) & module `src/env/server.ts` :** Code **strictement serveur** (accès DB, secrets, SDK privés). Tout import de ces fichiers dans un composant client (`"use client"`), dans un hook React (`src/hooks/`) ou dans un module client/isomorphe déclenche une erreur bloquante immédiate (`import 'server-only'`).
+* **Hooks React (`src/hooks/`) :** Destinés à la logique d'état et à l'exécution côté client, les hooks ont l'autorisation d'importer **`src/env/client.ts` uniquement** et ont l'interdiction formelle d'importer `src/env/server.ts`.
 * **Server Actions (`src/actions/`) :** Exécutées côté serveur (`'use server'`), elles sont autorisées à importer `src/env/server.ts` (ou `src/env/client.ts`) pour accéder aux variables d'environnement backend et aux secrets de traitement.
 * **Dossier `src/app/` (Next.js App Router Server Components) :**
   * Les pages et layouts (`page.tsx`, `layout.tsx`) s'exécutent côté serveur. Ils sont autorisés à appeler directement **`services/server/`** pour le data-fetching initial (SSR/RSC) et l'injection de props dans les composants ou briques `<Suspense>`, **`actions/`** (Server Actions pour orchestration ou passage aux composants/formulaires), ainsi que **`schemas/`** (typage) et **`env/`** (configuration).
   * `src/app/` a l'interdiction formelle d'importer directement **`lib/`** (qui doit rester encapsulé dans les services) et **`hooks/`** (qui appartiennent aux Client Components).
+* **Isomorphisme strict de `src/schemas/` & Instanciation dynamique (Pattern Factory) :**
+  * La couche `src/schemas/` est **100 % isomorphe** et agnostique à l'environnement : elle a l'**interdiction formelle d'importer `src/env/`** (`client.ts` ou `server.ts`).
+  * Tout schéma de validation nécessitant une valeur issue de l'environnement (ex. URL dynamique, seuil configurable, capacité maximale variable) doit être défini sous la forme d'une **fonction factory dynamique** (ex. `createBookingSchema(options: { maxCapacity: number })`). L'appelant (`services/`, `actions/`, `app/`) se charge d'importer `env/` et d'injecter la valeur à l'instanciation du schéma.
 
 ---
 
@@ -225,6 +230,20 @@ Scénario : Consommation de constantes et d'utilitaires par un schéma Zod
   Quand il valide les données de réservation
   Alors il peut importer des constantes depuis « src/config/pricing.constants.ts »
   Et il peut importer des fonctions de validation depuis « src/utils/date-formatter.ts »
+  Et il n'importe aucun module issu de « src/env/ »
+
+Scénario : Instanciation dynamique d'un schéma dépendant d'une variable d'environnement
+  Étant donné une fonction factory « createUploadSchema(maxFileSize: number) » dans « src/schemas/validation/upload.schema.ts »
+  Et une Server Action dans « src/actions/upload.actions.ts » important « serverEnv » depuis « src/env/server.ts »
+  Quand la Server Action valide le formulaire
+  Alors elle instancie le schéma en passant « serverEnv.MAX_UPLOAD_SIZE » à la factory
+  Et le schéma reste 100 % isomorphe sans importer directement « src/env/ »
+
+Scénario : Consommation exclusive des variables publiques par un Hook React
+  Étant donné un Hook personnalisé dans « src/hooks/domain/use-site-config.ts »
+  Quand il lit la configuration publique de l'application
+  Alors il peut importer « clientEnv » depuis « src/env/client.ts »
+  Et l'import de « src/env/server.ts » lui est formellement interdit
 
 Scénario : Data-fetching serveur direct et utilisation d'actions dans une page Next.js App Router
   Étant donné un Server Component de page dans « src/app/admin/planning/page.tsx »
@@ -243,8 +262,8 @@ Scénario : Consommation directe de l'environnement serveur par une Server Actio
 Scénario : Encapsulation stricte du module env
   Étant donné le module « src/env/client.ts » ou « src/env/server.ts »
   Quand les imports du projet sont analysés
-  Alors « env » n'est importé que par « src/services/ », « src/lib/ », « src/hooks/ », « src/actions/ » ou « src/app/ »
-  Et n'est jamais importé directement par « src/components/ », « src/utils/ » ou « src/config/ »
+  Alors « env » n'est importé que par « src/services/ », « src/lib/ », « src/hooks/ » (client uniquement), « src/actions/ » ou « src/app/ »
+  Et n'est jamais importé directement par « src/schemas/ », « src/components/ », « src/utils/ » ou « src/config/ »
 
 Scénario : Encapsulation de la couche lib par les services
   Étant donné une instance technique dans « src/lib/server/db.ts »
@@ -260,10 +279,12 @@ Scénario : Encapsulation de la couche lib par les services
 |---|---|---|
 | 1 | Un fichier `config/` tente d'importer `utils/`, `schemas/` ou tout autre module interne | **Rejet / Échec du test :** `config/` ne contient que des constantes statiques pures (0 import interne). |
 | 2 | Un fichier `utils/` tente d'importer `schemas/`, `env/`, `services/` ou `lib/` | **Rejet / Échec du test :** `utils/` ne peut importer que `config/` et `node_modules`. |
-| 3 | Un composant dans `components/` tente d'importer directement `env/` | **Rejet / Échec du test :** `components/` ne doit pas importer `env/` directement (passe par props, actions ou hooks). |
-| 4 | Une page dans `src/app/` tente d'importer directement `lib/` ou `hooks/` | **Rejet / Échec du test :** `app/` ne doit pas court-circuiter la couche `services/` et ne peut pas utiliser de hooks React en Server Component. |
-| 5 | Un composant annoté `"use client"` importe un module sous `*/server/` ou `src/env/server.ts` | **Rejet immédiat / Échec de compilation :** violation de l'étanchéité serveur (`server-only`). |
-| 6 | Présence d'un import circulaire (ex. `utils` $\leftrightarrow$ `config`) | **Rejet strict :** aucun cycle de dépendance autorisé. |
+| 3 | Un schéma dans `schemas/` tente d'importer directement `env/client.ts` ou `env/server.ts` | **Rejet / Échec du test :** violation de l'isomorphisme des schémas. Obligation d'utiliser une fonction factory avec injection de paramètres par l'appelant. |
+| 4 | Un hook dans `hooks/` tente d'importer `src/env/server.ts` | **Rejet immédiat / Échec de compilation :** les hooks client ne peuvent importer que `src/env/client.ts` (`server-only` bloque l'accès aux secrets). |
+| 5 | Un composant dans `components/` tente d'importer directement `env/` | **Rejet / Échec du test :** `components/` ne doit pas importer `env/` directement (passe par props, actions ou hooks). |
+| 6 | Une page dans `src/app/` tente d'importer directement `lib/` ou `hooks/` | **Rejet / Échec du test :** `app/` ne doit pas court-circuiter la couche `services/` et ne peut pas utiliser de hooks React en Server Component. |
+| 7 | Un composant annoté `"use client"` importe un module sous `*/server/` ou `src/env/server.ts` | **Rejet immédiat / Échec de compilation :** violation de l'étanchéité serveur (`server-only`). |
+| 8 | Présence d'un import circulaire (ex. `utils` $\leftrightarrow$ `config`) | **Rejet strict :** aucun cycle de dépendance autorisé. |
 
 ---
 
@@ -276,12 +297,13 @@ Scénario : Encapsulation de la couche lib par les services
 ### Critères d'acceptation
 
 - [ ] AC-1 — Le dossier `src/config/` ne contient aucun import relatif pointant vers des modules internes du projet (`CASE-ARCH-011`).
-- [ ] AC-2 — Le dossier `src/utils/` n'importe en interne que `src/config/`, et `src/schemas/` n'importe en interne que `src/config/` et `src/utils/` (`CASE-ARCH-012`).
-- [ ] AC-3 — Le dossier `src/env/` n'est importé que par `src/services/`, `src/lib/`, `src/hooks/`, `src/actions/` et `src/app/` (`CASE-ARCH-013`).
-- [ ] AC-4 — Le dossier `src/lib/` est exclusivement importé par le dossier `src/services/` (`CASE-ARCH-014`).
-- [ ] AC-5 — Les fichiers sous `src/app/` n'importent aucun module interne en dehors de `src/components/`, `src/services/server/`, `src/actions/`, `src/schemas/` et `src/env/` (`CASE-ARCH-015`).
-- [ ] AC-6 — Aucun fichier situé dans un sous-dossier `server/` ou `src/env/server.ts` n'est importé dans un composant client (`"use client"`) ou dans un dossier `client/` (`CASE-ARCH-016`).
-- [ ] AC-7 — L'analyseur statique de graphe ne détecte aucune dépendance circulaire sur l'ensemble du projet (`CASE-ARCH-017`).
+- [ ] AC-2 — Le dossier `src/utils/` n'importe en interne que `src/config/`, et `src/schemas/` n'importe en interne que `src/config/` et `src/utils/` à l'exclusion stricte de `src/env/` (`CASE-ARCH-012`).
+- [ ] AC-3 — Le module `src/env/client.ts` n'est importé que par `src/services/`, `src/lib/`, `src/hooks/`, `src/actions/`, `src/app/` et `src/env/server.ts` (`CASE-ARCH-013`).
+- [ ] AC-4 — Le module `src/env/server.ts` n'est importé que par `src/services/server/`, `src/lib/server/`, `src/actions/` et `src/app/`, à l'exclusion stricte de `src/hooks/` et des modules client (`CASE-ARCH-014`).
+- [ ] AC-5 — Le dossier `src/lib/` est exclusivement importé par le dossier `src/services/` (`CASE-ARCH-015`).
+- [ ] AC-6 — Les fichiers sous `src/app/` n'importent aucun module interne en dehors de `src/components/`, `src/services/server/`, `src/actions/`, `src/schemas/` et `src/env/` (`CASE-ARCH-016`).
+- [ ] AC-7 — Aucun fichier situé dans un sous-dossier `server/` ou `src/env/server.ts` n'est importé dans un composant client (`"use client"`) ou dans un dossier `client/` (`CASE-ARCH-017`).
+- [ ] AC-8 — L'analyseur statique de graphe ne détecte aucune dépendance circulaire sur l'ensemble du projet (`CASE-ARCH-018`).
 
 ---
 
@@ -290,5 +312,7 @@ Scénario : Encapsulation de la couche lib par les services
 | Remarque de l'IA | Décision | Motif |
 |---|---|---|
 | Établir `config/` (0 import) $\rightarrow$ `utils/` (importe `config`) $\rightarrow$ `schemas/` (importe `config`, `utils`) | Acceptée | Fournit un socle transversal clair et modulaire permettant aux schémas Zod et utilitaires de consommer les constantes sans créer de dépendance circulaire. |
-| Restreindre les imports de `env/` à `services/`, `lib/`, `hooks/`, `actions/` et `app/` | Acceptée | Permet aux mutations et orchestrations backend (`actions/`) d'accéder directement à la configuration d'environnement tout en protégeant les composants purs et utilitaires. |
+| Interdire l'import de `env/` dans `schemas/` et imposer le pattern factory dynamique | Acceptée | Préserve la pureté et l'isomorphisme absolu de la couche de validation Zod sans la lier à un environnement d'exécution particulier. |
+| Restreindre `hooks/` à `env/client.ts` uniquement | Acceptée | Empêche formellement l'inclusion de secrets et variables privées serveur dans les hooks d'état exécutés côté client. |
+| Restreindre les imports de `env/` à `services/`, `lib/`, `hooks/` (client), `actions/` et `app/` | Acceptée | Permet aux mutations et orchestrations backend (`actions/`) d'accéder directement à la configuration d'environnement tout en protégeant les composants purs et utilitaires. |
 | Autoriser `app/` à importer `services/server/`, `actions/`, `schemas/` et `env/` | Acceptée | Aligné sur le modèle officiel Next.js App Router (RSC) pour le fetching de données initial et l'orchestration des mutations sans sacrifier l'encapsulation de `lib/`. |
