@@ -53,7 +53,7 @@ Et chaque créneau affiche clairement son port de départ, son horaire et son é
 
 **Nom attendu :**  
 `test_CASE_ADMIN_001_affichage_consolide_grille_planning_multisites_desktop`  
-**Fichier :** `tests/tests-unitaires/admin/spec-admin-01/CASE-ADMIN-001.test.ts`
+**Fichier :** à renseigner après automatisation
 
 ## Revue du test automatisé
 
