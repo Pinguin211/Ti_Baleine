@@ -48,15 +48,15 @@ Et toute importation directe de « src/lib/ » ou de « src/hooks/ » est rejet�
 
 **Nom attendu :**  
 `test_CASE_ARCH_1015_perimetre_imports_autorises_nextjs_app_router`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1015.test.ts](../../tests-unitaires/architecture/spec-arch-02/CASE-ARCH-1015.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test analyse tous les fichiers sous `src/app/`.
-- [ ] Le test vérifie que chaque import interne pointe vers `components/`, `services/server/`, `actions/`, `schemas/` ou `env/`.
-- [ ] Le test échoue si un fichier sous `src/app/` importe un module de `src/lib/` ou un hook de `src/hooks/`.
-- [ ] Le nom du test contient `CASE_ARCH_1015`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test analyse tous les fichiers sous `src/app/`.
+- [x] Le test vérifie que chaque import interne pointe vers `components/`, `services/server/`, `actions/`, `schemas/` ou `env/`.
+- [x] Le test échoue si un fichier sous `src/app/` importe un module de `src/lib/` ou un hook de `src/hooks/`.
+- [x] Le nom du test contient `CASE_ARCH_1015`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

@@ -67,7 +67,7 @@ Et le client B peut désormais réserver ces 2 places
 
 **Nom attendu :**
 `test_CASE_RES_417_verrou_10_min_pendant_paiement_liberation_a_expiration`  
-**Fichier :** [tests/tests-unitaires/case-res-417.test.ts](../../tests-unitaires/case-res-417.test.ts)
+**Fichier :** [tests/tests-unitaires/reservation/case-res-417.test.ts](../../tests-unitaires/reservation/case-res-417.test.ts)
 
 ## Revue du test automatisé
 

@@ -60,7 +60,7 @@ Et le montant à payer reste 105 €
 
 **Nom attendu :**
 `test_CASE_RES_404_bascule_fr_en_conserve_les_donnees_saisies`  
-**Fichier :** [tests/tests-unitaires/case-res-404.test.ts](../../tests-unitaires/case-res-404.test.ts)
+**Fichier :** [tests/tests-unitaires/reservation/case-res-404.test.ts](../../tests-unitaires/reservation/case-res-404.test.ts)
 
 ## Revue du test automatisé
 

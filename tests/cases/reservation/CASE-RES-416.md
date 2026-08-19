@@ -58,7 +58,7 @@ Et aucune place n'est décomptée de la jauge (10 places restantes)
 
 **Nom attendu :**
 `test_CASE_RES_416_paiement_rejete_ou_abandonne_aucune_reservation_jauge_intacte`  
-**Fichier :** [tests/tests-unitaires/case-res-416.test.ts](../../tests-unitaires/case-res-416.test.ts)
+**Fichier :** [tests/tests-unitaires/reservation/case-res-416.test.ts](../../tests-unitaires/reservation/case-res-416.test.ts)
 
 ## Revue du test automatisé
 

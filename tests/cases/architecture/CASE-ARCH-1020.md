@@ -44,15 +44,15 @@ Et toute importation de Server Actions dans « src/services/ », « src/lib/ »,
 
 **Nom attendu :**  
 `test_CASE_ARCH_1020_encapsulation_stricte_actions_reserves_components_et_app`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1020.test.ts](../../tests-unitaires/architecture/spec-arch-02/CASE-ARCH-1020.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test liste l'ensemble des fichiers important des modules de `src/actions/`.
-- [ ] Le test s'assure que chaque fichier appartient à `src/components/` ou `src/app/`.
-- [ ] Le test échoue si un service sous `src/services/` importe une Server Action.
-- [ ] Le nom du test contient `CASE_ARCH_1020`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test liste l'ensemble des fichiers important des modules de `src/actions/`.
+- [x] Le test s'assure que chaque fichier appartient à `src/components/` ou `src/app/`.
+- [x] Le test échoue si un service sous `src/services/` importe une Server Action.
+- [x] Le nom du test contient `CASE_ARCH_1020`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

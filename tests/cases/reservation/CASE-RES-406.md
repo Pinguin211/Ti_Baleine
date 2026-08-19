@@ -56,7 +56,7 @@ Et l'ensemble de la capacité du créneau est bloquée
 
 **Nom attendu :**
 `test_CASE_RES_406_privatisation_grand_bleu_forfait_1100_capacite_bloquee`  
-**Fichier :** [tests/tests-unitaires/case-res-406.test.ts](../../tests-unitaires/case-res-406.test.ts)
+**Fichier :** [tests/tests-unitaires/reservation/case-res-406.test.ts](../../tests-unitaires/reservation/case-res-406.test.ts)
 
 ## Revue du test automatisé
 

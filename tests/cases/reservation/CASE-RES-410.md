@@ -54,7 +54,7 @@ Et aucun montant n'est calculé pour l'enfant de 3 ans
 
 **Nom attendu :**
 `test_CASE_RES_410_enfant_moins_4_ans_rejet_immediat_validation_bloquee`  
-**Fichier :** [tests/tests-unitaires/case-res-410.test.ts](../../tests-unitaires/case-res-410.test.ts)
+**Fichier :** [tests/tests-unitaires/reservation/case-res-410.test.ts](../../tests-unitaires/reservation/case-res-410.test.ts)
 
 ## Revue du test automatisé
 

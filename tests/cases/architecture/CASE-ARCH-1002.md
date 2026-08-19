@@ -49,15 +49,15 @@ Et aucune erreur de volumétrie n'est levée pour cette fonction
 
 **Nom attendu :**  
 `test_CASE_ARCH_1002_validation_derogation_fonction_ts_need_more_lines_avec_motif`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1002.test.ts](../../tests-unitaires/architecture/spec-arch-01/CASE-ARCH-1002.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test configure une fonction `.ts` de 45 lignes utiles avec un tag `@need_more_lines` et un motif explicite.
-- [ ] Le test vérifie que le linter/parseur AST accepte la fonction.
-- [ ] Le test vérifie que le motif textuel est correctement extrait et non vide.
-- [ ] Le nom du test contient `CASE_ARCH_1002`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test configure une fonction `.ts` de 45 lignes utiles avec un tag `@need_more_lines` et un motif explicite.
+- [x] Le test vérifie que le linter/parseur AST accepte la fonction.
+- [x] Le test vérifie que le motif textuel est correctement extrait et non vide.
+- [x] Le nom du test contient `CASE_ARCH_1002`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

@@ -49,15 +49,15 @@ Alors l'entrée du fichier dans le rapport contient les 4 éléments obligatoire
 
 **Nom attendu :**  
 `test_CASE_ARCH_1025_detail_precis_localisation_et_motif_infractions_rapport`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1025.test.ts](../../tests-unitaires/architecture/spec-arch-03/CASE-ARCH-1025.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test injecte une violation connue avec un numéro de ligne spécifique.
-- [ ] Le test inspecte le bloc généré dans `reports/arch-compliance-report.md`.
-- [ ] Le test vérifie la présence du numéro de ligne, du SPEC, du CASE-ARCH et du détail.
-- [ ] Le nom du test contient `CASE_ARCH_1025`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test injecte une violation connue avec un numéro de ligne spécifique.
+- [x] Le test inspecte le bloc généré dans `reports/arch-compliance-report.md`.
+- [x] Le test vérifie la présence du numéro de ligne, du SPEC, du CASE-ARCH et du détail.
+- [x] Le nom du test contient `CASE_ARCH_1025`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

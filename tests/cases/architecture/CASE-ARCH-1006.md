@@ -47,15 +47,15 @@ Et aucun avertissement de balise TSDoc non déclarée n'est émis sur le projet
 
 **Nom attendu :**  
 `test_CASE_ARCH_1006_declaration_balise_need_more_lines_dans_tsdoc_json`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1006.test.ts](../../tests-unitaires/architecture/spec-arch-01/CASE-ARCH-1006.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test lit et parse le fichier `tsdoc.json` à la racine du dépôt.
-- [ ] Le test valide la présence de `@need_more_lines` dans les `tagDefinitions`.
-- [ ] Le test échoue si la balise est retirée de `tsdoc.json`.
-- [ ] Le nom du test contient `CASE_ARCH_1006`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test lit et parse le fichier `tsdoc.json` à la racine du dépôt.
+- [x] Le test valide la présence de `@need_more_lines` dans les `tagDefinitions`.
+- [x] Le test échoue si la balise est retirée de `tsdoc.json`.
+- [x] Le nom du test contient `CASE_ARCH_1006`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

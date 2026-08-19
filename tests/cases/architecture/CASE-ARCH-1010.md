@@ -44,15 +44,15 @@ Et toute tentative d'importer « utils/ », « schemas/ », « env/ » ou tout a
 
 **Nom attendu :**  
 `test_CASE_ARCH_1010_isolation_stricte_config_zero_import_interne`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1010.test.ts](../../tests-unitaires/architecture/spec-arch-02/CASE-ARCH-1010.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test analyse l'ensemble des fichiers sous `src/config/`.
-- [ ] Le test vérifie qu'aucun import relatif (`./`, `../`) ou alias (`@/`, `src/`) vers des modules internes n'existe.
-- [ ] Le test simule un import de `src/utils/` dans `src/config/` et s'assure qu'il échoue.
-- [ ] Le nom du test contient `CASE_ARCH_1010`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test analyse l'ensemble des fichiers sous `src/config/`.
+- [x] Le test vérifie qu'aucun import relatif (`./`, `../`) ou alias (`@/`, `src/`) vers des modules internes n'existe.
+- [x] Le test simule un import de `src/utils/` dans `src/config/` et s'assure qu'il échoue.
+- [x] Le nom du test contient `CASE_ARCH_1010`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

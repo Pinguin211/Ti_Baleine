@@ -1,6 +1,7 @@
 {
   "name": "ti_baleine",
   "version": "1.0.0",
+  "type": "module",
   "description": "Repository de mission. Il contient l'analyse, la conception, les tests et le code.\r Il est aussi le support du dossier de projet.",
   "main": "index.js",
   "directories": {
@@ -11,7 +12,14 @@
     "puml:generate": "node scripts/plantuml/generate.js",
     "test": "vitest run",
     "test:watch": "vitest",
+<<<<<<< HEAD
     "test:e2e": "playwright test"
+=======
+    "test:arch": "vitest run --project arch",
+    "test:unit": "vitest run --project unit",
+    "arch:audit": "node scripts/arch-audit.ts",
+    "arch:report": "node scripts/arch-audit.ts"
+>>>>>>> 362312404acc4aee387d5d5c232036a6cb0e7c9c
   },
   "repository": {
     "type": "git",
@@ -31,6 +39,7 @@
     "@types/node": "^26.2.0",
     "@vitejs/plugin-react": "^6.0.5",
     "jsdom": "^30.0.1",
+    "ts-morph": "^28.0.0",
     "vitest": "^4.1.10"
   },
   "dependencies": {

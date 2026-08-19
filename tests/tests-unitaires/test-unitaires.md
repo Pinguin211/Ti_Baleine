@@ -52,16 +52,19 @@ Ce que les tests unitaires **ne couvrent pas** : l'affichage, la navigation, la
 soumission d'un vrai formulaire, l'envoi réel d'un SMS ou d'un paiement — ça
 reste le rôle de Playwright et de [tests/cases/](../cases/).
 
-## 3. Outillage — décision prise : Vitest + jsdom + React
+## 3. Outillage — décision prise : Vitest + jsdom + React + ts-morph
 
 **Vitest** a été retenu (2026-08-18). Installé en `devDependency` (`vitest ^4.1.10`)
-et configuré dans [`vitest.config.ts`](../../vitest.config.ts) à la racine du projet.
+et configuré dans [`vitest.config.ts`](../../vitest.config.ts) à la racine du projet avec deux projets distincts :
+- **`arch`** (`environment: node`) : tests de conformité architecturale statique (`SPEC-ARCH-01`, `SPEC-ARCH-02`, `SPEC-ARCH-03`) via analyse AST (`ts-morph`) ;
+- **`unit`** (`environment: jsdom`) : tests unitaires métier et composants React.
 
 Packages installés :
 
 | Package | Rôle |
 |---|---|
-| `vitest` | runner de tests |
+| `vitest` | runner de tests (support multi-projets) |
+| `ts-morph` | analyse statique AST TypeScript (règles d'architecture) |
 | `jsdom` | émulation DOM dans Node |
 | `@vitejs/plugin-react` | transformation JSX pour les tests React |
 | `@testing-library/react` | utilitaires de rendu de composants React |
@@ -69,18 +72,21 @@ Packages installés :
 
 Points clés de la configuration :
 
-| Paramètre | Valeur | Raison |
-|---|---|---|
-| `environment` | `jsdom` | DOM disponible, tests de composants React possibles |
-| `include` | `tests/tests-unitaires/**/*.test.{ts,tsx}` | dossier dédié, non colocalisé |
-| `setupFiles` | `tests/tests-unitaires/setup.ts` | charge `@testing-library/jest-dom` pour tous les tests |
-| `globals` | `false` | imports explicites (`import { describe, it, expect } from 'vitest'`) |
+| Paramètre | Projet `arch` | Projet `unit` | Raison |
+|---|---|---|---|
+| `environment` | `node` | `jsdom` | Pas de DOM pour l'AST statique ; DOM pour React |
+| `include` | `tests/tests-unitaires/architecture/**/*.test.ts` | `tests/tests-unitaires/**/*.test.{ts,tsx}` (hors architecture) | Séparation claire des types de tests |
+| `setupFiles` | Aucun | `tests/tests-unitaires/setup.ts` | charge `@testing-library/jest-dom` pour l'UI |
+| `globals` | `false` | `false` | imports explicites (`import { describe, it, expect } from 'vitest'`) |
 
 Scripts disponibles :
 
 ```bash
-npm test           # vitest run — exécution unique (CI)
-npm run test:watch # vitest     — mode watch (développement)
+npm test            # vitest run — exécute tous les projets (arch + unit)
+npm run test:watch  # vitest     — mode watch (développement)
+npm run test:arch   # vitest run --project arch — tests d'architecture uniquement
+npm run test:unit   # vitest run --project unit — tests unitaires React/métier
+npm run arch:report # scanne src/ et génère reports/arch-compliance-report.md (audit)
 ```
 
 ## 4. Convention

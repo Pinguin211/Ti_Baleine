@@ -63,7 +63,7 @@ Et le créneau conserve sa mention d'avertissement
 
 **Nom attendu :**
 `test_CASE_RES_402_creneau_sous_alerte_mention_affichee_avant_et_apres_reservation`  
-**Fichier :** [tests/tests-unitaires/case-res-402.test.ts](../../tests-unitaires/case-res-402.test.ts)
+**Fichier :** [tests/tests-unitaires/reservation/case-res-402.test.ts](../../tests-unitaires/reservation/case-res-402.test.ts)
 
 ## Revue du test automatisé
 

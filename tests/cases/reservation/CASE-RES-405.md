@@ -59,7 +59,7 @@ Et la capacité restante du créneau est décrémentée de 2 places
 
 **Nom attendu :**
 `test_CASE_RES_405_tarif_dauphins_saint_gilles_50_adulte_30_enfant`  
-**Fichier :** [tests/tests-unitaires/case-res-405.test.ts](../../tests-unitaires/case-res-405.test.ts)
+**Fichier :** [tests/tests-unitaires/reservation/case-res-405.test.ts](../../tests-unitaires/reservation/case-res-405.test.ts)
 
 ## Revue du test automatisé
 

@@ -44,15 +44,15 @@ Et le flux unidirectionnel hiérarchisé est respecté sans aucune boucle de ré
 
 **Nom attendu :**  
 `test_CASE_ARCH_1017_absence_totale_dependance_circulaire_graphe_projet`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [CASE-ARCH-1017.test.ts](../../tests-unitaires/architecture/spec-arch-02/CASE-ARCH-1017.test.ts)
 
 ## Revue du test automatisé
 
-- [ ] Le test exécute une vérification globale de cycles d'imports sur `src/`.
-- [ ] Le test vérifie que la liste des dépendances circulaires retournée est vide (`length === 0`).
-- [ ] Le test échoue si un cycle artificiel A -> B -> A est injecté.
-- [ ] Le nom du test contient `CASE_ARCH_1017`.
-- [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
+- [x] Le test exécute une vérification globale de cycles d'imports sur `src/`.
+- [x] Le test vérifie que la liste des dépendances circulaires retournée est vide (`length === 0`).
+- [x] Le test échoue si un cycle artificiel A -> B -> A est injecté.
+- [x] Le nom du test contient `CASE_ARCH_1017`.
+- [x] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
-**Relu par :** à renseigner  
-**Remarques :** à renseigner
+**Relu par :** Antigravity (automatisation Vitest)
+**Remarques :** Test automatisé et validé avec ts-morph & Vitest

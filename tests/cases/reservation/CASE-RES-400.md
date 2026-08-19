@@ -64,7 +64,7 @@ Et la capacité restante du créneau est décrémentée de 2 places
 
 **Nom attendu :**
 `test_CASE_RES_400_reservation_individuelle_saint_gilles_payee_jauge_moins_2`  
-**Fichier :** [tests/tests-unitaires/case-res-400.test.ts](../../tests-unitaires/case-res-400.test.ts)
+**Fichier :** [tests/tests-unitaires/reservation/case-res-400.test.ts](../../tests-unitaires/reservation/case-res-400.test.ts)
 
 ## Revue du test automatisé
 
