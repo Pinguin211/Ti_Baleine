@@ -7,7 +7,9 @@
 
 Nouvelle demande client : passage d'un **paiement intégral en ligne** à un
 **paiement en deux temps** (acompte puis solde), avec impact sur la politique
-de remboursement.
+de remboursement et sur l'**interface de consultation des réservations**
+(visualisation des réservations payées partiellement ou complètement en plus
+de la possibilité d'annuler).
 
 ---
 
@@ -19,6 +21,9 @@ précisément l'ambiguïté qu'il faudra lever.
 - « Je souhaite qu'au lieu de payer en totalité sur le site, je veux qu'un
   acompte de 30 % soit payé et le reste par un lien envoyé automatiquement la
   veille de la sortie ou sur place en carte bancaire. »
+- « Désormais dans l'interface de consultation des réservations, en plus de la
+  possibilité d'annuler, je veux pouvoir voir les réservations payées
+  complètement ou partiellement. »
 
 ## 2. Questions posées et réponses obtenues
 
@@ -36,6 +41,7 @@ suite.
 | Q02 | Le taux d'acompte de 30 % s'applique-t-il aussi aux privatisations ? | Non, l'acompte pour les privatisations est de 50 % de la réservation. |
 | Q03 | Pour une réservation le jour même, la personne paie-t-elle toujours un acompte ? Si oui, doit-on lui envoyer un lien ? | Un acompte reste toujours dû. En revanche, la personne devra payer le solde sur place : pas d'envoi de lien dans ce cas. |
 | Q04 | Retour sur Q01 : le remboursement se calcule-t-il sur le montant déjà payé, ou sur le montant total de la réservation ? | Le client revient sur sa réponse initiale (Q01) : le remboursement se fait toujours par pourcentage du **montant total** de la réservation. Exemple donné : si le client a payé un acompte de 30 % et que le barème prévoit un remboursement de 50 % du montant total, la part à rembourser (50 % du total) dépasse ce qui a déjà été perçu (30 %) — dans ce cas, **aucun remboursement n'est effectué**. |
+| Q05 | Que souhaitez-vous pouvoir visualiser dans l'interface de consultation des réservations concernant l'état des paiements ? | En plus de la possibilité d'annuler une réservation, l'interface doit permettre de visualiser directement si chaque réservation est payée complètement (solde réglé) ou partiellement (acompte versé seul). |
 
 Une question posée et **restée sans réponse** figure quand même ici, avec
 « sans réponse » : c'est une trace, et elle sert au §8.
@@ -71,6 +77,21 @@ d'un lien la veille — aucun lien n'est donc envoyé dans ce cas. Ceci lève un
 partie de l'ambiguïté AMB-18 pour ce cas précis, sans trancher le cas général
 des réservations faites à l'avance.
 
+### Interface de consultation des réservations (statut de paiement)
+
+En lien direct avec la mise en place du paiement scindé, le client formule une
+attente claire sur l'**interface de consultation des réservations** (back-office
+administrateur) :
+- l'administrateur conserve la possibilité d'**annuler des réservations** (règle
+  établie au CR-03) ;
+- l'interface doit désormais afficher explicitement l'état de règlement de chaque
+  dossier : **payée partiellement** (seul l'acompte de 30 % ou 50 % a été encaissé,
+  le solde restant dû) ou **payée complètement** (acompte et solde intégralement
+  réglés).
+
+Cette visibilité permettra à l'administrateur de suivre au quotidien les encaissements
+en attente et de vérifier l'état financier des passagers avant l'embarquement.
+
 ### Politique de remboursement : retour du client sur ce point (Q04)
 
 Le client confirme que le barème de remboursement existant (RM-07/RM-08/RM-09
@@ -105,6 +126,7 @@ max(0, 30 % − 50 %) = **0** — conforme à « aucun remboursement n'est fait 
 
 | Personne / rôle | Ce qu'elle fait | Comment on l'a découverte |
 |---|---|---|
+| Administrateur (Ti'Baleine) | Consulte le planning et les réservations, visualise le statut de paiement (partiel / complet) et procède aux annulations | Demande directe du client (§1, Q05) |
 
 ## 5. Règles métier découvertes
 
@@ -115,6 +137,7 @@ max(0, 30 % − 50 %) = **0** — conforme à « aucun remboursement n'est fait 
 | RM-53 | Pour les sorties en privatisation, le taux d'acompte est de 50 % (et non 30 %) ; le solde suit les mêmes modalités que le régime général (RM-51). | « Acompte de 50 % de la réservation pour les privatisations » | Q02 | ✅ oui |
 | RM-54 | Pour une réservation effectuée le jour même de la sortie, l'acompte reste dû, mais le solde est réglé exclusivement sur place ; aucun lien de paiement n'est envoyé. | « Toujours un acompte à payer mais la personne devra payer le solde sur place donc pas d'envoi de lien » | Q03 | ✅ oui |
 | RM-55 | En cas d'annulation, le pourcentage de remboursement du barème (RM-07/RM-08/RM-09) s'applique au **montant total** de la réservation (et non au montant déjà payé — annule et remplace RM-52). Le remboursement effectif est plafonné au montant déjà payé et ne peut jamais être négatif : `remboursement = max(0, montant payé − (100 % − taux du barème) × montant total)`. | « Le remboursement se fait donc toujours par pourcentage du montant total. Si le client a payé 30 % et qu'il annule et que le prestataire doit rembourser 50 % de la résa, aucun remboursement n'est fait » | Q04 | ✅ oui |
+| RM-56 | L'interface de consultation des réservations doit afficher le statut de paiement de chaque réservation (payée partiellement ou payée complètement), en plus de permettre d'effectuer des annulations de réservations. | « Dans l'interface de consultation des réservations, en plus de la possibilité d'annuler, je veux pouvoir voir les réservations payées complètement ou partiellement » | §1, Q05 | ✅ oui |
 
 ## 6. Ambiguïtés détectées
 
@@ -126,6 +149,7 @@ ambiguïté détectée mais non levée reste une ambiguïté : elle va au §8.
 | AMB-17 | « Un lien envoyé automatiquement la veille de la sortie » | §1 | (a) Envoi à heure fixe, éventuellement aligné sur l'heure déjà retenue pour l'alerte de pré-annulation (18 h, cf. RM-44) ; (b) Heure distincte, non encore définie. | ❌ non |
 | AMB-18 | « Ou sur place en carte bancaire » | §1 | (a) Choix laissé au client dès la réservation entre paiement du solde par lien ou sur place ; (b) Le paiement sur place est un mode de secours si le solde n'a pas été réglé via le lien avant le départ. | ⚠️ partiellement — tranché pour les réservations le jour même (RM-54 : sur place obligatoire, pas de lien) ; non tranché pour les réservations faites à l'avance |
 | AMB-19 | « Aucun remboursement n'est fait » (Q04) | Q04 | (a) Le principe général est que le montant déjà payé est simplement conservé quand il ne couvre pas la pénalité, sans jamais rien réclamer de plus au client (formule RM-55) ; (b) Le client n'a validé que l'exemple donné (acompte 30 % / barème 50 %), et un cas plus défavorable (ex. acompte non payé du tout, ou pénalité largement supérieure) pourrait appeler une réclamation du solde de pénalité. | ❌ non |
+| AMB-20 | « Voir les réservations payées complètement ou partiellement » | §1 / Q05 | (a) Simple affichage d'un badge ou indicateur d'état sur chaque réservation dans la liste ; (b) Présence d'un système de filtres par statut de paiement (ex. afficher uniquement les réservations partiellement payées avec solde dû). | ❌ non |
 
 ## 7. Contraintes évoquées
 
@@ -136,6 +160,7 @@ ambiguïté détectée mais non levée reste une ambiguïté : elle va au §8.
 | C-39 | Le taux d'acompte diffère selon le type de sortie : **30 %** en régime général, **50 %** pour les privatisations. | Q02 | Métier / Financière |
 | C-40 | Pour une réservation le jour même, le solde doit être payé **exclusivement sur place** ; le système ne doit **pas** envoyer de lien de paiement dans ce cas. | Q03 | Fonctionnelle |
 | C-41 | Le système doit calculer le remboursement sur le **montant total** de la réservation via le barème (RM-07/08/09), tout en plafonnant le résultat au montant déjà payé et à un minimum de 0 (jamais de somme réclamée au client en complément). | Q04 | Métier / Financière |
+| C-42 | L'interface de consultation des réservations doit afficher l'état du paiement (partiel / complet) pour chaque réservation, en plus de conserver l'action d'annulation. | §1 / Q05 | Fonctionnelle / IHM |
 
 ## 8. Questions à poser au prochain entretien
 
@@ -149,6 +174,7 @@ Formulées, pas juste évoquées. Priorisées : le prochain passage est court.
 | 4 | Ce nouveau mode de paiement en deux temps remplace-t-il totalement le paiement intégral en ligne (RM-05), ou les deux doivent-ils cohabiter au choix du client ? | |
 | 5 | Confirmez-vous la formule déduite pour le remboursement (`max(0, montant payé − (100 % − taux du barème) × montant total)`), au-delà du seul exemple donné (acompte 30 % / barème 50 %) ? | |
 | 6 | Quand le montant déjà payé ne couvre pas la pénalité, le solde manquant est-il définitivement abandonné, ou peut-il être réclamé au client dans certains cas ? | |
+| 7 | Dans l'interface de consultation des réservations, un affichage par badge/statut sur chaque ligne suffit-il, ou souhaitez-vous un système de filtre / recherche dédié par état de paiement (partiel / complet) ? | |
 
 ## 9. Ce que nous n'avons pas abordé
 
@@ -164,3 +190,4 @@ pas touchés. C'est là que se cachent les découvertes tardives et coûteuses.
 - Prestataire d'envoi SMS et coûts associés (point resté ouvert depuis le CR n° 3).
 - Disponibilité et hébergement du nom de domaine **tibaleine.re** (point resté ouvert depuis le CR n° 3).
 - Textes CGV / mentions légales, conformité RGPD, budget, délais de mise en service et contrat de maintenance (points restés ouverts depuis les CR n° 1 et 2).
+
