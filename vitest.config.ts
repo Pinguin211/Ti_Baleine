@@ -2,9 +2,10 @@ import { defineConfig, defineProject } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
 /**
- * Configuration Vitest — deux projets :
- *   • arch  (node)  — Tests de conformité architecturale (analyse AST statique)
- *   • unit  (jsdom) — Tests unitaires React / métier
+ * Configuration Vitest — trois projets :
+ *   • arch        (node)  — Tests de conformité architecturale (analyse AST statique)
+ *   • facturation (node)  — Tests unitaires du domaine facturation (calcul/orchestration, sans DOM)
+ *   • unit        (jsdom) — Tests unitaires React / métier
  */
 export default defineConfig({
   test: {
@@ -18,6 +19,14 @@ export default defineConfig({
         },
       }),
       defineProject({
+        test: {
+          name: 'facturation',
+          environment: 'node',
+          include: ['tests/tests-unitaires/facturation/**/*.test.ts'],
+          globals: false,
+        },
+      }),
+      defineProject({
         plugins: [react()],
         test: {
           name: 'unit',
@@ -26,7 +35,10 @@ export default defineConfig({
             'tests/tests-unitaires/**/*.test.ts',
             'tests/tests-unitaires/**/*.test.tsx',
           ],
-          exclude: ['tests/tests-unitaires/architecture/**'],
+          exclude: [
+            'tests/tests-unitaires/architecture/**',
+            'tests/tests-unitaires/facturation/**',
+          ],
           setupFiles: ['tests/tests-unitaires/setup.ts'],
           globals: false,
         },
