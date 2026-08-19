@@ -20,4 +20,4 @@ docs/uml/**/*.svg
 ./report
 
 #out
-./out
+out
