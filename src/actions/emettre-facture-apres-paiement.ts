@@ -1,6 +1,14 @@
-import type { ReservationFacturable, PaiementValide, FacturePdf } from './facture.types';
-import type { EnvoiCourriel, DepotEmissionFacture, Horloge } from './ports';
-import { genererFacturePdf } from './genererFacturePdf';
+import type {
+  ReservationFacturable,
+  PaiementValide,
+  FacturePdf,
+} from '../schemas/types/facturation.types';
+import type {
+  EnvoiCourriel,
+  DepotEmissionFacture,
+  Horloge,
+} from '../schemas/types/facturation-ports.types';
+import { genererFacturePdf } from '../services/server/generer-facture-pdf';
 
 export interface EmissionFactureCommande {
   reservation: ReservationFacturable;

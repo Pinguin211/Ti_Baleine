@@ -6,15 +6,15 @@
 import { it, expect, vi, afterEach } from 'vitest';
 import fs from 'node:fs';
 import fsPromises from 'node:fs/promises';
-import type { ReservationFacturable, PaiementValide } from '../../../src/domain/facturation/facture.types';
+import type { ReservationFacturable, PaiementValide } from '../../../src/schemas/types/facturation.types';
 import type {
   EnvoiCourriel,
   DepotEmissionFacture,
   Horloge,
   CourrielFacturation,
   StatutEmissionFacture,
-} from '../../../src/domain/facturation/ports';
-import { emettreFactureApresPaiement } from '../../../src/domain/facturation/emettreFactureApresPaiement';
+} from '../../../src/schemas/types/facturation-ports.types';
+import { emettreFactureApresPaiement } from '../../../src/actions/emettre-facture-apres-paiement';
 
 class EnvoiCourrielEnMemoire implements EnvoiCourriel {
   public messagesEnvoyes: CourrielFacturation[] = [];

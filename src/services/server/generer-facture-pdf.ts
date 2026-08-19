@@ -1,4 +1,8 @@
-import type { ReservationFacturable, PaiementValide, FacturePdf } from './facture.types';
+import type {
+  ReservationFacturable,
+  PaiementValide,
+  FacturePdf,
+} from '../../schemas/types/facturation.types';
 
 export function genererFacturePdf(
   _reservation: ReservationFacturable,
