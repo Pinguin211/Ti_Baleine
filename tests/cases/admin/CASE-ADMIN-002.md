@@ -41,7 +41,8 @@ Et le détail du port d'embarquement « Saint-Gilles » est rappelé
 
 - la modification de l'affectation des navires ou de l'activité (couvert par `CASE-ADMIN-064`, `CASE-ADMIN-065`) ;
 - l'affichage de l'alerte de pré-annulation (couvert par `CASE-ADMIN-003`) ;
-- le calcul mathématique du taux de remplissage (couvert par `CASE-ADMIN-041`).
+- le calcul mathématique du taux de remplissage (couvert par `CASE-ADMIN-041`) ;
+- l'affichage des statuts financiers (« Payée complètement » / « Payée partiellement ») des réservations le jour J (couvert par `CASE-ADMIN-077`).
 
 ---
 
