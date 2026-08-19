@@ -22,6 +22,7 @@
     "test:unit": "vitest run --project unit",
     "arch:audit": "node scripts/arch-audit.ts",
     "arch:report": "node scripts/arch-audit.ts",
+    "concat": "node scripts/concat.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio"
