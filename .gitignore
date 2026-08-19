@@ -15,3 +15,6 @@ docs/uml/**/*.svg
 
 # macOS
 .DS_Store
+
+# Reports
+./report

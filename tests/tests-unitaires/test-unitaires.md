@@ -82,10 +82,11 @@ Points clés de la configuration :
 Scripts disponibles :
 
 ```bash
-npm test           # vitest run — exécute tous les projets (arch + unit)
-npm run test:watch # vitest     — mode watch (développement)
-npm run test:arch  # vitest run --project arch — tests d'architecture uniquement
-npm run test:unit  # vitest run --project unit — tests unitaires React/métier
+npm test            # vitest run — exécute tous les projets (arch + unit)
+npm run test:watch  # vitest     — mode watch (développement)
+npm run test:arch   # vitest run --project arch — tests d'architecture uniquement
+npm run test:unit   # vitest run --project unit — tests unitaires React/métier
+npm run arch:report # scanne src/ et génère reports/arch-compliance-report.md (audit)
 ```
 
 ## 4. Convention
