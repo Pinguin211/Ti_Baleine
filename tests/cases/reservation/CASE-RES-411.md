@@ -55,7 +55,7 @@ Alors aucun créneau n'est disponible sur cette date
 
 **Nom attendu :**
 `test_CASE_RES_411_saint_leu_hors_mardi_jeudi_matin_aucun_creneau`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [tests/tests-unitaires/case-res-411.test.ts](../../tests-unitaires/case-res-411.test.ts)
 
 ## Revue du test automatisé
 

@@ -62,7 +62,7 @@ Et aucune de ces tentatives n'a donné accès à l'étape de paiement
 
 **Nom attendu :**
 `test_CASE_RES_407_nom_prenom_email_manquants_rejet_formulaire_contact`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [tests/tests-unitaires/case-res-407.test.ts](../../tests-unitaires/case-res-407.test.ts)
 
 ## Revue du test automatisé
 

@@ -63,7 +63,7 @@ Alors la réservation est enregistrée à l'état « payée » et le créneau d�
 
 **Nom attendu :**
 `test_CASE_RES_401_reservation_saint_leu_majoration_10_euros_par_personne`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [tests/tests-unitaires/case-res-401.test.ts](../../tests-unitaires/case-res-401.test.ts)
 
 ## Revue du test automatisé
 

@@ -57,7 +57,7 @@ Et aucune place n'est décomptée de la jauge
 
 **Nom attendu :**
 `test_CASE_RES_408_reservation_moins_2h_avant_depart_creneau_clos_rejet`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [tests/tests-unitaires/case-res-408.test.ts](../../tests-unitaires/case-res-408.test.ts)
 
 ## Revue du test automatisé
 

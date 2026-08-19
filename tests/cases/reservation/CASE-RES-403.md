@@ -61,7 +61,7 @@ Et l'ensemble de la capacité du créneau est bloquée
 
 **Nom attendu :**
 `test_CASE_RES_403_privatisation_tikap_saint_leu_forfait_600_capacite_bloquee`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [tests/tests-unitaires/case-res-403.test.ts](../../tests-unitaires/case-res-403.test.ts)
 
 ## Revue du test automatisé
 

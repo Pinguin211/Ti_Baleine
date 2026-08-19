@@ -53,7 +53,7 @@ Et aucune place n'est décomptée de la jauge
 
 **Nom attendu :**
 `test_CASE_RES_413_demande_superieure_aux_places_restantes_blocage_et_message`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [tests/tests-unitaires/case-res-413.test.ts](../../tests-unitaires/case-res-413.test.ts)
 
 ## Revue du test automatisé
 

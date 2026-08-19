@@ -55,7 +55,7 @@ Et le créneau n'est plus proposé aux clients suivants
 
 **Nom attendu :**
 `test_CASE_RES_414_derniere_place_acceptee_creneau_complet_retire_de_l_offre`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [tests/tests-unitaires/case-res-414.test.ts](../../tests-unitaires/case-res-414.test.ts)
 
 ## Revue du test automatisé
 

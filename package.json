@@ -10,7 +10,8 @@
   "scripts": {
     "puml:generate": "node scripts/plantuml/generate.js",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "repository": {
     "type": "git",

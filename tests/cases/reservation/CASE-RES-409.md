@@ -51,7 +51,7 @@ Alors aucun créneau n'est proposé sur cette date
 
 **Nom attendu :**
 `test_CASE_RES_409_fermeture_annuelle_25_decembre_1er_janvier_aucun_creneau`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [tests/tests-unitaires/case-res-409.test.ts](../../tests-unitaires/case-res-409.test.ts)
 
 ## Revue du test automatisé
 

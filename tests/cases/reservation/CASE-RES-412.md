@@ -54,7 +54,7 @@ Alors cette privatisation est indisponible sur ce créneau
 
 **Nom attendu :**
 `test_CASE_RES_412_saint_gilles_mardi_jeudi_matin_jauge_24_tikap_indisponible`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** [tests/tests-unitaires/case-res-412.test.ts](../../tests-unitaires/case-res-412.test.ts)
 
 ## Revue du test automatisé
 
