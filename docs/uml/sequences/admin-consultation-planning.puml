@@ -25,7 +25,7 @@ BO --> Admin : Créneaux (jour, heure, port de départ)
 Admin -> BO : Consulte le détail d'un créneau
 BO --> Admin : Type de sortie, navire affecté, remplissage (réservées / capacité)
 note right of App
-  SPEC-ADMIN-01 AC-1 (CASE-ADMIN-01).
+  SPEC-ADMIN-01 AC-1 (CASE-ADMIN-001, CASE-ADMIN-002).
   Taux de remplissage détaillé →
   [[admin-taux-remplissage.svg SPEC-ADMIN-05]].
 end note

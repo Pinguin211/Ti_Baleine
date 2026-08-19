@@ -1,58 +1,133 @@
 @startuml mpd
-title Modèle Physique de Données (MPD) — Ti'Baleine
+title **Modèle Physique de Données (MPD) — Ti'Baleine**\n//Persistance PostgreSQL, UUID et Énumérations Métier (Strict Domaine)//
 
 skinparam monochrome false
 skinparam roundcorner 8
 skinparam linetype ortho
 skinparam defaultFontName Arial
 skinparam dpi 150
+skinparam shadowing false
+skinparam packageStyle rectangle
 
-entity "users" as users {
-  * **id** : BIGSERIAL / UUID <<PK>>
-  --
-  * **email** : VARCHAR(255) <<UQ, NOT NULL>>
-  password_hash : VARCHAR(255) <<NULLABLE>>
-  * **first_name** : VARCHAR(100) <<NOT NULL>>
-  * **last_name** : VARCHAR(100) <<NOT NULL>>
-  phone : VARCHAR(20) <<NULLABLE>>
-  * **role** : ENUM('Client', 'Administrateur') <<NOT NULL, DEFAULT 'Client'>>
-  * **created_at** : TIMESTAMP WITH TIME ZONE <<NOT NULL, DEFAULT NOW()>>
-  * **updated_at** : TIMESTAMP WITH TIME ZONE <<NOT NULL, DEFAULT NOW()>>
+' ==========================================================
+' 1. ÉNUMÉRATIONS (Custom ENUM Types)
+' ==========================================================
+package "Énumérations (Types ENUM)" as EnumsPkg #ECEFF1 {
+  enum role_enum <<ENUM>> {
+    CLIENT
+    ADMIN
+  }
+
+  enum port_enum <<ENUM>> {
+    SAINT_GILLES
+    SAINT_LEU
+  }
+
+  enum activite_enum <<ENUM>> {
+    BALEINES
+    DAUPHINS
+    PRIVATISATION_TIKAP
+    PRIVATISATION_GRAND_BLEU
+  }
+
+  enum type_billet_enum <<ENUM>> {
+    ADULTE
+    ENFANT
+    PRIVATISATION
+  }
+
+  enum statut_reservation_enum <<ENUM>> {
+    EN_ATTENTE_PAIEMENT
+    CONFIRMEE
+    ANNULEE
+  }
+
+  enum statut_emission_facture_enum <<ENUM>> {
+    EN_ATTENTE
+    ENVOYEE_SUCCES
+    ECHEC_ENVOI
+  }
 }
 
-entity "bookings" as bookings {
-  * **id** : BIGSERIAL / UUID <<PK>>
-  --
-  * **booking_ref** : VARCHAR(20) <<UQ, NOT NULL>>
-  invoice_number : VARCHAR(50) <<UQ, NULLABLE>>
-  * **user_id** : BIGINT / UUID <<FK, NOT NULL>>
-  * **excursion_type** : ENUM('Sortie Baleines', 'Sortie Dauphins', 'Privatisation Tikap', 'Privatisation Grand Bleu') <<NOT NULL>>
-  * **departure_date** : DATE <<NOT NULL>>
-  * **departure_time** : ENUM('07:00', '09:00', '10:00', '14:00') <<NOT NULL>>
-  * **status** : ENUM('En attente', 'Confirmée', 'Annulée') <<NOT NULL, DEFAULT 'En attente'>>
-  * **created_at** : TIMESTAMP WITH TIME ZONE <<NOT NULL, DEFAULT NOW()>>
+' ==========================================================
+' 2. TABLES PERSISTÉES DU DOMAINE
+' ==========================================================
+package "Tables Persistées (Base Relationnelle)" as TablesPkg #FFFFFF {
+
+  entity "users" as users {
+    * **id** : UUID <<PK, DEFAULT gen_random_uuid()>>
+    --
+    * **nom** : VARCHAR(100) <<NOT NULL>>
+    * **prenom** : VARCHAR(100) <<NOT NULL>>
+    * **email** : VARCHAR(255) <<UQ, NOT NULL>>
+    * **telephone** : VARCHAR(20) <<NOT NULL>>
+    * **role** : role_enum <<NOT NULL, DEFAULT 'CLIENT'>>
+    * **mot_de_passe** : VARCHAR(255) <<NULLABLE>>
+  }
+
+  entity "alertes" as alertes {
+    * **id** : UUID <<PK, DEFAULT gen_random_uuid()>>
+    --
+    * **message** : TEXT <<NOT NULL>>
+  }
+
+  entity "creneaux" as creneaux {
+    * **id** : UUID <<PK, DEFAULT gen_random_uuid()>>
+    --
+    * **date** : DATE <<NOT NULL>>
+    * **heure_depart** : TIME <<NOT NULL>>
+    * **port** : port_enum <<NOT NULL>>
+    * **activite** : activite_enum <<NOT NULL>>
+    * **est_ouvert** : BOOLEAN <<NOT NULL, DEFAULT TRUE>>
+    * **alerte_id** : UUID <<FK, NULLABLE>>
+  }
+
+  entity "reservations" as reservations {
+    * **id** : UUID <<PK, DEFAULT gen_random_uuid()>>
+    --
+    * **reference** : VARCHAR(20) <<UQ, NOT NULL>>
+    * **statut** : statut_reservation_enum <<NOT NULL, DEFAULT 'EN_ATTENTE_PAIEMENT'>>
+    * **creneau_id** : UUID <<FK, NOT NULL>>
+    * **user_id** : UUID <<FK, NOT NULL>>
+  }
+
+  entity "billets" as billets {
+    * **id** : UUID <<PK, DEFAULT gen_random_uuid()>>
+    --
+    * **reservation_id** : UUID <<FK, NOT NULL>>
+    * **type_billet** : type_billet_enum <<NOT NULL>>
+  }
+
+  entity "paiements" as paiements {
+    * **id** : UUID <<PK, DEFAULT gen_random_uuid()>>
+    --
+    * **reservation_id** : UUID <<FK, UQ, NOT NULL>>
+    * **reference_transaction** : VARCHAR(100) <<UQ, NOT NULL>>
+    * **montant** : DECIMAL(10,2) <<NOT NULL>>
+    * **date_paiement** : TIMESTAMPTZ <<NOT NULL, DEFAULT NOW()>>
+    * **reference_facture** : VARCHAR(50) <<UQ, NOT NULL>>
+    * **statut_emission_facture** : statut_emission_facture_enum <<NOT NULL, DEFAULT 'EN_ATTENTE'>>
+    * **date_emission_facture** : TIMESTAMPTZ <<NULLABLE>>
+  }
 }
 
-entity "booking_items" as booking_items {
-  * **id** : BIGSERIAL / UUID <<PK>>
-  --
-  * **booking_id** : BIGINT / UUID <<FK, NOT NULL, ON DELETE CASCADE>>
-  * **passenger_type** : ENUM('Adulte', 'Enfant', 'Forfait Privatisation') <<NOT NULL>>
-}
+' ==========================================================
+' 3. RELATIONS PHYSIQUES (Contraintes Foreign Keys)
+' ==========================================================
+alertes ||--o{ creneaux : "FK: alerte_id (SET NULL)"
+creneaux ||--o{ reservations : "FK: creneau_id (RESTRICT)"
+users ||--o{ reservations : "FK: user_id (RESTRICT)"
+reservations ||--o{ billets : "FK: reservation_id (CASCADE)"
+reservations ||--o| paiements : "FK: reservation_id (RESTRICT / 1..1)"
 
-entity "payments" as payments {
-  * **id** : BIGSERIAL / UUID <<PK>>
-  --
-  * **booking_id** : BIGINT / UUID <<FK, NOT NULL, ON DELETE RESTRICT>>
-  * **transaction_ref** : VARCHAR(100) <<UQ, NOT NULL>>
-  * **amount_cents** : INTEGER <<NOT NULL>>
-  * **status** : ENUM('Réussi', 'Échoué', 'Remboursé') <<NOT NULL>>
-  raw_data : JSONB / TEXT <<NULLABLE>>
-  * **paid_at** : TIMESTAMP WITH TIME ZONE <<NOT NULL, DEFAULT NOW()>>
-}
-
-users ||--o{ bookings : "FK: user_id"
-bookings ||--|{ booking_items : "FK: booking_id (CASCADE)"
-bookings ||--o{ payments : "FK: booking_id"
+' ==========================================================
+' 4. LIAISONS AUX TYPES ÉNUMÉRÉS
+' ==========================================================
+users .down.> role_enum : "role"
+creneaux .down.> port_enum : "port"
+creneaux .down.> activite_enum : "activite"
+reservations .down.> statut_reservation_enum : "statut"
+billets .down.> type_billet_enum : "type_billet"
+paiements .down.> statut_emission_facture_enum : "statut_emission_facture"
 
 @enduml

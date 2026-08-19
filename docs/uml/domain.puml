@@ -1,0 +1,346 @@
+@startuml
+!theme plain
+top to bottom direction
+skinparam roundcorner 10
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+title **Diagramme de Classes du Domaine Métier — Ti'Baleine**\n//Traçabilité avec les Spécifications (specs/reservation.md, specs/facturation.md, specs/admin.md)//
+
+' ==========================================================
+' 1. CONFIGURATIONS CONSTANTES (Fichiers en dur / Invariants)
+' ==========================================================
+package "Configurations Constantes (fichiers en dur)" as ConfigPkg #F8F9FA {
+    class ConfigBateau <<(C,#B0BEC5) Constante>> {
+        +bateau: Bateau
+        +capacite: Integer
+    }
+    note bottom of ConfigBateau
+      **SPEC-RESERVATION-03, SPEC-ADMIN-01, SPEC-ADMIN-05**
+      - TIKAP : 12 places (opère à St-Leu mar/jeu matin)
+      - GRAND BLEU : 24 places (opère à St-Gilles)
+      - Jauge max selon navire(s) mobilisé(s) (R-03, C-04)
+    end note
+
+    class ConfigSkipper <<(C,#B0BEC5) Constante>> {
+        +skipper: Skipper
+        +naturaliste: Boolean
+    }
+    note bottom of ConfigSkipper
+      **SPEC-ADMIN-07, R-15, C-19**
+      - Définit les qualifications des skippers de la flotte
+      - naturaliste = true : unique ressource habilitée à encadrer les sorties Baleines (R-15)
+    end note
+
+    class ConfigPort <<(C,#B0BEC5) Constante>> {
+        +port: Port
+        +majorationIndividuelle: Float
+        +joursOuverts: List<String>
+    }
+    note bottom of ConfigPort
+      **SPEC-RESERVATION-03, SPEC-ADMIN-01**
+      - Saint-Gilles : 7j/7 (créneaux 7h, 10h, 14h), majoration 0 €
+      - Saint-Leu : mar/jeu matin (9h00), majoration +10 €/pers
+      - Référence : R-01, R-05, R-20, C-03, C-11
+    end note
+
+    class ConfigActivite <<(C,#B0BEC5) Constante>> {
+        +activite: Activite
+        +categorie: CategorieActivite
+        +tarifBaseAdulte: Float
+        +tarifBaseEnfant: Float
+        +forfait: Float
+        +necessiteNaturaliste: Boolean
+    }
+    note bottom of ConfigActivite
+      **SPEC-RESERVATION-03, SPEC-ADMIN-07**
+      - Baleines : 65 € / 40 €, naturaliste obligatoire unique (R-15)
+      - Dauphins : 50 € / 30 €, sans naturaliste
+      - Privatisation Tikap : forfait 600 €
+      - Privatisation Grand Bleu : forfait 1 100 €
+      - Référence : R-04, R-12, R-19, C-12, C-19
+    end note
+}
+
+' ==========================================================
+' 2. ENTITÉS PERSISTÉES DU DOMAINE (État métier)
+' ==========================================================
+package "Entités Persistées (état métier)" as PersistedPkg {
+
+    class User <<(E,#90CAF9) Persistée>> {
+        +nom: String
+        +prenom: String
+        +email: String
+        +telephone: String
+        +role: Role
+        +motDePasse: String [0..1]
+    }
+    note right of User
+      **SPEC-RESERVATION-03, SPEC-ADMIN-04**
+      - motDePasse = null : mode invité (client sans compte, mobile obligatoire pour SMS)
+      - motDePasse != null : utilisateur authentifiable (profil unique ADMIN desktop sécurisé - C-16, REQ-103)
+    end note
+
+    class Alerte <<(E,#90CAF9) Persistée>> {
+        +message: String
+    }
+    note right of Alerte
+      **SPEC-ADMIN-06, SPEC-RESERVATION-03**
+      - Émission groupée J-1 18h par l'admin sur 1..* créneaux (SPEC-ADMIN-06)
+      - Message bilingue combiné FR + EN (R-26, C-23)
+      - Active la mention d'avertissement sur le créneau en ligne (REQ-019, R-25)
+      - Ouvre droit au remboursement 100 % (R-27, R-28, C-36)
+    end note
+
+    class Creneau <<(E,#90CAF9) Persistée>> {
+        +date: Date
+        +heureDepart: Time
+        +port: Port
+        +activite: Activite
+        +estOuvert: Boolean
+        +calculerJauge(): Integer
+        +calculerPlacesReservees(): Integer
+        +placesRestantes(): Integer
+        +estReservable(): Boolean
+    }
+    note right of Creneau
+      **SPEC-RESERVATION-03, SPEC-ADMIN-01, SPEC-ADMIN-05, SPEC-ADMIN-07**
+      - Jauge max : 36 standard, 24 mar/jeu matin St-Gilles, 12 St-Leu
+      - Clôture automatique à H-2 (R-11, C-07)
+      - Fermeture annuelle : 25 déc & 1er janv (R-02, C-02)
+      - Seuil de maintien : 6 passagers payants (R-09)
+      - Exclusivité d'activité par créneau/navire (R-12, C-18)
+    end note
+
+    class Reservation <<(E,#90CAF9) Persistée>> {
+        +reference: String
+        +statut: StatutReservation
+        +calculerMontantTotal(): Float
+    }
+    note right of Reservation
+      **SPEC-RESERVATION-03, SPEC-ADMIN-02, SPEC-ADMIN-03**
+      - Réservation individuelle : regroupe 1..* billets (ADULTE / ENFANT)
+      - Privatisation : regroupe 1 billet forfaitaire (PRIVATISATION)
+      - Annulation admin : libération synchrone des places (SPEC-ADMIN-02)
+      - Réduction passagers admin : sans ajout ni report (SPEC-ADMIN-03)
+      - Conserve son enregistrement avec 0 billet actif si annulée
+    end note
+
+    class Billet <<(E,#90CAF9) Persistée>> {
+        +typeBillet: TypeBillet
+    }
+    note right of Billet
+      **SPEC-RESERVATION-03, SPEC-ADMIN-02, SPEC-ADMIN-03**
+      - ADULTE : >= 12 ans (plein tarif calculé par config)
+      - ENFANT : 4 à 11 ans inclus (tarif réduit calculé par config)
+      - PRIVATISATION : billet unique représentant le forfait du navire privatisé
+      - Moins de 4 ans : accès strictement interdit (R-06)
+      - Tout billet présent est actif (supprimé lors d'annulation/réduction)
+    end note
+
+    class Paiement <<(E,#90CAF9) Persistée>> {
+        +referenceTransaction: String
+        +montant: Float
+        +datePaiement: DateTime
+        +referenceFacture: String
+        +statutEmissionFacture: StatutEmissionFacture
+        +dateEmissionFacture: DateTime
+    }
+    note right of Paiement
+      **SPEC-RESERVATION-03, SPEC-FAC-02**
+      - Règlement 100 % par carte bancaire sécurisée (REQ-006, R-07)
+      - Présent uniquement si validé avec succès
+      - Déclenche la génération à la volée d'une facture acquittée PDF
+        (non stockée sur disque) et son envoi immédiat par e-mail (SPEC-FAC-02)
+      - referenceFacture : identifiant unique de la facture (ex. "FACT-2026-00123")
+      - statutEmissionFacture / dateEmissionFacture : persistés pour tracer
+        le succès ou l'échec d'envoi (AC-3) et garantir l'idempotence en cas
+        de webhook de paiement dupliqué (cas limite 4, AC-7)
+      - En cas d'échec SMTP, seul le statut passe à ECHEC_ENVOI ; un nouvel
+        essai d'envoi à la volée reste possible (cas limite 1, AC-4)
+    end note
+}
+
+' ==========================================================
+' 3. ENTITÉS TEMPORAIRES (En transit / Événementielles)
+' ==========================================================
+package "Entités Temporaires (en transit)" as TempPkg #FFFDE7 {
+    class Facture <<(T,#FFE082) Temporaire>> {
+        +referenceFacture: String
+        +referenceReservation: String
+        +referenceTransaction: String
+        +dateEmission: DateTime
+        +destinataireEmail: String
+        +nomClient: String
+        +portDepart: Port
+        +activite: Activite
+        +datePrestation: Date
+        +heurePrestation: Time
+        +nombreAdultes: Integer [0..1]
+        +nombreEnfants: Integer [0..1]
+        +forfaitPrivatisation: Float [0..1]
+        +montantTotalTTC: Float
+        +estAcquittee: Boolean
+    }
+    note right of Facture
+      **SPEC-FAC-02 (Facturation dynamique)**
+      - Facture acquittée PDF générée à la volée en mémoire (non stockée sur disque)
+      - Transmise immédiatement par courriel transactionnel lors du paiement réussi
+      - Détail complet : références (facture, réservation, transaction), port,
+        prestation, ventilation passagers (adultes/enfants) ou forfait privatisation,
+        tarifs TTC et mention acquittée (AC-1, AC-2)
+      - Traçabilité persistée dans l'entité Paiement (succès/échec SMTP)
+    end note
+
+    class NotificationSMS <<(T,#FFE082) Temporaire>> {
+        +destinataireTelephone: String
+        +message: String
+        +dateEnvoi: DateTime
+    }
+    note right of NotificationSMS
+      **SPEC-ADMIN-02, SPEC-ADMIN-03, SPEC-ADMIN-06**
+      - SMS d'information émis lors de l'annulation d'une réservation (avec motif)
+      - SMS d'alerte météo groupée diffusé la veille à 18h (message combiné FR + EN)
+    end note
+
+    class NotificationEmail <<(T,#FFE082) Temporaire>> {
+        +destinataireEmail: String
+        +sujet: String
+        +corpsMessage: String
+        +dateEnvoi: DateTime
+    }
+    note right of NotificationEmail
+      **SPEC-FAC-02, SPEC-ADMIN-06**
+      - Courriel transactionnel de confirmation avec Facture PDF en pièce jointe
+      - Courriel d'alerte météo groupée diffusé la veille à 18h (message combiné FR + EN)
+    end note
+}
+
+' ==========================================================
+' 4. ÉNUMÉRATIONS
+' ==========================================================
+package "Énumérations" as EnumPkg #ECEFF1 {
+    enum Role {
+        CLIENT
+        ADMIN
+    }
+
+    enum Port {
+        SAINT_GILLES
+        SAINT_LEU
+    }
+
+    enum Activite {
+        BALEINES
+        DAUPHINS
+        PRIVATISATION_TIKAP
+        PRIVATISATION_GRAND_BLEU
+    }
+
+    enum Bateau {
+        TIKAP
+        GRAND_BLEU
+    }
+
+    enum Skipper {
+        SKIPPER_1
+        SKIPPER_2
+    }
+
+    enum CategorieActivite {
+        INDIVIDUELLE
+        PRIVATISATION
+    }
+
+    enum TypeBillet {
+        ADULTE
+        ENFANT
+        PRIVATISATION
+    }
+
+    enum StatutReservation {
+        EN_ATTENTE_PAIEMENT
+        CONFIRMEE
+        ANNULEE
+    }
+
+    enum StatutEmissionFacture {
+        EN_ATTENTE
+        ENVOYEE_SUCCES
+        ECHEC_ENVOI
+    }
+}
+
+' ==========================================================
+' ALIGNEMENT VERTICAL DES PACKAGES & ÉLÉMENTS
+' ==========================================================
+ConfigPkg -[hidden]down-> PersistedPkg
+PersistedPkg -[hidden]down-> TempPkg
+TempPkg -[hidden]down-> EnumPkg
+
+' ==========================================================
+' RELATIONS APPLICATIVES DU DOMAINE (Flux vertical)
+' ==========================================================
+Alerte "0..1" -down-> "1..*" Creneau : cible > \n**SPEC-ADMIN-06, SPEC-RESERVATION-03**
+Creneau "1" *-down-> "0..*" Reservation : regroupe > \n**SPEC-RESERVATION-03, SPEC-ADMIN-01**
+User "1" -down-> "0..*" Reservation : effectue / gère > \n**SPEC-RESERVATION-03, SPEC-ADMIN-04**
+Reservation "1" *-down-> "0..*" Billet : contient > \n**SPEC-RESERVATION-03, SPEC-ADMIN-02, SPEC-ADMIN-03**
+Reservation "1" -down-> "0..1" Paiement : est réglée par > \n**SPEC-RESERVATION-03, SPEC-FAC-02**
+
+' Flux de facturation à la volée et notifications
+Paiement "1" -down-> "1" Facture : génère à la volée > \n**SPEC-FAC-02**
+Facture "1" -down-> "1" NotificationEmail : est jointe à > \n**SPEC-FAC-02**
+Reservation "1" -down-> "0..*" NotificationSMS : déclenche (si annulation) > \n**SPEC-ADMIN-02, SPEC-ADMIN-03**
+Alerte "1" -down-> "0..*" NotificationSMS : diffuse par SMS > \n**SPEC-ADMIN-06**
+Alerte "1" -down-> "0..*" NotificationEmail : diffuse par Email > \n**SPEC-ADMIN-06**
+
+' ==========================================================
+' DÉPENDANCES MÉTIER VERS LES CONFIGURATIONS CONSTANTES
+' ==========================================================
+' Le créneau lit la configuration de l'activité pour obtenir les tarifs de base et la contrainte de naturaliste
+Creneau .down.> ConfigActivite : s'appuie sur > \n**SPEC-RESERVATION-03 (Tarifs/Prestation)**
+
+' Le créneau lit la configuration du port pour connaître les jours d'ouverture et la majoration géographique (+10 € St-Leu)
+Creneau .down.> ConfigPort : s'appuie sur > \n**SPEC-RESERVATION-03 (Jours/Majoration)**
+
+' ==========================================================
+' LIAISONS DES CONFIGURATIONS AVEC LES ÉNUMÉRATIONS
+' ==========================================================
+' Clé de configuration reliant chaque bateau à son énumération
+ConfigBateau -down-> Bateau : identifié par >
+
+' Clé de configuration reliant chaque skipper à son énumération
+ConfigSkipper -down-> Skipper : identifié par >
+
+' Clé de configuration reliant chaque paramétrage de port à son énumération
+ConfigPort -down-> Port : identifié par >
+
+' Clé de configuration reliant chaque paramétrage d'activité à son énumération
+ConfigActivite -down-> Activite : identifié par >
+
+' Classification de l'activité (Individuelle ou Privatisation)
+ConfigActivite -down-> CategorieActivite : classé par >
+
+' ==========================================================
+' TYPAGE DES ENTITÉS DU DOMAINE PAR LES ÉNUMÉRATIONS
+' ==========================================================
+' Rôle de l'utilisateur : CLIENT (mode invité) ou ADMIN (back-office)
+User -down-> Role : typé par >
+
+' Port d'embarquement du créneau : SAINT_GILLES ou SAINT_LEU
+Creneau -down-> Port : localisé à >
+
+' Prestation proposée sur le créneau : BALEINES, DAUPHINS, PRIVATISATION...
+Creneau -down-> Activite : propose >
+
+' Typage du billet pour le calcul tarifaire : ADULTE (>=12 ans), ENFANT (4-11 ans) ou PRIVATISATION (forfait)
+Billet -down-> TypeBillet : catégorisé par >
+
+' Cycle de vie de la commande : EN_ATTENTE_PAIEMENT, CONFIRMEE, ANNULEE
+Reservation -down-> StatutReservation : statut >
+
+' Statut d'émission de la facture acquittée par e-mail
+Paiement -down-> StatutEmissionFacture : statut émission >
+
+@enduml

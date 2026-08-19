@@ -12,14 +12,14 @@
 
 ### Règle
 
-> L'administrateur peut consulter le planning consolidé des réservations par port, jour et créneau horaire, visualiser les jauges réelles et identifier immédiatement les créneaux complets ou placés sous alerte de pré-annulation.
+> L'administrateur peut consulter le planning consolidé des réservations par port, jour et créneau horaire, et identifier immédiatement les créneaux placés sous alerte de pré-annulation.
 
 ### Portée
 
 - Couvre l'affichage consolidé de la grille de planning multi-sites : Saint-Gilles (7h, 10h, 14h tous les jours) et Saint-Leu (9h les mardis et jeudis).
-- Couvre la visualisation des jauges réelles (12 places à Saint-Leu, 24 places le mardi et jeudi matin à Saint-Gilles, 36 places standard à Saint-Gilles).
 - Couvre l'affichage de l'état d'alerte de pré-annulation sur les créneaux ciblés la veille à 18h.
 - Ne couvre pas la décision manuelle d'annuler un départ sous le seuil de maintien (6 passagers) : reste manuelle, hors système.
+- Ne couvre pas le calcul et la visualisation du taux de remplissage / jauges réelles (12, 24 ou 36 places) → `SPEC-ADMIN-05`.
 - Ne couvre pas l'authentification au back-office → `SPEC-ADMIN-04`.
 - Ne couvre pas l'annulation d'une réservation → `SPEC-ADMIN-02`.
 - Ne couvre pas l'émission de l'alerte de pré-annulation → `SPEC-ADMIN-06`.
@@ -36,7 +36,7 @@ Scénario : Affichage de la grille du planning consolidé
 Scénario : Détail d'un créneau et statut d'alerte
   Étant donné un créneau affiché sur le planning
   Quand l'administrateur le consulte
-  Alors il voit le type de sortie affecté, les navires mobilisés (Tikap et/ou Grand Bleu), le nombre de places réservées sur la jauge réelle (12, 24 ou 36 places — R-10) et un indicateur visuel explicite si le créneau est sous alerte de pré-annulation (R-25)
+  Alors il voit le type de sortie affecté, les navires mobilisés (Tikap et/ou Grand Bleu) et un indicateur visuel explicite si le créneau est sous alerte de pré-annulation (R-25)
 ```
 
 ### Cas limites
@@ -46,24 +46,14 @@ Scénario : Détail d'un créneau et statut d'alerte
 | 1 | Aucun créneau programmé pour la journée consultée | Le planning affiche un état vide explicite (aucun écran figé ni liste factice). |
 | 2 | Créneau sans navire affecté | Le créneau est affiché avec un statut distinctif « non affecté ». |
 | 3 | Créneau sans type de sortie renseigné | Le créneau est affiché avec un statut « type non renseigné ». |
-| 4 | Créneau au remplissage 0 (aucune réservation) | Le remplissage s'affiche normalement à 0, sans traitement particulier. |
-| 5 | Créneau complet (remplissage = jauge du créneau) | Un libellé distinctif « complet » est affiché avec un badge visuel. |
-| 6 | Nombre de réservations supérieur à la jauge du créneau (incohérence de données) | Une alerte visuelle d'incohérence est affichée. |
-| 7 | Consultation du planning à toute heure de la journée | Le planning reste consultable en permanence sans restriction horaire. |
-| 8 | Perte de connexion réseau pendant le chargement | Un message d'erreur explicite est affiché avec un bouton permettant de réessayer. |
-| 9 | Créneau du mardi ou jeudi 7h/10h à Saint-Gilles | Jauge affichée plafonnée à 24 places (Grand Bleu seul, rotation Tikap vers Saint-Leu — R-01, R-10). |
-| 10 | Créneau à Saint-Leu (mardi ou jeudi 9h) | Jauge affichée fixée à 12 places (Tikap seul — R-03, R-10). |
-| 11 | Créneau standard à Saint-Gilles (hors mar/jeu matin) | Jauge à 36 places (Tikap et Grand Bleu — R-10). |
-| 12 | Créneau sous alerte de pré-annulation émise la veille | Un badge visuel distinctif « Sous pré-alerte » apparaît sur la carte du créneau. |
-
-### Ce qui n'est pas défini
-
-- Format visuel exact d'affichage du remplissage (pourcentage, fraction ex. 18/24, ou les deux) — relève du design UI.
+| 4 | Consultation du planning à toute heure de la journée | Le planning reste consultable en permanence sans restriction horaire. |
+| 5 | Perte de connexion réseau pendant le chargement | Un message d'erreur explicite est affiché avec un bouton permettant de réessayer. |
+| 6 | Créneau sous alerte de pré-annulation émise la veille | Un badge visuel distinctif « Sous pré-alerte » apparaît sur la carte du créneau. |
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — Le planning affiche les créneaux consolidés par port, avec navire, type de sortie, jauge réelle (12, 24 ou 36 places) et statut de remplissage (`CASE-ADMIN-01`).
-- [ ] AC-2 — Tout créneau ayant fait l'objet d'une alerte de pré-annulation affiche un indicateur visuel clair sur la grille de planning.
+- [ ] AC-1 — Le planning affiche les créneaux consolidés par port, avec navire et type de sortie, gère les états vides, les créneaux incomplets, la consultation 24h/24, la résilience réseau et le seuil de rentabilité (`CASE-ADMIN-001`, `CASE-ADMIN-002`, `CASE-ADMIN-004`, `CASE-ADMIN-005`, `CASE-ADMIN-006`, `CASE-ADMIN-007`, `CASE-ADMIN-008`, `CASE-ADMIN-009`).
+- [ ] AC-2 — Tout créneau ayant fait l'objet d'une alerte de pré-annulation affiche un indicateur visuel clair sur la grille de planning (`CASE-ADMIN-003`).
 
 ### Revue IA
 
@@ -74,7 +64,7 @@ Scénario : Détail d'un créneau et statut d'alerte
 
 ---
 
-## SPEC-ADMIN-02 — Annulation d'une réservation (suppression totale des billets) et traçabilité
+## SPEC-ADMIN-02 — Annulation d'une réservation (suppression totale des billets) et notification client
 
 **Exigence :** REQ-013, REQ-014, REQ-020 (avec R-16, R-17, R-27, R-28, Contraintes C-08, C-09, C-10, C-24, REQ-106, REQ-107)
 **Statut :** validée
@@ -82,19 +72,20 @@ Scénario : Détail d'un créneau et statut d'alerte
 
 ### Règle
 
-> L'administrateur peut annuler une réservation depuis le back-office via une action préconfigurée qui supprime l'intégralité des billets (`BOOKING_ITEMS`) rattachés à la commande, ce qui libère immédiatement et de façon synchrone toutes les places sur le créneau, consigne obligatoirement le motif d'annulation pour traçabilité (REQ-020), et déclenche l'envoi automatique d'un SMS d'information au client (REQ-014), tandis que la fiche de réservation est conservée (avec 0 billet actif) pour l'historique et la conformité comptable.
+> L'administrateur peut annuler une réservation depuis le back-office via une action préconfigurée qui supprime l'intégralité des billets (`BOOKING_ITEMS`) rattachés à la commande, ce qui libère immédiatement et de façon synchrone toutes les places sur le créneau, permet la saisie ou la sélection d'un motif d'annulation à la volée (REQ-020) pour composer le SMS de notification au client (REQ-014) — sans enregistrement durable du motif en base —, tandis que la fiche de réservation est conservée (avec 0 billet actif) pour l'historique et la conformité comptable.
 
 ### Portée
 
 - Couvre l'annulation d'une réservation à l'initiative de l'administrateur (motif météo/technique ou suite à demande d'un client).
 - **Architecture technique unifiée :** L'action d'annulation totale utilise la même fonction back-end de suppression de billets que la réduction (`SPEC-ADMIN-03`), préconfigurée pour retirer **la totalité des billets actifs (`BOOKING_ITEMS`)** de la réservation en une seule opération.
 - Couvre la conservation de l'entité réservation (`BOOKINGS`) en base de données avec son historique de paiement initial et 0 billet actif (aucun enregistrement détruit).
-- Couvre la sélection et la consignation obligatoire du motif d'annulation :
+- Couvre la saisie/sélection du motif d'annulation à des fins informatives pour composer le message de notification envoyé au client :
   - *Annulation administrative météo/technique suite à alerte* (remboursement dérogatoire à 100 % manuel hors système — R-27)
   - *Désistement / annulation « par peur » du client suite à alerte* (remboursement dérogatoire à 100 % manuel hors système — R-28)
   - *Annulation standard hors alerte*
+  - Le motif sert exclusivement à la notification client et n'est pas persisté sur l'entité réservation.
 - Couvre la libération synchrone et immédiate des places sur le créneau de réservation (remises en vente jusqu'à H-2).
-- Couvre le déclenchement automatique du SMS transactionnel d'information au numéro de téléphone mobile du client.
+- Couvre le déclenchement automatique de l'entité temporaire de notification (SMS transactionnel d'information) au numéro de téléphone mobile du client.
 - Ne couvre pas les opérations financières de remboursement bancaire (gérées 100 % manuellement hors système selon le CDC v4, C-10).
 
 ### Scénarios nominaux
@@ -106,15 +97,15 @@ Scénario : Annulation complète d'une réservation via suppression de tous ses 
   Quand l'administrateur clique sur le bouton « Annuler toute la réservation »
   Et sélectionne le motif « Annulation client par peur suite à alerte météo »
   Alors la fonction technique supprime les 2 billets (BOOKING_ITEMS) associés à la réservation
-  Et la réservation est conservée avec 0 billet actif et son motif consigné en base pour traçabilité (REQ-020, R-28)
+  Et la réservation est conservée avec 0 billet actif
   Et les 2 places sont immédiatement remises à disposition sur l'interface de réservation (REQ-013)
-  Et un SMS transactionnel d'information est automatiquement transmis au numéro mobile du client (REQ-014)
+  Et un SMS transactionnel de notification contenant le message informatif est automatiquement transmis au numéro mobile du client (REQ-014)
 
 Scénario : Annulation administrative d'office pour cause météo
   Étant donné une réservation confirmée avec 3 billets
   Quand l'administrateur déclenche l'annulation d'office pour cause météo
   Et renseigne le motif « Annulation administrative météo »
-  Alors les 3 billets sont supprimés de la réservation, les places sont libérées sur le créneau et le SMS d'information est envoyé au client
+  Alors les 3 billets sont supprimés de la réservation, les places sont libérées sur le créneau et la notification SMS d'information est envoyée au client
 ```
 
 ### Cas limites
@@ -137,16 +128,16 @@ Scénario : Annulation administrative d'office pour cause météo
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — L'annulation d'une réservation supprime la totalité de ses billets (`BOOKING_ITEMS`), conserve la réservation avec 0 billet et consigne obligatoirement le motif d'annulation sélectionné (REQ-013, REQ-020, `CASE-ADMIN-02`).
-- [ ] AC-2 — Les places correspondant aux billets supprimés sont immédiatement et synchroniquement remises à disposition sur la jauge du créneau (REQ-013, `CASE-ADMIN-03`).
-- [ ] AC-3 — L'annulation déclenche l'envoi immédiat d'un SMS d'information au numéro de téléphone mobile du client (REQ-014, `CASE-ADMIN-04`).
+- [ ] AC-1 — L'annulation d'une réservation supprime la totalité de ses billets (`BOOKING_ITEMS`), conserve la réservation avec 0 billet actif, propose la saisie du motif à la volée pour composer le SMS (REQ-020, sans persistance en base), gère les règles temporelles (jusqu'à H-0, rejet après départ), les blocages de résa à 0 billet, la cohérence transactionnelle et l'absence de flux financier automatique (REQ-013, `CASE-ADMIN-010`, `CASE-ADMIN-011`, `CASE-ADMIN-012`, `CASE-ADMIN-013`, `CASE-ADMIN-014`, `CASE-ADMIN-016`, `CASE-ADMIN-017`, `CASE-ADMIN-018`, `CASE-ADMIN-021`, `CASE-ADMIN-022`).
+- [ ] AC-2 — Les places correspondant aux billets supprimés sont immédiatement et synchroniquement remises à disposition sur la jauge du créneau (REQ-013, `CASE-ADMIN-015`).
+- [ ] AC-3 — L'annulation déclenche l'envoi immédiat d'un SMS d'information au numéro de téléphone mobile du client avec gestion des erreurs de délivrance (REQ-014, `CASE-ADMIN-010`, `CASE-ADMIN-011`, `CASE-ADMIN-012`, `CASE-ADMIN-019`, `CASE-ADMIN-020`).
 
 ### Revue IA
 
 | Remarque de l'IA | Décision | Motif |
 |---|---|---|
 | Clarifier la distinction entre entité Réservation (conservée) et Billets (supprimés) | Acceptée | Architecture unifiée conforme au MLD (`BOOKING_ITEMS`). |
-| Intégrer l'enregistrement du motif d'annulation (météo suite à alerte vs par peur) exigé par REQ-020 | Acceptée | Conforme au CDC v4 (REQ-020, R-27, R-28, CR-04). |
+| Intégrer l'enregistrement du motif d'annulation (météo suite à alerte vs par peur) exigé par REQ-020 | Acceptée | Motif demandé à l'admin pour la composition du SMS de notification client sans persistance sur la réservation. |
 | Mettre à jour les références vers le CDC v4 | Acceptée | Nettoyage des mentions CDC v3. |
 
 ---
@@ -169,7 +160,7 @@ Scénario : Annulation administrative d'office pour cause météo
 - Ne couvre pas l'ajout de billets sur une réservation existante (nécessite une nouvelle commande séparée selon R-18 et CDC v4 §6).
 - Ne couvre pas le report de date ou d'horaire (nécessite annulation préalable selon R-18).
 - Ne couvre pas le remboursement financier consécutif à la réduction (géré manuellement hors système).
-- Si la suppression de billets ramène le total de billets actifs à **0**, le système applique automatiquement la logique complète d'annulation de `SPEC-ADMIN-02` (consignation du motif et envoi du SMS d'information au client).
+- Si la suppression de billets ramène le total de billets actifs à **0**, le système applique automatiquement la logique complète d'annulation de `SPEC-ADMIN-02` (saisie du motif et envoi du SMS de notification au client).
 
 ### Scénarios nominaux
 
@@ -186,7 +177,7 @@ Scénario : Suppression de l'ensemble des billets via l'écran de réduction
   Étant donné une réservation confirmée détenant 2 billets
   Quand l'administrateur supprime les 2 billets (ramenant le nombre de billets à 0)
   Et sélectionne le motif d'annulation
-  Alors la réservation passe à 0 billet actif, le motif est consigné et le SMS d'annulation est automatiquement envoyé au client (SPEC-ADMIN-02)
+  Alors la réservation passe à 0 billet actif et le SMS de notification d'annulation est automatiquement envoyé au client (SPEC-ADMIN-02)
 ```
 
 ### Cas limites
@@ -194,7 +185,7 @@ Scénario : Suppression de l'ensemble des billets via l'écran de réduction
 | # | Situation | Comportement attendu |
 |---|---|---|
 | 1 | Tentative de rajouter un ou plusieurs billets sur la réservation | Rejet strict (R-18) : l'ajout de billets est impossible sur une commande existante. |
-| 2 | Suppression ramenant le nombre de billets restants à 0 | Traitement unifié identique à `SPEC-ADMIN-02` : la réservation conserve 0 billet, consigne le motif et déclenche le SMS. |
+| 2 | Suppression ramenant le nombre de billets restants à 0 | Traitement unifié identique à `SPEC-ADMIN-02` : la réservation conserve 0 billet et déclenche le SMS de notification. |
 | 3 | Réservation n'ayant déjà plus aucun billet actif (0 billet) | Aucune réduction supplémentaire applicable. |
 | 4 | Tentative de modification de la date ou du port de départ lors de la réduction | Rejet strict (R-18) : aucun report ni changement de date autorisé. |
 | 5 | Créneau concerné déjà passé | Modification rejetée. |
@@ -206,9 +197,9 @@ Scénario : Suppression de l'ensemble des billets via l'écran de réduction
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — L'administrateur peut supprimer sélectivement $N$ billets adultes et/ou enfants d'une réservation, libérant synchroniquement $N$ places sur le créneau (`CASE-ADMIN-05`, `CASE-ADMIN-06`).
-- [ ] AC-2 — Toute tentative d'ajout de billet ou de modification de date sur une réservation existante est strictement bloquée (R-18).
-- [ ] AC-3 — Une réduction supprimant la totalité des billets (0 billet restant) applique le traitement complet d'annulation avec motif et SMS d'information (`CASE-ADMIN-09`).
+- [ ] AC-1 — L'administrateur peut supprimer sélectivement $N$ billets adultes et/ou enfants d'une réservation, libérant synchroniquement $N$ places sur le créneau, dans le respect de l'intégrité des quantités, de l'atomicité transactionnelle et sans remboursement automatique (`CASE-ADMIN-023`, `CASE-ADMIN-024`, `CASE-ADMIN-025`, `CASE-ADMIN-031`, `CASE-ADMIN-032`, `CASE-ADMIN-069`).
+- [ ] AC-2 — Toute tentative d'ajout de billet, de modification de date/port, de réduction sur réservation à 0 billet ou sur créneau passé est strictement bloquée (R-18, `CASE-ADMIN-027`, `CASE-ADMIN-028`, `CASE-ADMIN-029`, `CASE-ADMIN-030`).
+- [ ] AC-3 — Une réduction supprimant la totalité des billets (0 billet restant) applique le traitement complet d'annulation avec motif informatif et SMS de notification (`CASE-ADMIN-026`).
 
 ---
 
@@ -246,6 +237,7 @@ Scénario : Connexion administrateur réussie
 | 2 | Champs laissés vides | Blocage à la validation du formulaire côté client. |
 | 3 | Tentatives de connexion infructueuses répétées | Application d'un ralentissement / blocage temporaire contre les attaques par force brute. |
 | 4 | Session expirée après inactivité prolongée | Déconnexion automatique et redirection vers la mire d'authentification. |
+| 5 | Déconnexion manuelle par l'administrateur | Destruction immédiate de la session active et redirection vers la mire d'authentification. |
 
 ### Ce qui n'est pas défini
 
@@ -253,8 +245,9 @@ Scénario : Connexion administrateur réussie
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — L'administrateur peut se connecter avec ses identifiants valides et accéder au tableau de bord (`CASE-ADMIN-07`).
-- [ ] AC-2 — Tout accès non authentifié aux URL du back-office est intercepté et redirigé vers l'écran de connexion.
+- [ ] AC-1 — L'administrateur peut se connecter avec ses identifiants valides, accéder au tableau de bord, maintenir sa session lors de la navigation et respecter la contrainte d'administrateur unique (`CASE-ADMIN-033`, `CASE-ADMIN-034`, `CASE-ADMIN-040`, `CASE-ADMIN-071`).
+- [ ] AC-2 — Tout accès non authentifié aux URL du back-office est intercepté et redirigé, les identifiants erronés ou champs vides sont rejetés, et les mécanismes de protection (anti-bruteforce, expiration de session) sont actifs (`CASE-ADMIN-035`, `CASE-ADMIN-036`, `CASE-ADMIN-037`, `CASE-ADMIN-038`, `CASE-ADMIN-039`).
+- [ ] AC-3 — L'administrateur peut se déconnecter manuellement à tout moment, entraînant la clôture immédiate de la session (`CASE-ADMIN-070`).
 
 ---
 
@@ -302,13 +295,13 @@ Scénario : Visualisation du taux de remplissage le mardi matin à Saint-Gilles
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — Le calcul du taux de remplissage s'effectue sur la base du nombre de billets actifs existants (`BOOKING_ITEMS`) rapporté à la jauge réelle du créneau (12, 24 ou 36 places) et se met à jour en temps réel lors de toute modification (`CASE-ADMIN-08`).
+- [ ] AC-1 — Le calcul du taux de remplissage s'effectue sur la base du nombre de billets actifs existants (`BOOKING_ITEMS`) rapporté à la jauge réelle du créneau (12, 24 ou 36 places) et se met à jour en temps réel lors de toute modification (`CASE-ADMIN-041`, `CASE-ADMIN-042`, `CASE-ADMIN-043`, `CASE-ADMIN-044`, `CASE-ADMIN-045`, `CASE-ADMIN-046`, `CASE-ADMIN-047`, `CASE-ADMIN-072`).
 
 ---
 
 ## SPEC-ADMIN-06 — Envoi groupé d'alertes de pré-annulation la veille à 18h
 
-**Exigence :** REQ-017, REQ-018 (avec R-22, R-23, R-24, R-26, Contraintes C-21, C-22, C-23, REQ-106)
+**Exigence :** REQ-017, REQ-018, REQ-019 (avec R-22, R-23, R-24, R-26, Contraintes C-21, C-22, C-23, REQ-106)
 **Statut :** validée
 **Version :** v1
 
@@ -350,6 +343,7 @@ Scénario : Envoi groupé d'une alerte météo bilingue sur deux créneaux du le
 | 3 | Texte du message effacé ou vide | Validation bloquée : le corps du message est obligatoire. |
 | 4 | Échec de délivrance sur un destinataire (numéro erroné ou bounce e-mail) | L'échec individuel est journalisé sans bloquer l'envoi aux autres destinataires de la file d'attente (REQ-106). |
 | 5 | Envoi simultané sur plusieurs créneaux (multi-créneaux) | Traitement groupé en une seule action administrative (R-24). |
+| 6 | Ré-émission d'une alerte sur un créneau déjà « sous pré-alerte » | Envoi du message actualisé aux destinataires avec maintien idempotent du statut « sous pré-alerte » du créneau. |
 
 ### Ce qui n'est pas défini
 
@@ -358,10 +352,10 @@ Scénario : Envoi groupé d'une alerte météo bilingue sur deux créneaux du le
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — L'administrateur peut sélectionner plusieurs créneaux du lendemain et leur envoyer une alerte groupée par SMS et/ou e-mail (REQ-017, R-22, R-24).
-- [ ] AC-2 — L'interface propose des templates bilingues codés en dur qui préremplissent automatiquement le champ de texte modifiable au clic (REQ-018, R-23).
-- [ ] AC-3 — Le message transmis regroupe obligatoirement la version française suivie de la version anglaise dans un corps de message unique (REQ-018, R-26).
-- [ ] AC-4 — L'émission de l'alerte active immédiatement l'affichage de la mention d'avertissement sur les créneaux concernés en ligne s'ils restent ouverts avec des places disponibles (REQ-019, R-25).
+- [ ] AC-1 — L'administrateur peut sélectionner plusieurs créneaux du lendemain et leur envoyer une alerte groupée par SMS et/ou e-mail, avec contrôle de sélection, gestion des échecs individuels et ré-émission idempotente (REQ-017, R-22, R-24, `CASE-ADMIN-048`, `CASE-ADMIN-049`, `CASE-ADMIN-050`, `CASE-ADMIN-051`, `CASE-ADMIN-058`, `CASE-ADMIN-061`, `CASE-ADMIN-073`).
+- [ ] AC-2 — L'interface propose des templates bilingues codés en dur qui préremplissent automatiquement le champ de texte modifiable au clic, avec personnalisation libre et blocage en cas de texte vide (REQ-018, R-23, `CASE-ADMIN-052`, `CASE-ADMIN-053`, `CASE-ADMIN-054`, `CASE-ADMIN-060`).
+- [ ] AC-3 — Le message transmis regroupe obligatoirement la version française suivie de la version anglaise dans un corps de message unique (REQ-018, R-26, `CASE-ADMIN-055`).
+- [ ] AC-4 — L'émission de l'alerte active immédiatement l'affichage de la mention d'avertissement sur les créneaux concernés en ligne s'ils restent ouverts avec des places disponibles ou sans réservation (REQ-019, R-25, `CASE-ADMIN-056`, `CASE-ADMIN-057`, `CASE-ADMIN-059`).
 
 ---
 
@@ -400,5 +394,5 @@ Scénario : Fermeture administrative d'un créneau
 
 ### Critères d'acceptation
 
-- [ ] AC-1 — L'administrateur peut modifier la disponibilité et la configuration d'un créneau depuis son tableau de bord (REQ-011, R-13).
-- [ ] AC-2 — Le système empêche toute mixité d'activités sur un même créneau et navire (R-12).
+- [ ] AC-1 — L'administrateur peut modifier la disponibilité et la configuration d'un créneau depuis son tableau de bord (REQ-011, R-13, `CASE-ADMIN-062`, `CASE-ADMIN-063`, `CASE-ADMIN-064`, `CASE-ADMIN-065`, `CASE-ADMIN-068`).
+- [ ] AC-2 — Le système empêche toute mixité d'activités sur un même créneau et navire ou conflit de naturaliste (R-12, R-15, `CASE-ADMIN-066`, `CASE-ADMIN-067`).
