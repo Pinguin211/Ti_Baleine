@@ -44,7 +44,7 @@ L'entreprise recherche un outil sur-mesure — sans passer par un SaaS tiers —
 
 | Partie prenante | Rôle | Ce qu'elle attend | Utilise l'application ? |
 |---|---|---|---|
-| Administrateur (Ti'Baleine) | Profil unique de back-office : consultation du planning multi-sites, gestion des créneaux, suivi du remplissage, consultation le jour J du statut de paiement de chaque réservation (payée complètement / payée partiellement), pointage/enregistrement de l'encaissement du solde par carte bancaire sur place, annulation totale et modification à la baisse (réduction de passagers), envoi groupé d'alertes de pré-annulation à J-1 18h avec préremplissage par templates bilingues codés en dur et personnalisation du motif, consignation du motif d'annulation | Un espace simple, épuré, sur ordinateur de bureau (Desktop) avec une ergonomie claire pour le suivi des statuts financiers et les opérations du jour J | oui |
+| Administrateur (Ti'Baleine) | Profil unique de back-office : consultation du planning multi-sites, gestion des créneaux, suivi du remplissage, consultation le jour J du statut de paiement de chaque réservation (payée complètement / payée partiellement), pointage/enregistrement de l'encaissement du solde par carte bancaire sur place, annulation totale et modification à la baisse (réduction de passagers), envoi groupé d'alertes de pré-annulation à J-1 18h avec préremplissage par templates bilingues codés en dur et personnalisation du motif, sélection du motif d'annulation pour composer le SMS d'information au client (sans persistance en base) | Un espace simple, épuré, sur ordinateur de bureau (Desktop) avec une ergonomie claire pour le suivi des statuts financiers et les opérations du jour J | oui |
 | Client final (touriste ou local) | Réserve en ligne (choisit son point de départ Saint-Gilles ou Saint-Leu), règle l'acompte obligatoire par carte bancaire (30 % ou 50 %), reçoit un e-mail de confirmation avec facture d'acompte PDF, reçoit la veille à J-1 un SMS contenant le lien sécurisé de règlement du solde (qu'il est libre d'utiliser ou d'ignorer pour régler sur place par CB), reçoit une facture de solde distincte lors du règlement final, reçoit un SMS d'information en cas d'annulation par l'admin, et reçoit le message d'alerte de pré-annulation bilingue (texte FR suivi du texte EN) par SMS ou e-mail | Un parcours rapide, clair, dans sa langue, sans création de compte, avec flexibilité sur le règlement du solde | oui |
 | Naturaliste | Encadre obligatoirement les sorties baleines (ressource unique affectée selon la demande du planning) | Aucune interaction directe avec le système (planning géré par l'admin) | non |
 | Capitainerie / Affaires Maritimes | Autorité réglementaire sur le manifeste de bord | Rien du système : le manifeste reste un registre papier | non |
@@ -60,7 +60,7 @@ L'entreprise recherche un outil sur-mesure — sans passer par un SaaS tiers —
 
 ### Marc — client local
 - **Contexte d'usage :** réserve depuis un ordinateur ou smartphone, connaît bien la côte ouest de La Réunion.
-- **Objectif :** réserver rapidement une privatisation du Tikap le matin (7h–12h) au départ de Saint-Leu pour son groupe d'amis en réglant 50 % d'acompte, être prévenu la veille à 18h en cas de risque météo avec garantie de remboursement à 100 %, ou régler le solde sur place en CB le matin même.
+- **Objectif :** réserver rapidement une privatisation du Tikap le matin (dès 09h00) au départ de Saint-Leu pour son groupe d'amis en réglant 50 % d'acompte, être prévenu la veille à 18h en cas de risque météo avec garantie de remboursement à 100 %, ou régler le solde sur place en CB le matin même.
 - **Ce qui le bloque aujourd'hui :** besoin d'appeler pour vérifier les disponibilités du navire et connaître les tarifs applicables.
 
 ### L'administrateur — gérant de Ti'Baleine
@@ -92,7 +92,7 @@ L'entreprise recherche un outil sur-mesure — sans passer par un SaaS tiers —
   - Annulation totale d'une réservation avec libération synchrone des places sur le créneau et calcul indicatif du remboursement sur le montant total plafonné aux sommes perçues (*CR-03/Q01, CR-05/Q04, RM-55*).
   - Déclenchement automatique d'un **SMS d'information au client** lors d'une annulation (*CR-03/Q01*).
   - Module d'envoi d'alerte de pré-annulation groupée la veille à 18h (multi-créneaux, SMS/Email, champ texte avec préremplissage par propositions de templates bilingues codées en dur FR+EN et personnalisation du motif) (*CR-04/Q01, CR-04/Q02, CR-04/Q03, CR-04/Q04, CR-04/Q06*).
-  - Enregistrement du motif d'annulation (annulation effective météo suite à alerte vs annulation « par peur » / anticipation du client suite à l'alerte vs standard) à des fins de traçabilité (*CR-04/Q07, CR-04/Q08*).
+  - Sélection ou saisie du motif d'annulation (annulation effective météo suite à alerte vs annulation « par peur » / anticipation du client suite à l'alerte vs standard) pour composer le SMS de notification au client, sans persistance en base de données (*CR-04/Q07, CR-04/Q08, REQ-020*).
 - Affichage d'une mention spécifique d'avertissement sur les créneaux sous alerte de pré-annulation lorsqu'ils restent ouverts à la réservation et disposent de places (*CR-04/Q05*).
 - Support bilingue complet français/anglais sur le parcours public (*CR-01/Q07, CR-02/§3*).
 
