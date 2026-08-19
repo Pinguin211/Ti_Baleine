@@ -7,7 +7,14 @@ Convention : le nom du test contient l'identifiant CASE.
 CE QUE JE TE DONNE
 - Le cas de test : tests/cases/facturation/CASE-FAC-723.md
 - La spécification : specs/facturation.md, 
-- Les signatures existantes du domaine : src/<...>
+- Les signatures existantes du domaine (arborescence conforme à specs/architecture.md,
+  SPEC-ARCH-02) :
+  - src/schemas/types/facturation.types.ts : ReservationFacturable, PaiementValide, FacturePdf
+  - src/schemas/types/facturation-ports.types.ts : EnvoiCourriel, CourrielFacturation,
+    PieceJointe, DepotEmissionFacture, StatutEmissionFacture, StatutEmission, Horloge
+  - src/services/server/generer-facture-pdf.ts : genererFacturePdf(reservation, paiement)
+  - src/actions/emettre-facture-apres-paiement.ts : emettreFactureApresPaiement(commande,
+    dependances), EmissionFactureCommande, EmissionFactureDependances
 
 TA TÂCHE
 Écris UN test automatisé, et un seul, qui traduit CASE-FAC-723.
