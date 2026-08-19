@@ -15,9 +15,7 @@
     "puml:generate": "node scripts/plantuml/generate.js",
     "test": "vitest run",
     "test:watch": "vitest",
-<<<<<<< HEAD
-    "test:e2e": "playwright test"
-=======
+    "test:e2e": "playwright test",
     "test:arch": "vitest run --project arch",
     "test:admin": "vitest run --project admin",
     "test:facturation": "vitest run --project facturation",
