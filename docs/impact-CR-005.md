@@ -160,4 +160,4 @@ Assumé, et à confirmer avec le client lors de la prochaine étape :
 | 6 | Développement de la gestion des acomptes (30 % / 50 %) et de la facture d'acompte dans le tunnel public | Toute l'équipe |
 | 7 | Développement de la tâche planifiée d'envoi des SMS à J-1 et de l'interface de paiement du solde (validité 1h) avec facture de solde distincte | Toute l'équipe |
 | 8 | Enrichissement du back-office (consultation statut complet/partiel le jour J selon ergonomie CDC, pointage solde sur place et calcul indicatif remboursement) | Toute l'équipe |
-| 9 | Campagne globale de tests d'intégration, vérification des non-régressions et recette fonctionnelle | Toute l'équipe |
+| 9 | Campagne globale de tests d'intégration, vérification des non-régressions et recette fonctionnelle | Toute l'équipe |impacy
