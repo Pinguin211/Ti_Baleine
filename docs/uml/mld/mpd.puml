@@ -1,5 +1,5 @@
 @startuml mpd
-title **Modèle Physique de Données (MPD) — Ti'Baleine**\n//Persistance PostgreSQL, UUID et Énumérations Métier (Strict Domaine)//
+title **Modèle Physique de Données (MPD) — Ti'Baleine**\n//Persistance PostgreSQL, UUID et Énumérations Métier — CDC v5 (paiement scindé, token solde, pré-alerte)//
 
 skinparam monochrome false
 skinparam roundcorner 8
@@ -38,8 +38,19 @@ package "Énumérations (Types ENUM)" as EnumsPkg #ECEFF1 {
 
   enum statut_reservation_enum <<ENUM>> {
     EN_ATTENTE_PAIEMENT
-    CONFIRMEE
+    PAYEE_PARTIELLEMENT
+    PAYEE_COMPLETEMENT
     ANNULEE
+  }
+
+  enum type_paiement_enum <<ENUM>> {
+    ACOMPTE
+    SOLDE
+  }
+
+  enum canal_paiement_enum <<ENUM>> {
+    EN_LIGNE
+    SUR_PLACE_CB
   }
 
   enum statut_emission_facture_enum <<ENUM>> {
@@ -69,6 +80,7 @@ package "Tables Persistées (Base Relationnelle)" as TablesPkg #FFFFFF {
     * **id** : UUID <<PK, DEFAULT gen_random_uuid()>>
     --
     * **message** : TEXT <<NOT NULL>>
+    * **date_emission** : TIMESTAMPTZ <<NOT NULL, DEFAULT NOW()>>
   }
 
   entity "creneaux" as creneaux {
@@ -79,6 +91,7 @@ package "Tables Persistées (Base Relationnelle)" as TablesPkg #FFFFFF {
     * **port** : port_enum <<NOT NULL>>
     * **activite** : activite_enum <<NOT NULL>>
     * **est_ouvert** : BOOLEAN <<NOT NULL, DEFAULT TRUE>>
+    * **sous_pre_alerte** : BOOLEAN <<NOT NULL, DEFAULT FALSE>>
     * **alerte_id** : UUID <<FK, NULLABLE>>
   }
 
@@ -89,6 +102,7 @@ package "Tables Persistées (Base Relationnelle)" as TablesPkg #FFFFFF {
     * **statut** : statut_reservation_enum <<NOT NULL, DEFAULT 'EN_ATTENTE_PAIEMENT'>>
     * **creneau_id** : UUID <<FK, NOT NULL>>
     * **user_id** : UUID <<FK, NOT NULL>>
+    * **date_creation** : TIMESTAMPTZ <<NOT NULL, DEFAULT NOW()>>
   }
 
   entity "billets" as billets {
@@ -101,13 +115,25 @@ package "Tables Persistées (Base Relationnelle)" as TablesPkg #FFFFFF {
   entity "paiements" as paiements {
     * **id** : UUID <<PK, DEFAULT gen_random_uuid()>>
     --
-    * **reservation_id** : UUID <<FK, UQ, NOT NULL>>
+    * **reservation_id** : UUID <<FK, NOT NULL>>
+    * **type_paiement** : type_paiement_enum <<NOT NULL>>
+    * **canal_paiement** : canal_paiement_enum <<NOT NULL>>
     * **reference_transaction** : VARCHAR(100) <<UQ, NOT NULL>>
     * **montant** : DECIMAL(10,2) <<NOT NULL>>
     * **date_paiement** : TIMESTAMPTZ <<NOT NULL, DEFAULT NOW()>>
     * **reference_facture** : VARCHAR(50) <<UQ, NOT NULL>>
     * **statut_emission_facture** : statut_emission_facture_enum <<NOT NULL, DEFAULT 'EN_ATTENTE'>>
     * **date_emission_facture** : TIMESTAMPTZ <<NULLABLE>>
+  }
+
+  entity "tokens_paiement_solde" as tokens {
+    * **id** : UUID <<PK, DEFAULT gen_random_uuid()>>
+    --
+    * **reservation_id** : UUID <<FK, UQ, NOT NULL>>
+    * **token** : VARCHAR(255) <<UQ, NOT NULL>>
+    * **date_creation** : TIMESTAMPTZ <<NOT NULL, DEFAULT NOW()>>
+    * **date_expiration** : TIMESTAMPTZ <<NOT NULL>>
+    * **est_utilise** : BOOLEAN <<NOT NULL, DEFAULT FALSE>>
   }
 }
 
@@ -118,7 +144,8 @@ alertes ||--o{ creneaux : "FK: alerte_id (SET NULL)"
 creneaux ||--o{ reservations : "FK: creneau_id (RESTRICT)"
 users ||--o{ reservations : "FK: user_id (RESTRICT)"
 reservations ||--o{ billets : "FK: reservation_id (CASCADE)"
-reservations ||--o| paiements : "FK: reservation_id (RESTRICT / 1..1)"
+reservations ||--o{ paiements : "FK: reservation_id (RESTRICT / 0..2)"
+reservations ||--o| tokens : "FK: reservation_id (CASCADE / 0..1)"
 
 ' ==========================================================
 ' 4. LIAISONS AUX TYPES ÉNUMÉRÉS
@@ -128,6 +155,8 @@ creneaux .down.> port_enum : "port"
 creneaux .down.> activite_enum : "activite"
 reservations .down.> statut_reservation_enum : "statut"
 billets .down.> type_billet_enum : "type_billet"
+paiements .down.> type_paiement_enum : "type_paiement"
+paiements .down.> canal_paiement_enum : "canal_paiement"
 paiements .down.> statut_emission_facture_enum : "statut_emission_facture"
 
 @enduml
