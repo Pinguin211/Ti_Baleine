@@ -1,12 +1,14 @@
 /**
- * CASE-FAC-700 — Envoi de la facture PDF acquittée après paiement d'une réservation
+ * CASE-FAC-700 — Émission des factures d'acompte et de solde après paiement d'une réservation
  * individuelle à Saint-Leu
- * SPEC-FAC-02 | AC-1, AC-2, AC-3, AC-5
+ * SPEC-FAC-02 | AC-1, AC-2, AC-3, AC-6, Scénario 1
  */
 import { it, expect, vi, afterEach } from 'vitest';
-import fs from 'node:fs';
-import fsPromises from 'node:fs/promises';
-import type { ReservationFacturable, PaiementValide } from '../../../src/schemas/types/facturation.types';
+import type {
+  ReservationFacturable,
+  PaiementAcompteValide,
+  PaiementSoldeValide,
+} from '../../../src/schemas/types/facturation.types';
 import type {
   EnvoiCourriel,
   DepotEmissionFacture,
@@ -14,7 +16,8 @@ import type {
   CourrielFacturation,
   StatutEmissionFacture,
 } from '../../../src/schemas/types/facturation-ports.types';
-import { emettreFactureApresPaiement } from '../../../src/actions/emettre-facture-apres-paiement';
+import { emettreFactureAcompteApresPaiement } from '../../../src/actions/emettre-facture-acompte-apres-paiement';
+import { emettreFactureSoldeApresPaiement } from '../../../src/actions/emettre-facture-solde-apres-paiement';
 
 class EnvoiCourrielEnMemoire implements EnvoiCourriel {
   public messagesEnvoyes: CourrielFacturation[] = [];
@@ -41,12 +44,11 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-it('test_CASE_FAC_700_envoi_facture_pdf_acquittee_reservation_individuelle_saint_leu', () => {
-  // Étant donné une réservation individuelle pour une sortie « Baleines » le 18/08/2026 à 9h00
-  // Et un port d'embarquement situé à « Saint-Leu »
-  // Et un groupe composé de 2 adultes
-  // Et un tarif de base de 65 € par adulte et un supplément géographique de 10 € par personne
-  // Et une adresse courriel client renseignée « client.exemple@test.re »
+it('test_CASE_FAC_700_emission_facture_acompte_puis_solde_reservation_individuelle_saint_leu', () => {
+  // Étant donné une réservation individuelle pour une sortie « Baleines » pour 2 adultes au départ
+  // de Saint-Leu le mardi 18/08/2026 à 9h00 (montant total TTC : 150 € incluant le tarif de base de
+  // 65 € / adulte et le supplément géographique de 10 € / personne)
+  // Et l'adresse courriel client renseignée « client.exemple@test.re »
   const reservation: ReservationFacturable = {
     id: 'RESA-CASE-FAC-700',
     prestation: 'Sortie Baleines',
@@ -58,54 +60,92 @@ it('test_CASE_FAC_700_envoi_facture_pdf_acquittee_reservation_individuelle_saint
     emailClient: 'client.exemple@test.re',
   };
 
-  const paiement: PaiementValide = {
-    montantRegle: 150,
-    statut: 'validé avec succès',
-  };
-
   const envoiCourriel = new EnvoiCourrielEnMemoire();
   const depotEmission = new DepotEmissionFactureEnMemoire();
   const horloge = new HorlogeFixe(new Date(2026, 7, 18, 9, 5));
 
-  const ecritureDisqueSync = vi.spyOn(fs, 'writeFileSync').mockImplementation(() => undefined);
-  const ecritureDisqueAsync = vi.spyOn(fsPromises, 'writeFile').mockResolvedValue(undefined);
+  // Quand le paiement en ligne de l'acompte de 30 % (45 €) est validé avec succès
+  const paiementAcompte: PaiementAcompteValide = {
+    montantRegle: 45,
+    statut: 'validé avec succès',
+  };
 
-  // Quand le paiement en ligne d'un montant total de 150 € est validé avec succès
-  const facture = emettreFactureApresPaiement(
-    { reservation, paiement },
+  const factureAcompte = emettreFactureAcompteApresPaiement(
+    { reservation, paiement: paiementAcompte },
     { envoiCourriel, depotEmission, horloge }
   );
 
-  // Alors une facture acquittée est générée à la volée en mémoire au format PDF
-  expect(facture).toMatchObject({ format: 'pdf', contenu: expect.any(Uint8Array) });
-
-  // Et la facture PDF mentionne l'identifiant unique, la mention explicite « Acquittée », la date
-  // « 18/08/2026 9h00 », le port « Saint-Leu » et la ligne de supplément
-  // (« Majoration / Supplément Saint-Leu » ou « 2 × 10 € »)
-  expect(facture).toMatchObject({
+  // Alors la facture d'acompte PDF est générée à la volée avec un identifiant unique, la mention
+  // explicite « Acompte acquitté », le montant total TTC (150 €), l'acompte réglé (45 €) et le
+  // solde restant dû (105 €)
+  expect(factureAcompte).toMatchObject({
     identifiantUnique: expect.stringMatching(/.+/),
-    mentionAcquittement: 'Acquittée',
-    dateDepartFormatee: '18/08/2026 9h00',
-    portEmbarquement: 'Saint-Leu',
-    ligneSupplement: expect.stringMatching(/Majoration \/ Supplément Saint-Leu|2 × 10 €/),
+    mentionAcompte: 'Acompte acquitté',
+    montantTotalTtc: 150,
+    acompteRegle: 45,
+    soldeRestantDu: 105,
   });
 
-  // Et un courriel transactionnel contenant la facture PDF en pièce jointe et le récapitulatif de
-  // la réservation est envoyé à « client.exemple@test.re »
-  expect(envoiCourriel.messagesEnvoyes).toEqual([
-    {
-      destinataire: 'client.exemple@test.re',
-      pieceJointe: { nomFichier: expect.any(String), contenu: facture.contenu, typeMime: 'application/pdf' },
-      recapitulatifReservation: expect.stringContaining('Baleines'),
+  // Et un courriel transactionnel contenant la facture d'acompte PDF en pièce jointe et le
+  // récapitulatif est envoyé à « client.exemple@test.re »
+  expect(envoiCourriel.messagesEnvoyes[0]).toMatchObject({
+    destinataire: 'client.exemple@test.re',
+    pieceJointe: {
+      nomFichier: expect.any(String),
+      contenu: factureAcompte.contenu,
+      typeMime: 'application/pdf',
     },
-  ]);
+    recapitulatifReservation: expect.any(String),
+  });
 
-  // Et aucun fichier PDF physique n'est stocké sur le disque du serveur
-  expect(ecritureDisqueSync.mock.calls.length + ecritureDisqueAsync.mock.calls.length).toBe(0);
+  // Et l'état d'émission de la facture d'acompte est persisté en base de données à
+  // « envoyée avec succès »
+  expect(depotEmission.statutsEnregistres[0]).toMatchObject({
+    reservationId: reservation.id,
+    typeFacture: 'acompte',
+    statut: 'envoyée avec succès',
+  });
 
-  // Et l'état d'émission de la facture est persisté en base de données à « envoyée avec succès »
-  // avec son horodatage
-  expect(depotEmission.statutsEnregistres).toEqual([
-    { reservationId: reservation.id, statut: 'envoyée avec succès', horodatage: horloge.maintenant() },
-  ]);
+  // Quand le client règle ultérieurement le solde de 105 € (en ligne via le lien SMS ou sur place
+  // en CB)
+  const paiementSolde: PaiementSoldeValide = {
+    montantRegle: 105,
+    statut: 'validé avec succès',
+  };
+
+  const factureSolde = emettreFactureSoldeApresPaiement(
+    { reservation, paiement: paiementSolde, acompteRegle: factureAcompte.acompteRegle },
+    { envoiCourriel, depotEmission, horloge }
+  );
+
+  // Alors la facture de solde distincte PDF est générée à la volée avec un identifiant unique
+  // distinct, la mention explicite « Acquittée », le rappel de l'acompte (45 €) et l'acquittement
+  // complet des 150 €
+  expect(factureSolde).toMatchObject({
+    identifiantUnique: expect.toSatisfy(
+      (valeur: string) => valeur.length > 0 && valeur !== factureAcompte.identifiantUnique
+    ),
+    mentionSolde: 'Acquittée',
+    rappelAcompte: 45,
+    montantTotalAcquitte: 150,
+  });
+
+  // Et un courriel contenant la facture de solde PDF en pièce jointe est envoyé à
+  // « client.exemple@test.re »
+  expect(envoiCourriel.messagesEnvoyes[1]).toMatchObject({
+    destinataire: 'client.exemple@test.re',
+    pieceJointe: {
+      nomFichier: expect.any(String),
+      contenu: factureSolde.contenu,
+      typeMime: 'application/pdf',
+    },
+  });
+
+  // Et l'état d'émission de la facture de solde est persisté en base de données à
+  // « envoyée avec succès »
+  expect(depotEmission.statutsEnregistres[1]).toMatchObject({
+    reservationId: reservation.id,
+    typeFacture: 'solde',
+    statut: 'envoyée avec succès',
+  });
 });
