@@ -9,6 +9,7 @@ CE QUE JE TE DONNE
 - Le cas de test : tests/cases/reservation/CASE-RES-400.md
 - La spécification : specs/reservation.md, section SPEC-RESERVATION-03 (AC-2, AC-4, AC-8)
 - Les exigences d'architecture : specs/architecture.md (SPEC-ARCH-01, SPEC-ARCH-02, SPEC-ARCH-03)
+- Le modèle du domaine : docs/uml/domain.puml
 - Les couches du domaine que tu peux modifier : src/services/server/, src/utils/, src/schemas/, src/actions/
 
 TA TÂCHE
@@ -20,15 +21,19 @@ CONTRAINTES
 2. Ne le contourne pas : pas de skip, pas de xfail, pas de tolérance élargie, pas d'assertion neutralisée.
 3. Implémente la règle, pas la valeur attendue. Les nombres écrits dans le cas de test ne doivent apparaître nulle part dans le code de production. Le calcul part du pourcentage écrit dans la spécification.
 4. La règle vit dans l'arborescence imposée par SPEC-ARCH-02 : logique métier dans src/services/server/ ou calculs purs dans src/utils/. Pas dans un contrôleur arbitraire hors structure, pas dans un composant UI ni dans un hook.
-5. N'implémente que ce que ce test exige. Ne traite pas les autres cas, ne généralise pas, n'anticipe aucune évolution. Les autres tests rouges restent rouges.
-6. Respecte strictement les spécifications de specs/architecture.md :
+5. Respecte le modèle du domaine documenté dans docs/uml/domain.puml : mêmes
+   classes, mêmes attributs, mêmes relations, même vocabulaire. N'invente
+   aucune entité ni relation absente du diagramme. Si le test l'exige, arrête-
+   toi et dis-le-moi plutôt que de t'en écarter.
+6. N'implémente que ce que ce test exige. Ne traite pas les autres cas, ne généralise pas, n'anticipe aucune évolution. Les autres tests rouges restent rouges.
+7. Respecte strictement les spécifications de specs/architecture.md :
    - Fichiers .ts/.js : max 30 lignes utiles par fonction (sauf dérogation TSDoc @need_more_lines - "motif").
    - Fichiers .tsx/.jsx : mono-composant strict (1 composant par fichier, aucun sous-composant local).
    - Plafond global : max 500 lignes par fichier.
    - Flux d'imports & étanchéité : respect de la matrice modulaire (utils -> schemas -> services -> actions) et interdiction des modules serveurs/secrets dans le client et les hooks.
    - Conventions de nommage : kebab-case pour fichiers/dossiers, camelCase pour fonctions/variables/hooks, PascalCase pour classes/types/composants.
-7. Ne modifie aucun fichier en dehors des couches techniques autorisées sous src/ : src/services/server/, src/utils/, src/schemas/, src/actions/.
-8. Aucune dépendance nouvelle.
+8. Ne modifie aucun fichier en dehors des couches techniques autorisées sous src/ : src/services/server/, src/utils/, src/schemas/, src/actions/.
+9. Aucune dépendance nouvelle.
 
 RENDS
 - Le diff.
