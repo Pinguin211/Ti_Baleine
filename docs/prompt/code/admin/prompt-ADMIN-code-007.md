@@ -24,7 +24,8 @@ CE QUE JE TE DONNE
 - Le cas de test : tests/cases/admin/CASE-ADMIN-007.md
 - La spécification : specs/admin.md, section SPEC-ADMIN-01
 - Les exigences d'architecture : specs/architecture.md
-- Les fichiers du domaine que tu peux modifier : src/admin/planning/
+- Le modèle du domaine : docs/uml/domain.puml
+- Les fichiers du domaine que tu peux modifier : src/app/admin/planning/, src/components/domain/planning/, src/services/server/planning/, src/hooks/domain/planning/
 
 TA TÂCHE
 1. Fais passer au vert le test test_CASE_ADMIN_007_consultation_planning_continu_24h_24_sans_restriction, et lui seul.
@@ -38,19 +39,23 @@ CONTRAINTES
 3. Implémente la règle, pas la valeur attendue. Les nombres écrits dans le cas
    de test ne doivent apparaître nulle part dans le code de production. Le
    calcul part du pourcentage écrit dans la spécification.
-4. La règle vit dans le domaine : src/admin/planning/. Pas dans un contrôleur, pas dans un
+4. La règle vit dans le domaine : src/services/server/planning/. Pas dans un contrôleur, pas dans un
    écran, pas dans une requête.
-5. N'implémente que ce que ce test exige. Ne traite pas les autres cas, ne
+5. Respecte le modèle du domaine documenté dans docs/uml/domain.puml : mêmes
+   classes, mêmes attributs, mêmes relations, même vocabulaire. N'invente
+   aucune entité ni relation absente du diagramme. Si le test l'exige, arrête-
+   toi et dis-le-moi plutôt que de t'en écarter.
+6. N'implémente que ce que ce test exige. Ne traite pas les autres cas, ne
    généralise pas, n'anticipe aucune évolution. Les autres tests rouges restent
    rouges.
-6. Respecte strictement les spécifications de specs/architecture.md :
+7. Respecte strictement les spécifications de specs/architecture.md :
    - Fichiers .ts/.js : max 30 lignes utiles par fonction (sauf dérogation TSDoc @need_more_lines - "motif").
    - Fichiers .tsx/.jsx : mono-composant strict (1 composant par fichier, aucun sous-composant local).
    - Plafond global : max 500 lignes par fichier.
    - Flux d'imports & étanchéité : respect de la matrice modulaire et interdiction des modules serveurs/secrets dans le client et les hooks.
    - Conventions de nommage : kebab-case pour fichiers/dossiers, camelCase pour fonctions/variables/hooks, PascalCase pour classes/types/composants.
-7. Ne modifie aucun fichier en dehors de : `src/admin/planning/`.
-8. Aucune dépendance nouvelle.
+8. Ne modifie aucun fichier en dehors de : `src/app/admin/planning/`, `src/components/domain/planning/`, `src/services/server/planning/`, `src/hooks/domain/planning/`.
+9. Aucune dépendance nouvelle.
 
 RENDS
 - Le diff.
