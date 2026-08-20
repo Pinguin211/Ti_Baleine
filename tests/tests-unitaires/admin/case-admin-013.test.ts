@@ -11,7 +11,7 @@
  */
 import { expect, it } from 'vitest';
 import { annulerReservationService } from '../../../src/services/server/cancellation/annuler-reservation.service';
-import { composerMessageAnnulationReservation } from '../../../src/lib/sms/composer-message-annulation-reservation';
+import { composerMessageAnnulationReservation } from '../../../src/lib/server/sms/composer-message-annulation-reservation';
 
 interface BilletActif {
   id: string;
