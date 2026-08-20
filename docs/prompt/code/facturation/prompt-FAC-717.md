@@ -9,6 +9,7 @@ CE QUE JE TE DONNE
 - Le cas de test : tests/cases/facturation/CASE-FAC-717.md
 - La spécification : specs/facturation.md, section SPEC-FAC-02 (AC-4, Scénarios 1 et 2)
 - Les exigences d'architecture : specs/architecture.md (SPEC-ARCH-01, SPEC-ARCH-02, SPEC-ARCH-03)
+- Le modèle du domaine : docs/uml/domain.puml
 - Les couches du domaine que tu peux modifier : src/services/server/
 
 TA TÂCHE
@@ -20,15 +21,19 @@ CONTRAINTES
 2. Ne le contourne pas : pas de skip, pas de xfail, pas de tolérance élargie, pas d'assertion neutralisée.
 3. Implémente la règle, pas la valeur attendue. Les nombres écrits dans le cas de test ne doivent apparaître nulle part dans le code de production. Le calcul part du pourcentage ou de la règle écrite dans la spécification.
 4. La règle vit dans le domaine : src/services/server/enregistrer-statut-emission-facture.service.ts.
-5. N'implémente que ce que ce test exige. Ne traite pas les autres cas, ne généralise pas, n'anticipe aucune évolution. Les autres tests rouges restent rouges.
-6. Respecte strictement les spécifications de specs/architecture.md :
+5. Respecte le modèle du domaine documenté dans docs/uml/domain.puml : mêmes
+   classes, mêmes attributs, mêmes relations, même vocabulaire. N'invente
+   aucune entité ni relation absente du diagramme. Si le test l'exige, arrête-
+   toi et dis-le-moi plutôt que de t'en écarter.
+6. N'implémente que ce que ce test exige. Ne traite pas les autres cas, ne généralise pas, n'anticipe aucune évolution. Les autres tests rouges restent rouges.
+7. Respecte strictement les spécifications de specs/architecture.md :
    - Fichiers .ts/.js : max 30 lignes utiles par fonction (sauf dérogation TSDoc @need_more_lines - "motif").
    - Fichiers .tsx/.jsx : mono-composant strict (1 composant par fichier, aucun sous-composant local).
    - Plafond global : max 500 lignes par fichier.
    - Flux d'imports & étanchéité : respect de la matrice modulaire et interdiction des modules serveurs/secrets dans le client et les hooks.
    - Conventions de nommage : kebab-case pour fichiers/dossiers, camelCase pour fonctions/variables/hooks, PascalCase pour classes/types/composants.
-7. Ne modifie aucun fichier en dehors de : src/services/server/
-8. Aucune dépendance nouvelle.
+8. Ne modifie aucun fichier en dehors de : src/services/server/
+9. Aucune dépendance nouvelle.
 
 RENDS
 - Le diff.
