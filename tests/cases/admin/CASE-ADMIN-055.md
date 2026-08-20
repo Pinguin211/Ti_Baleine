@@ -32,7 +32,7 @@ Et un seul et même message bilingue est expédié à tous les destinataires ind
 |---|---:|---|
 | Section française | Présente en première partie du message | REQ-018 |
 | Section anglaise | Présente à la suite dans le même message | R-26 |
-| Ciblage linguistique | Indistinct (aucun filtre par langue requis) | Conformité CDC v4 |
+| Ciblage linguistique | Indistinct (aucun filtre par langue requis) | Conformité CDC v5 |
 
 ## Ce que ce cas ne vérifie pas
 

@@ -1,7 +1,7 @@
-# CASE-ADMIN-018 — [Choix déduit — En attente CDC] Rejet strict de la demande d'annulation administrative lorsque le créneau est déjà passé
+# CASE-ADMIN-018 — Rejet strict de la demande d'annulation administrative lorsque le créneau est déjà passé
 
 **Spécification :** `SPEC-ADMIN-02`  
-**Critère d'acceptation :** `Cas limite #3`, `Ce qui n'est pas défini §1`, `CDC v4 §11 Q1`  
+**Critère d'acceptation :** `Cas limite #3`, `Ce qui n'est pas défini §1`, `CDC v5 §11 Q1`  
 **Type :** sécurité / règle temporelle  
 **Niveau de risque :** élevé
 

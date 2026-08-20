@@ -30,7 +30,7 @@ Et le système fonctionne exclusivement sur la base de l'administrateur unique d
 | Grandeur | Valeur attendue | Calcul |
 |---|---:|---|
 | Gestion multi-utilisateurs | Non proposée (0 menu de création de compte) | Contrainte C-16 |
-| Modèle de sécurité | Mono-administrateur | Conformité CDC v4 |
+| Modèle de sécurité | Mono-administrateur | Conformité CDC v5 §6 |
 
 ## Ce que ce cas ne vérifie pas
 
