@@ -1,22 +1,22 @@
-# CASE-FAC-720 — Non-déclenchement de la facturation en cas de transaction bancaire rejetée ou refusée
+# CASE-FAC-720 — Non-déclenchement de la facturation en cas de transaction bancaire rejetée ou refusée, sur l'acompte comme sur le solde
 
 **Spécification :** `SPEC-FAC-02`  
-**Critère d'acceptation :** `AC-6`, `Cas limite #3`  
+**Critère d'acceptation :** `AC-7`, `Cas limite #3`  
 **Type :** sécurité / robustesse  
 **Niveau de risque :** critique
 
 ## Ce que ce cas protège
 
-Ce cas protège l'intégrité comptable et commerciale en empêchant formellement toute génération de facture acquittée, tout envoi d'e-mail de confirmation et toute création d'état d'émission lorsqu'une transaction bancaire est refusée ou rejetée par l'émetteur de paiement. Si la règle se casse, un client pourrait obtenir une facture acquittée sans avoir payé.
+Ce cas protège l'intégrité comptable et commerciale en empêchant formellement toute génération de facture (d'acompte ou de solde), tout envoi d'e-mail de confirmation et toute création d'état d'émission lorsqu'une transaction bancaire (celle de l'acompte ou celle du solde) est refusée ou rejetée par l'émetteur de paiement. Si la règle se casse, un client pourrait obtenir une facture « Acompte acquitté » ou « Acquittée » sans avoir effectivement payé l'étape correspondante.
 
 ## Cas
 
 ```gherkin
-Étant donné une réservation en cours de paiement
-Quand la tentative de paiement par carte bancaire est rejetée ou refusée par la passerelle de paiement
-Alors aucun document de facture PDF n'est produit
+Étant donné une réservation en cours de paiement de l'acompte ou du solde
+Quand la tentative de paiement par carte bancaire (acompte ou solde) est rejetée ou refusée par la passerelle de paiement
+Alors aucun document de facture PDF (d'acompte ou de solde selon l'étape concernée) n'est produit
 Et aucun courriel de facturation n'est envoyé
-Et aucun statut d'émission de facture n'est créé en base de données
+Et aucun statut d'émission de facture n'est créé en base de données pour cette étape de paiement
 ```
 
 ## Données
@@ -46,12 +46,12 @@ Et aucun statut d'émission de facture n'est créé en base de données
 ## Test automatisé
 
 **Nom attendu :**
-`test_CASE_FAC_720_non_declenchement_facturation_transaction_bancaire_rejetee`  
+`test_CASE_FAC_720_non_declenchement_facturation_transaction_bancaire_rejetee_acompte_ou_solde`  
 **Fichier :** à renseigner après automatisation
 
 ## Revue du test automatisé
 
-- [ ] Le test simule une réponse de rejet de paiement bancaire (ex: solde insuffisant, carte expirée).
+- [ ] Le test simule une réponse de rejet de paiement bancaire (ex: solde insuffisant, carte expirée) lors du règlement de l'acompte, puis lors du règlement du solde.
 - [ ] Le test vérifie qu'aucun service de génération PDF n'est sollicité.
 - [ ] Le test vérifie qu'aucun message n'est posté sur le serveur SMTP.
 - [ ] Le test vérifie qu'aucun statut d'émission de facture n'existe en base de données.

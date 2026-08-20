@@ -7,13 +7,13 @@
 
 ## Ce que ce cas protège
 
-Ce cas protège le comportement du système face aux rebonds de messagerie (adresse de destination inexistante ou boîte de réception saturée). Conformément aux spécifications, aucun canal de secours (ex: SMS) ni boucle de retry infini de rattrapage automatique n'est déclenché pour le moment.
+Ce cas protège le comportement du système face aux rebonds de messagerie (adresse de destination inexistante ou boîte de réception saturée), que le courriel rejeté soit celui de la facture d'acompte ou celui de la facture de solde. Conformément aux spécifications, aucun canal de secours (ex: SMS) ni boucle de retry infini de rattrapage automatique n'est déclenché pour le moment.
 
 ## Cas
 
 ```gherkin
-Étant donné une réservation payée associée à une adresse courriel provoquant un rejet de distribution (boîte pleine ou adresse erronée)
-Quand le message est initialement accepté par la passerelle SMTP puis retourne un avis de non-délivrance (Bounce)
+Étant donné une réservation dont le paiement de l'acompte (ou du solde) est validé, associée à une adresse courriel provoquant un rejet de distribution (boîte pleine ou adresse erronée)
+Quand le message contenant la facture correspondante est initialement accepté par la passerelle SMTP puis retourne un avis de non-délivrance (Bounce)
 Alors le système ne déclenche aucun canal alternatif automatique (pas d'envoi SMS de secours)
 Et le système n'entre pas dans une boucle infinie de réexpéditions automatiques
 ```

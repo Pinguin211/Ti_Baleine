@@ -1,11 +1,11 @@
-# Prompt — écrire le test de CASE-ADMIN-060
+# Prompt — écrire le test de CASE-ADMIN-075
 
-> Blocage de la validation de l'envoi d'alerte lorsque le corps du message est vide ou effacé
+> Blocage de l'encaissement sur une réservation déjà « Payée complètement »
 >
 > Étape « cas de test → test ». Le cas de test est le contrat, l'agent produit
 > le test. Suit `docs/prompt/prompt-GABARIT-test.md`.
 >
-> Prérequis : le cas `tests/cases/admin/CASE-ADMIN-060.md` doit exister.
+> Prérequis : le cas `tests/cases/admin/CASE-ADMIN-075.md` doit exister.
 >
 > À recopier tel quel dans l'agent. Un prompt = un test.
 
@@ -19,12 +19,12 @@ Emplacement des tests : tests/tests-unitaires/admin/
 Convention : le nom du test contient l'identifiant CASE.
 
 CE QUE JE TE DONNE
-- Le cas de test : tests/cases/admin/CASE-ADMIN-060.md
-- La spécification métier : specs/admin.md, section SPEC-ADMIN-06
+- Le cas de test : tests/cases/admin/CASE-ADMIN-075.md
+- La spécification métier : specs/admin.md, section SPEC-ADMIN-08
 - Les exigences d'architecture : specs/architecture.md (règles SPEC-ARCH-01 et SPEC-ARCH-02)
 
 TA TÂCHE
-Écris UN test automatisé, et un seul, qui traduit CASE-ADMIN-060.
+Écris UN test automatisé, et un seul, qui traduit CASE-ADMIN-075.
 
 CONTRAINTES
 1. Nom du test : exactement celui écrit dans la section « Test automatisé » du
@@ -39,8 +39,8 @@ CONTRAINTES
 5. Les assertions correspondent exactement aux lignes « Alors » et « Et » du
    Gherkin : une assertion par ligne, aucune de plus.
 6. Ne modifie aucun fichier en dehors de :
-   - tests/tests-unitaires/admin/case-admin-060.test.ts
-   - tests/cases/admin/CASE-ADMIN-060.md (uniquement le champ « Fichier »)
+   - tests/tests-unitaires/admin/case-admin-075.test.ts
+   - tests/cases/admin/CASE-ADMIN-075.md (uniquement le champ « Fichier »)
    Ne touche à aucun fichier sous src/ ni à aucun autre test existant.
 7. Ne simule pas le calcul qui est l'objet du cas. Tu peux simuler ce qui
    l'entoure — horloge, envoi de message, persistance.
