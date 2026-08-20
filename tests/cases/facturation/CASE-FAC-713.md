@@ -1,19 +1,19 @@
 # CASE-FAC-713 — Génération de la facture PDF exclusivement en mémoire sans persistance de fichier physique sur le disque du serveur
 
 **Spécification :** `SPEC-FAC-02`  
-**Critère d'acceptation :** `AC-1`, `Règle`, `Portée §4`  
+**Critère d'acceptation :** `AC-1`, `AC-2`, `Règle`, `Portée §4`  
 **Type :** architecture / conformité  
 **Niveau de risque :** élevé
 
 ## Ce que ce cas protège
 
-Ce cas protège la contrainte architecturale interdisant tout stockage persistant de fichiers PDF sur le disque ou serveur de fichiers de l'application (respect de la minimisation de données et prévention de la saturation du disque). Si la règle se casse, le serveur accumulerait des fichiers PDF de factures sur son système de fichiers local sans politique de purge.
+Ce cas protège la contrainte architecturale interdisant tout stockage persistant de fichiers PDF sur le disque ou serveur de fichiers de l'application, pour la facture d'acompte comme pour la facture de solde (respect de la minimisation de données et prévention de la saturation du disque). Si la règle se casse, le serveur accumulerait des fichiers PDF de factures sur son système de fichiers local sans politique de purge.
 
 ## Cas
 
 ```gherkin
-Étant donné une réservation dont le paiement vient d'être validé
-Quand le moteur de facturation génère la facture acquittée PDF et l'expédie par courriel
+Étant donné une réservation dont l'acompte ou le solde vient d'être validé
+Quand le moteur de facturation génère la facture d'acompte PDF (ou la facture de solde PDF) et l'expédie par courriel
 Alors le flux binaire du PDF est produit exclusivement en mémoire vive (ou via un fichier temporaire en mémoire détruit immédiatement)
 Et aucun nouveau fichier PDF persistant n'est présent sur le système de fichiers du serveur à l'issue de l'opération
 ```

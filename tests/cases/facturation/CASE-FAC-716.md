@@ -1,21 +1,23 @@
 # CASE-FAC-716 — Inclusion du récapitulatif de la réservation dans le corps du courriel transactionnel
 
 **Spécification :** `SPEC-FAC-02`  
-**Critère d'acceptation :** `AC-5`, `Scénario 1`  
+**Critère d'acceptation :** `AC-6`, `Scénario 1`  
 **Type :** acceptation  
 **Niveau de risque :** moyen
 
 ## Ce que ce cas protège
 
-Ce cas protège la lisibilité directe des informations essentielles de réservation dans le corps même du message électronique (HTML ou texte brut), permettant au client de consulter immédiatement le récapitulatif de sa commande sans devoir ouvrir la pièce jointe PDF.
+Ce cas protège la lisibilité directe des informations essentielles de réservation dans le corps même du message électronique (HTML ou texte brut), permettant au client de consulter immédiatement le récapitulatif de sa commande sans devoir ouvrir la pièce jointe PDF, aussi bien pour le courriel d'acompte que pour le courriel de solde.
 
 ## Cas
 
 ```gherkin
-Étant donné une réservation confirmée pour une sortie « Baleines » le 18/08/2026 à 9h00 au départ de Saint-Leu pour 2 adultes (150 €)
-Quand le courriel transactionnel d'envoi de facture est généré
+Étant donné une réservation confirmée pour une sortie « Baleines » le 18/08/2026 à 9h00 au départ de Saint-Leu pour 2 adultes (montant total TTC de 150 €, acompte de 45 € réglé, solde restant dû de 105 €)
+Quand le courriel transactionnel d'envoi de la facture d'acompte est généré
 Alors le corps du courriel (texte ou HTML) contient le récapitulatif de la réservation
-Et ce récapitulatif mentionne explicitement la date (18/08/2026), l'horaire (9h00), le port (Saint-Leu), le nombre de passagers (2 adultes) et le montant total réglé (150 €)
+Et ce récapitulatif mentionne explicitement la date (18/08/2026), l'horaire (9h00), le port (Saint-Leu), le nombre de passagers (2 adultes), le montant total TTC (150 €), l'acompte réglé (45 €) et le solde restant dû (105 €)
+Quand le solde est réglé et que le courriel transactionnel d'envoi de la facture de solde est généré
+Alors le récapitulatif de ce second courriel mentionne le rappel de l'acompte perçu (45 €) et l'acquittement complet du montant total TTC (150 €)
 ```
 
 ## Données
@@ -26,14 +28,17 @@ Et ce récapitulatif mentionne explicitement la date (18/08/2026), l'horaire (9h
 | Date et heure | 18/08/2026 à 9h00 |
 | Port | Saint-Leu |
 | Passagers | 2 adultes |
-| Montant réglé | 150 € |
+| Montant total TTC | 150 € |
+| Acompte réglé | 45 € |
+| Solde restant dû | 105 € |
 
 ## Résultat attendu, calculé à la main
 
 | Grandeur | Valeur attendue | Calcul |
 |---|---:|---|
-| Récapitulatif dans le corps du courriel | Présent et complet | Inclusion des données clés de commande |
-| Concordance des montants et dates | Identiques au PDF | Cohérence entre le corps de message et le PDF joint |
+| Récapitulatif dans le corps du courriel d'acompte | Présent et complet (dont acompte et solde dû) | Inclusion des données clés de commande |
+| Récapitulatif dans le corps du courriel de solde | Présent et complet (dont rappel de l'acompte et acquittement) | Inclusion des données clés de commande |
+| Concordance des montants et dates | Identiques aux PDF joints | Cohérence entre le corps de message et chaque PDF joint |
 
 ## Ce que ce cas ne vérifie pas
 
@@ -50,9 +55,10 @@ Et ce récapitulatif mentionne explicitement la date (18/08/2026), l'horaire (9h
 
 ## Revue du test automatisé
 
-- [ ] Le test intercepte le courriel transactionnel émis après paiement.
-- [ ] Le test extrait le corps (body) textuel ou HTML de l'e-mail.
-- [ ] Le test vérifie la présence des mentions : prestation, date, heure, lieu et montant (150 €).
+- [ ] Le test intercepte le courriel transactionnel émis après paiement de l'acompte, puis après règlement du solde.
+- [ ] Le test extrait le corps (body) textuel ou HTML de chaque e-mail.
+- [ ] Le test vérifie la présence des mentions : prestation, date, heure, lieu, montant total (150 €), acompte (45 €) et solde dû (105 €) dans le courriel d'acompte.
+- [ ] Le test vérifie la présence du rappel de l'acompte (45 €) et de l'acquittement (150 €) dans le courriel de solde.
 - [ ] Le nom du test contient `CASE_FAC_716`.
 - [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
