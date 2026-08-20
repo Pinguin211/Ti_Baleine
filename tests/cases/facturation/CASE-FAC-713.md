@@ -1,7 +1,7 @@
 # CASE-FAC-713 — Génération de la facture PDF exclusivement en mémoire sans persistance de fichier physique sur le disque du serveur
 
 **Spécification :** `SPEC-FAC-02`  
-**Critère d'acceptation :** `AC-1`, `AC-2`, `Règle`, `Portée §4`  
+**Critère d'acceptation :** `AC-1`, `AC-2`, `Règle`, `Portée §5`  
 **Type :** architecture / conformité  
 **Niveau de risque :** élevé
 

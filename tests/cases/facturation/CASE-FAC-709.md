@@ -14,7 +14,7 @@ Ce cas protège l'exactitude des informations temporelles figurant sur la factur
 ```gherkin
 Étant donné une réservation confirmée pour une sortie prévue le 18/08/2026, créneau 9h00
 Quand la facture d'acompte PDF est générée suite à la validation du paiement de l'acompte
-Alors le document mentionne explicitement la date et l'horaire au format standard « 18/08/2026 9h00 » (ou « 18/08/2026 » et « 9h00 »)
+Alors le document mentionne explicitement la date et l'horaire sous la forme d'une chaîne unique consolidée au format standard strict « 18/08/2026 9h00 » (la séparation en deux champs distincts « 18/08/2026 » et « 9h00 » n'est pas admise)
 Quand le solde est réglé et que la facture de solde PDF est générée
 Alors ce second document mentionne également la même date et le même horaire au format standard
 ```

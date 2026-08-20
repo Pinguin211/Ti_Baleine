@@ -1,7 +1,7 @@
 # CASE-FAC-715 — Facture d'acompte ou de solde transmise en pièce jointe PDF valide du courriel
 
 **Spécification :** `SPEC-FAC-02`  
-**Critère d'acceptation :** `AC-6`, `Portée §3`  
+**Critère d'acceptation :** `AC-6`, `Portée §4`  
 **Type :** acceptation  
 **Niveau de risque :** élevé
 
