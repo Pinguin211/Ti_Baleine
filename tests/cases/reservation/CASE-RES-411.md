@@ -54,7 +54,7 @@ Et aucun créneau d'après-midi (ex. 14h00) n'est affiché pour Saint-Leu
 
 **Nom attendu :**  
 `test_CASE_RES_411_indisponibilite_creneaux_saint_leu_hors_mardi_jeudi_matin`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-411.test.ts`
 
 ## Revue du test automatisé
 

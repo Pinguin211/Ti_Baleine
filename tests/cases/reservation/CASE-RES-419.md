@@ -54,7 +54,7 @@ Et la page de confirmation ainsi que l'e-mail récapitulatif indiquent explicite
 
 **Nom attendu :**  
 `test_CASE_RES_419_reservation_jour_meme_blocage_envoi_sms_solde_sur_place`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-419.test.ts`
 
 ## Revue du test automatisé
 

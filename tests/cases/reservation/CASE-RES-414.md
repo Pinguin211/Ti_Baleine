@@ -57,7 +57,7 @@ Et le créneau est affiché à l'état « Complet » et n'est plus sélectionnab
 
 **Nom attendu :**  
 `test_CASE_RES_414_reservation_derniere_place_passage_creneau_etat_complet`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-414.test.ts`
 
 ## Revue du test automatisé
 

@@ -55,7 +55,7 @@ Et aucune redirection vers la passerelle de paiement CB n'est autorisée tant qu
 
 **Nom attendu :**  
 `test_CASE_RES_407_rejet_formulaire_coordonnees_nom_prenom_email_manquant_ou_invalide`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-407.test.ts`
 
 ## Revue du test automatisé
 

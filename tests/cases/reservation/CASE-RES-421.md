@@ -52,7 +52,7 @@ Et le solde restant dû reste exigible pour un encaissement par carte bancaire s
 
 **Nom attendu :**  
 `test_CASE_RES_421_non_utilisation_lien_solde_maintien_reservation_payee_partiellement`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-421.test.ts`
 
 ## Revue du test automatisé
 
