@@ -45,7 +45,7 @@ Alors ce second document mentionne également le même intitulé exact de l'acti
 
 **Nom attendu :**
 `test_CASE_FAC_710_presence_intitule_exact_prestation_sur_factures_acompte_et_solde`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-710.test.ts`
 
 ## Revue du test automatisé
 

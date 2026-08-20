@@ -60,7 +60,7 @@ Alors la facture de solde distincte PDF est générée à la volée avec un iden
 
 **Nom attendu :**
 `test_CASE_FAC_706_facturation_acompte_solde_privatisation_saint_leu_sans_majoration`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-706.test.ts`
 
 ## Revue du test automatisé
 

@@ -49,7 +49,7 @@ Et le statut d'émission de la facture de solde est égal à « envoyée avec su
 
 **Nom attendu :**
 `test_CASE_FAC_717_enregistrement_etat_emission_succes_avec_horodatage_acompte_et_solde`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-717.test.ts`
 
 ## Revue du test automatisé
 

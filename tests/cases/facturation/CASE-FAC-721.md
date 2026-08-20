@@ -46,7 +46,7 @@ Et aucun enregistrement d'émission de facture n'est créé en base de données 
 
 **Nom attendu :**
 `test_CASE_FAC_721_non_declenchement_facturation_abandon_ou_expiration_session_paiement_acompte_ou_solde`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-721.test.ts`
 
 ## Revue du test automatisé
 

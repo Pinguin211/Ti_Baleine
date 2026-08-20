@@ -61,7 +61,7 @@ Et la facture PDF détaille la ligne tarifaire 1 adulte à 50 €, le montant to
 
 **Nom attendu :**
 `test_CASE_FAC_703_facturation_acompte_sortie_dauphins_tarif_specifique`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-703.test.ts`
 
 ## Revue du test automatisé
 

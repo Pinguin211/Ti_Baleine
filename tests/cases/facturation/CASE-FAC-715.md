@@ -44,7 +44,7 @@ Et la pièce jointe correspond à la facture d'acompte si l'événement déclenc
 
 **Nom attendu :**
 `test_CASE_FAC_715_piece_jointe_pdf_facture_valide`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-715.test.ts`
 
 ## Revue du test automatisé
 

@@ -58,7 +58,7 @@ Alors le récapitulatif de la facture de solde rappelle également la ventilatio
 
 **Nom attendu :**
 `test_CASE_FAC_712_ligne_detaillee_supplement_saint_leu_facture_acompte_et_solde`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-712.test.ts`
 
 ## Revue du test automatisé
 

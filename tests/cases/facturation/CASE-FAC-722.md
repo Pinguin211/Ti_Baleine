@@ -45,7 +45,7 @@ Et aucun statut « envoyée avec succès » n'est persisté en base de données 
 
 **Nom attendu :**
 `test_CASE_FAC_722_non_declenchement_facturation_statut_paiement_en_attente_acompte_ou_solde`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-722.test.ts`
 
 ## Revue du test automatisé
 

@@ -65,7 +65,7 @@ Et l'état d'émission de la facture de solde est persisté en base de données 
 
 **Nom attendu :**
 `test_CASE_FAC_701_emission_facture_acompte_puis_solde_privatisation_forfaitaire`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-701.test.ts`
 
 ## Revue du test automatisé
 

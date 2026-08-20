@@ -48,7 +48,7 @@ Et, pour deux réservations distinctes, les identifiants de facture générés s
 
 **Nom attendu :**
 `test_CASE_FAC_707_presence_obligatoire_et_unicite_identifiants_facture_acompte_solde`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-707.test.ts`
 
 ## Revue du test automatisé
 
