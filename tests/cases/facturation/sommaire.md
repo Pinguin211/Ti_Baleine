@@ -16,12 +16,12 @@
 | 706 | CASE-FAC-706.md | Émission des factures d'acompte et de solde d'une privatisation forfaitaire au départ de Saint-Leu sans application de majoration géographique | `AC-1`, `AC-2`, `AC-3`, `Scénario 2`, `Cas limite #5` |
 | 707 | CASE-FAC-707.md | Présence obligatoire et unicité des identifiants de facture d'acompte et de solde (ex: `FACT-AC-YYYY-XXXXX` / `FACT-SO-YYYY-XXXXX`) | `Scénario 1`, `Portée §1`, `AC-1`, `AC-2` |
 | 708 | CASE-FAC-708.md | Présence obligatoire des mentions explicites « Acompte acquitté » / « Acquittée » et des montants correspondants sur les factures PDF | `AC-1`, `AC-2`, `Règle` |
-| 709 | CASE-FAC-709.md | Présence obligatoire de la date exacte et du créneau horaire de la prestation sur le PDF | `AC-2` |
-| 710 | CASE-FAC-710.md | Présence obligatoire de l'intitulé exact de la prestation (Baleines, Dauphins, Privatisation) sur le PDF | `AC-2` |
-| 711 | CASE-FAC-711.md | Mention explicite du port d'embarquement (Saint-Gilles ou Saint-Leu) sur la facture PDF | `AC-2`, `Scénario 1` |
+| 709 | CASE-FAC-709.md | Présence obligatoire de la date exacte et du créneau horaire de la prestation sur les factures PDF (acompte et solde) | `AC-3` |
+| 710 | CASE-FAC-710.md | Présence obligatoire de l'intitulé exact de la prestation (Baleines, Dauphins, Privatisation) sur les factures PDF (acompte et solde) | `AC-3` |
+| 711 | CASE-FAC-711.md | Mention explicite du port d'embarquement (Saint-Gilles ou Saint-Leu) sur les factures PDF (acompte et solde) | `AC-3`, `Scénario 1` |
 | 712 | CASE-FAC-712.md | Ligne détaillée sur les factures d'acompte et de solde pour le supplément géographique Saint-Leu (10 € par personne) | `AC-1`, `AC-2`, `AC-3`, `Scénario 1`, `Cas limite #5` |
 | 713 | CASE-FAC-713.md | Génération de la facture (acompte ou solde) exclusivement en mémoire sans persistance de fichier physique sur le disque du serveur | `AC-1`, `AC-2`, `Règle`, `Portée §4` |
-| 714 | CASE-FAC-714.md | Expédition immédiate du courriel transactionnel à l'adresse e-mail renseignée lors de la commande | `AC-6`, `Règle` |
+| 714 | CASE-FAC-714.md | Expédition immédiate du courriel transactionnel (facture d'acompte ou de solde) à l'adresse e-mail renseignée lors de la commande | `AC-6`, `Règle` |
 | 715 | CASE-FAC-715.md | Facture d'acompte ou de solde transmise en pièce jointe PDF valide et non corrompue du courriel | `AC-6`, `Portée §3` |
 | 716 | CASE-FAC-716.md | Inclusion du récapitulatif de la réservation (acompte réglé / solde dû, puis acquittement) dans le corps des courriels transactionnels | `AC-6`, `Scénario 1` |
 | 717 | CASE-FAC-717.md | Enregistrement de l'état d'émission à « envoyée avec succès » avec horodatage en base, indépendamment pour la facture d'acompte et la facture de solde | `AC-4`, `Scénarios 1 et 2` |

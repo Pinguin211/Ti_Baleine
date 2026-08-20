@@ -1,20 +1,22 @@
-# CASE-FAC-710 — Présence obligatoire de l'intitulé exact de la prestation sur le PDF
+# CASE-FAC-710 — Présence obligatoire de l'intitulé exact de la prestation sur les factures PDF (acompte et solde)
 
 **Spécification :** `SPEC-FAC-02`  
-**Critère d'acceptation :** `AC-2`  
+**Critère d'acceptation :** `AC-3`  
 **Type :** conformité  
 **Niveau de risque :** moyen
 
 ## Ce que ce cas protège
 
-Ce cas protège la fidélité de l'intitulé de la prestation rendu sur la facture PDF par rapport à l'activité effectivement choisie par le client (« Sortie Baleines », « Sortie Dauphins », ou « Privatisation »). Si la règle se casse, un intitulé générique ou erroné pourrait induire une ambiguïté sur le service acheté.
+Ce cas protège la fidélité de l'intitulé de la prestation rendu sur la facture PDF, d'acompte comme de solde, par rapport à l'activité effectivement choisie par le client (« Sortie Baleines », « Sortie Dauphins », ou « Privatisation »). Si la règle se casse, un intitulé générique ou erroné pourrait induire une ambiguïté sur le service acheté, sur l'un ou l'autre des deux documents.
 
 ## Cas
 
 ```gherkin
 Étant donné une réservation confirmée pour une prestation de type « Baleines » (respectivement « Dauphins » ou « Privatisation »)
-Quand la facture PDF acquittée est générée à la volée après paiement
-Alors le document PDF mentionne obligatoirement et explicitement l'intitulé exact de l'activité réservée
+Quand la facture d'acompte PDF est générée à la volée après paiement de l'acompte
+Alors le document mentionne obligatoirement et explicitement l'intitulé exact de l'activité réservée
+Quand le solde est réglé et que la facture de solde PDF est générée
+Alors ce second document mentionne également le même intitulé exact de l'activité réservée
 ```
 
 ## Données
@@ -22,13 +24,14 @@ Alors le document PDF mentionne obligatoirement et explicitement l'intitulé exa
 | Élément | Valeur |
 |---|---:|
 | Activité testée | Sortie Baleines (ou Dauphins / Privatisation) |
-| Déclencheur | Validation du paiement |
+| Déclencheur | Validation du paiement de l'acompte, puis du solde |
 
 ## Résultat attendu, calculé à la main
 
 | Grandeur | Valeur attendue | Calcul |
 |---|---:|---|
-| Libellé de la prestation sur PDF | Sortie Baleines (ou Dauphins / Privatisation) | Correspondance exacte avec l'activité réservée |
+| Libellé de la prestation sur la facture d'acompte | Sortie Baleines (ou Dauphins / Privatisation) | Correspondance exacte avec l'activité réservée |
+| Libellé de la prestation sur la facture de solde | Sortie Baleines (ou Dauphins / Privatisation) | Identique, données issues de la même réservation |
 
 ## Ce que ce cas ne vérifie pas
 
@@ -41,14 +44,14 @@ Alors le document PDF mentionne obligatoirement et explicitement l'intitulé exa
 ## Test automatisé
 
 **Nom attendu :**
-`test_CASE_FAC_710_presence_intitule_exact_prestation_sur_facture_pdf`  
+`test_CASE_FAC_710_presence_intitule_exact_prestation_sur_factures_acompte_et_solde`  
 **Fichier :** à renseigner après automatisation
 
 ## Revue du test automatisé
 
 - [ ] Le test crée une réservation avec une activité spécifique (ex: Baleines).
-- [ ] Le test valide le paiement et génère la facture PDF.
-- [ ] Le test extrait le texte du PDF et vérifie la présence de l'intitulé exact de la prestation.
+- [ ] Le test valide le paiement de l'acompte, génère la facture d'acompte et vérifie la présence de l'intitulé exact de la prestation.
+- [ ] Le test règle ensuite le solde, génère la facture de solde et vérifie le même intitulé sur ce second document.
 - [ ] Le nom du test contient `CASE_FAC_710`.
 - [ ] Aucune assertion étrangère à ce cas n'a été ajoutée.
 
