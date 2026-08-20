@@ -14,7 +14,7 @@ Ce cas protège l'annulation standard d'une réservation en conditions nominales
 ```gherkin
 Étant donné une réservation confirmée de 1 adulte sur un créneau ordinaire sans alerte, montant total 75,00 €, acompte versé 22,50 €
 Quand l'administrateur ouvre l'écran d'annulation
-Alors le système affiche à l'administrateur le calcul indicatif de remboursement standard, assis sur le montant total de la commande (R-29)
+Alors le système affiche à l'administrateur le calcul indicatif de remboursement standard, assis sur le montant total de la commande et plafonné aux sommes perçues (R-29)
 Quand l'administrateur procède à l'annulation en sélectionnant le motif standard « Annulation standard hors alerte »
 Alors le billet est supprimé de la réservation
 Et la place est immédiatement libérée
@@ -35,7 +35,7 @@ Et le SMS de notification standard est envoyé au numéro du client sans aucune 
 
 | Grandeur | Valeur attendue | Calcul |
 |---|---:|---|
-| Calcul indicatif affiché (admin) | Régime standard assis sur le montant total | R-29, réservé à la vue administrateur |
+| Calcul indicatif affiché (admin) | Régime standard assis sur le montant total, plafonné aux sommes perçues | R-29, réservé à la vue administrateur |
 | Suppression billets | 1 billet supprimé | Suppression totale de la commande |
 | Notification SMS | SMS standard expédié au client, sans détail financier | Exigence AC-3 |
 | Jauge créneau | +1 place disponible | Exigence AC-2 |
@@ -44,6 +44,7 @@ Et le SMS de notification standard est envoyé au numéro du client sans aucune 
 
 - la vérification des retenues de frais d'annulation client en ligne (couvert par SPEC-CANCEL-03) ;
 - le traitement des pré-alertes et le régime dérogatoire à 100 % (couvert par `CASE-ADMIN-010`, `CASE-ADMIN-011`) ;
+- le cas où le montant payé est insuffisant pour couvrir la pénalité, avec remboursement indicatif plafonné à 0 € (couvert par `CASE-ADMIN-079`) ;
 - la formule exacte de calcul du barème (couvert par les cas dédiés de `SPEC-ADMIN-02`).
 
 ---

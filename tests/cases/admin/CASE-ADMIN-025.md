@@ -1,7 +1,7 @@
-# CASE-ADMIN-025 — [Choix déduit — Format audit à confirmer] Réduction partielle mixte (adultes et enfants) avec recalcul immédiat et trace d'audit
+# CASE-ADMIN-025 — Réduction partielle mixte (adultes et enfants) avec recalcul immédiat et trace d'audit
 
 **Spécification :** `SPEC-ADMIN-03`  
-**Critère d'acceptation :** `Portée §1`, `AC-1`, `Ce qui n'est pas défini §1`, `REQ-015`  
+**Critère d'acceptation :** `Portée §1`, `AC-1`, `REQ-015`  
 **Type :** acceptation  
 **Niveau de risque :** élevé
 

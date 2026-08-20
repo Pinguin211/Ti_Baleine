@@ -7,7 +7,7 @@
 
 ## Ce que ce cas protège
 
-Ce cas protège le système contre tout déclenchement non maîtrisé de flux financier sortant (virement bancaire ou recrédit carte automatique). Conformément au CDC v4 (Contrainte C-10), 100 % des remboursements doivent être exécutés manuellement par l'entreprise en dehors de la plateforme.
+Ce cas protège le système contre tout déclenchement non maîtrisé de flux financier sortant (virement bancaire ou recrédit carte automatique). Conformément au CDC v5 (Contrainte C-10), 100 % des remboursements doivent être exécutés manuellement par l'entreprise en dehors de la plateforme.
 
 ## Cas
 

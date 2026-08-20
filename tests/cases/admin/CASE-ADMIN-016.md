@@ -1,7 +1,7 @@
-# CASE-ADMIN-016 — [Choix déduit — En attente CDC] Annulation administrative autorisée sans délai minimal préalable jusqu'à l'heure exacte du départ
+# CASE-ADMIN-016 — Annulation administrative autorisée sans délai minimal préalable jusqu'à l'heure exacte du départ
 
 **Spécification :** `SPEC-ADMIN-02`  
-**Critère d'acceptation :** `Cas limite #1`, `Ce qui n'est pas défini §1`, `CDC v4 §11 Q1`  
+**Critère d'acceptation :** `Cas limite #1`, `Question ouverte n°1 §11 du CDC v5`  
 **Type :** acceptation / règle temporelle  
 **Niveau de risque :** élevé
 
