@@ -1,8 +1,7 @@
 # Sommaire — cas de test Réservation (CASE-RES-400 à 449)
 
-**Statut :** cas générés le 18/08/2026 — les 18 fichiers `CASE-RES-400.md` à
-`CASE-RES-417.md` existent dans ce dossier
-**Périmètre :** parcours de réservation grand public multi-sites
+**Statut :** mis à jour le 20/08/2026 suite à `SPEC-RESERVATION-03` v4 (CDC v5) — 22 cas prévus (CASE-RES-400 à CASE-RES-421)
+**Périmètre :** parcours de réservation grand public multi-sites et paiement scindé
 (`specs/reservation.md`, `SPEC-RESERVATION-03` uniquement). Annulation
 (`SPEC-ADMIN-02`), réduction de passagers (`SPEC-ADMIN-03`), émission des
 alertes de pré-annulation (`SPEC-ADMIN-06` — seul l'affichage d'une alerte
@@ -65,38 +64,58 @@ d'un complément de portée.
 
 - [x] **CASE-RES-400** — Réservation individuelle standard au départ de
   Saint-Gilles : créneau 10h00, 1 adulte (65 €) + 1 enfant de 8 ans (40 €),
-  coordonnées complètes, paiement CB de 105 € → réservation « payée », jauge
-  décrémentée de 2 places. *Nominal 1 — AC-2, AC-4, AC-8. Risque : élevé.*
+  montant total calculé de 105,00 €, acompte obligatoire de 30 % (31,50 €)
+  réglé par carte bancaire, solde restant dû de 73,50 € → réservation enregistrée
+  à l'état « payée partiellement », jauge décrémentée de 2 places. *Nominal 1 —
+  AC-2, AC-4, AC-8. Risque : élevé.*
 - [x] **CASE-RES-401** — Réservation individuelle au départ de Saint-Leu avec
-  majoration géographique : mardi 18 août 9h00 (créneau standard, non
-  privatisé — à distinguer du mardi 25 août utilisé par `CASE-RES-403`, où le
-  même créneau Tikap est entièrement privatisé), 2 adultes à 75 € (150 €),
-  coordonnées avec mobile valide → réservation « payée », jauge décrémentée de
-  2 places sur les 12 disponibles. *Nominal 2 — AC-2, AC-4, AC-8. Risque :
-  élevé.*
+  majoration géographique (+ 10 € / pers.) : mardi 18 août 9h00 (créneau standard,
+  non privatisé — à distinguer du mardi 25 août utilisé par `CASE-RES-403`),
+  2 adultes à 75 € (150,00 € total), acompte obligatoire de 30 % (45,00 €) réglé
+  par carte bancaire, solde restant dû de 105,00 € → réservation enregistrée à
+  l'état « payée partiellement », jauge décrémentée de 2 places sur les 12
+  disponibles. *Nominal 2 — AC-2, AC-4, AC-8. Risque : élevé.*
 - [x] **CASE-RES-402** — Réservation sur un créneau sous alerte de
   pré-annulation météo (émise la veille 18h, 4 places restantes) : mention
   d'avertissement affichée avant paiement, réservation de 2 places adultes
-  (130 €)
-  acceptée, mention toujours affichée après réservation. *Nominal 3 — AC-7,
-  AC-8. Risque : élevé.*
+  (130,00 € total), acompte obligatoire de 30 % (39,00 €) réglé par carte bancaire,
+  solde restant dû de 91,00 € → réservation enregistrée à l'état « payée
+  partiellement », mention d'avertissement toujours affichée après réservation.
+  *Nominal 6 — AC-7, AC-8. Risque : élevé.*
 - [x] **CASE-RES-403** — Réservation d'une privatisation demi-journée Tikap à
   Saint-Leu (mardi 25 août, matin dès 9h00 — créneau distinct de celui réservé
-  en individuel par `CASE-RES-401`) : forfait 600 € sans majoration
-  géographique, capacité du créneau intégralement bloquée. *Nominal 4 — AC-5,
-  AC-8. Risque : élevé.*
+  en individuel par `CASE-RES-401`) : forfait 600,00 € sans majoration
+  géographique, acompte obligatoire de 50 % (300,00 €) réglé par carte bancaire,
+  solde restant dû de 300,00 € → réservation enregistrée à l'état « payée
+  partiellement », capacité du créneau intégralement bloquée. *Nominal 3 —
+  AC-5, AC-8. Risque : élevé.*
+- [x] **CASE-RES-418** — Réception du SMS à J-1 et paiement du solde en ligne
+  dans le délai de 1 heure : exécution de la tâche planifiée J-1, envoi automatique
+  d'un SMS avec lien sécurisé temporaire (REQ-021), accès à la page de solde
+  bilingue FR/EN dans les 60 minutes, règlement par carte bancaire du solde restant
+  (70 % ou 50 %) → réservation bascule à l'état « payée complètement ». *Nominal 4
+  — AC-9, AC-10. Risque : élevé.*
+- [x] **CASE-RES-419** — Réservation effectuée le jour même de la sortie (ex. le
+  matin pour le créneau de 14h00) : saisie des passagers, acompte de 30 % réglé
+  en ligne par carte bancaire → réservation à l'état « payée partiellement »,
+  blocage strict de l'envoi de SMS / lien de solde (R-08, Contrainte 26),
+  récapitulatif indiquant le règlement obligatoire du solde sur place par carte
+  bancaire. *Nominal 5 / Cas limite 12 — AC-11. Risque : élevé.*
 
 ### Compléments de portée (grille tarifaire, privatisation, bilinguisme et formulaire de contact)
 
-- [x] **CASE-RES-404** — Bascule français/anglais à chaque étape du tunnel
-  sans perte des données déjà saisies (port, créneau, passagers,
-  coordonnées). *Complément AC-1. Risque : moyen.*
+- [x] **CASE-RES-404** — Bascule français/anglais à chaque étape du tunnel initial
+  et sur la page de paiement du solde sans perte des données déjà saisies
+  (port, créneau, passagers, coordonnées). *Complément AC-1, AC-10. Risque :
+  moyen.*
 - [x] **CASE-RES-405** — Grille tarifaire standard Saint-Gilles sur l'activité
   Dauphins (50 € adulte / 30 € enfant), non couverte par les scénarios
-  nominaux qui ne testent que Baleines. *Complément AC-4. Risque : moyen.*
-- [x] **CASE-RES-406** — Privatisation Grand Bleu (1 100 €) à Saint-Gilles,
-  formule non couverte par le scénario nominal 4 qui ne teste que le Tikap.
-  *Complément AC-5. Risque : moyen.*
+  nominaux qui ne testent que Baleines : calcul du montant total, de l'acompte
+  de 30 % et du solde restant dû. *Complément AC-4, AC-8. Risque : moyen.*
+- [x] **CASE-RES-406** — Privatisation Grand Bleu (1 100,00 €) à Saint-Gilles,
+  formule non couverte par le scénario nominal 3 qui ne teste que le Tikap :
+  application du forfait 1 100 €, acompte obligatoire de 50 % (550,00 €) et solde
+  restant dû de 550,00 €. *Complément AC-5, AC-8. Risque : moyen.*
 - [x] **CASE-RES-407** — Nom, prénom ou e-mail manquant à l'étape
   coordonnées : rejet à la validation du formulaire, distinct du cas limite 8
   qui ne teste que le mobile. *Complément AC-6. Risque : moyen.*
@@ -104,19 +123,21 @@ d'un complément de portée.
 ### Cas limites (`specs/reservation.md`, table « Cas limites »)
 
 - [x] **CASE-RES-408** — Tentative de réservation à moins de 2 heures du
-  départ (ex. 8h15 pour un créneau à 10h00) : créneau non sélectionnable,
-  toute validation rejetée. *Cas limite 1 — AC-3. Risque : élevé.*
+  départ (ex. 8h15 pour un créneau à 10h00) : clôture automatique (R-11), créneau
+  non sélectionnable, toute validation rejetée. *Cas limite 1 — AC-3. Risque :
+  élevé.*
 - [x] **CASE-RES-409** — Consultation du 25 décembre ou du 1er janvier :
-  aucun créneau proposé sur ces dates. *Cas limite 2 — AC-2. Risque : faible.*
+  fermeture annuelle (R-02), aucun créneau proposé sur ces dates. *Cas limite 2
+  — AC-2. Risque : faible.*
 - [x] **CASE-RES-410** — Saisie d'un participant de moins de 4 ans : rejet
-  immédiat, message d'inadmissibilité à bord, validation bloquée. *Cas limite
-  3 — AC-4. Risque : élevé.*
+  immédiat (R-06), message d'inadmissibilité à bord, validation bloquée. *Cas
+  limite 3 — AC-4. Risque : élevé.*
 - [x] **CASE-RES-411** — Consultation de Saint-Leu en dehors des mardis et
   jeudis matin (ex. un lundi, ou un mardi après-midi) : aucun créneau
   disponible. *Cas limite 4 — AC-2. Risque : moyen.*
 - [x] **CASE-RES-412** — Créneau du mardi ou jeudi matin (7h00 et 10h00) à
-  Saint-Gilles : jauge plafonnée à 24 places (Grand Bleu seul), privatisation
-  Tikap indisponible sur ce créneau. *Cas limite 5 — AC-2, AC-5. Risque :
+  Saint-Gilles : jauge plafonnée à 24 places (Grand Bleu seul, R-10), privatisation
+  Tikap indisponible le matin sur ce créneau. *Cas limite 5 — AC-2, AC-5. Risque :
   moyen.*
 - [x] **CASE-RES-413** — Demande d'un nombre de places supérieur aux places
   restantes sur le créneau : réservation bloquée, message indiquant le
@@ -126,24 +147,33 @@ d'un complément de portée.
   retiré de l'offre. *Cas limite 7 — AC-2, AC-8. Risque : moyen.*
 - [x] **CASE-RES-415** — Numéro de téléphone mobile manquant ou dans un
   format invalide à l'étape coordonnées : rejet à la validation du
-  formulaire. *Cas limite 8 — AC-6. Risque : élevé.*
-- [x] **CASE-RES-416** — Rejet ou abandon du paiement par carte bancaire :
-  aucune réservation enregistrée, aucune place décomptée de la jauge. *Cas
-  limite 9 — AC-8 (négatif). Risque : élevé.*
+  formulaire (Contrainte 20). *Cas limite 8 — AC-6. Risque : élevé.*
+- [x] **CASE-RES-416** — Rejet ou abandon du paiement de l'acompte par carte
+  bancaire : aucune réservation enregistrée, aucune place décomptée de la jauge.
+  *Cas limite 9 — AC-8 (négatif). Risque : élevé.*
+- [x] **CASE-RES-420** — Accès à la page de paiement du solde après expiration
+  du token technique (> 1 heure — REQ-107) : affichage du message d'expiration
+  du lien, invitation du client à régler le solde directement sur place par carte
+  bancaire le jour du départ. *Cas limite 10 — AC-10. Risque : moyen.*
+- [x] **CASE-RES-421** — Non-utilisation du lien de solde par le client (lien
+  SMS ignoré) : la réservation reste à l'état « payée partiellement » sans
+  blocage ni annulation, le client réglant son solde en CB sur place au départ.
+  *Cas limite 11 — AC-8, AC-10. Risque : moyen.*
 - [x] **CASE-RES-417** — Verrouillage temporaire des places sélectionnées
-  pendant le paiement CB (timer 10 min, hypothèse retenue) : places libérées
-  automatiquement si le paiement expire, est annulé ou rejeté. *Cas limite 10
-  — AC-2, AC-8. Risque : élevé.*
+  pendant le paiement de l'acompte CB (timer 10 min, choix technique) : places
+  libérées automatiquement si le paiement expire, est annulé ou rejeté (REQ-108).
+  *Cas limite 13 — AC-2, AC-8. Risque : élevé.*
 
 ---
 
 ## Point d'attention — hypothèses non validées côté client
 
 Deux points de `specs/reservation.md` § « Ce qui n'est pas défini » restent
-des hypothèses, pas des règles confirmées :
+des choix techniques / hypothèses, pas des règles confirmées par la direction :
 
 - la durée exacte du verrouillage temporaire du panier (10 min retenu par
-  défaut) — impacte directement `CASE-RES-417` ;
+  défaut pour prévenir le surbooking pendant la transaction — Question ouverte
+  n°12 §11 du CDC v5) — impacte directement `CASE-RES-417` ;
 - la formulation textuelle exacte de la mention d'avertissement de
   pré-annulation — `CASE-RES-402` ne devra donc vérifier que la *présence* de
   la mention, pas son texte au mot près, tant que la direction n'a pas validé
@@ -157,15 +187,16 @@ les contraintes jour/heure : mardi 9h00, etc.), la clôture automatique H-2
 
 ## Total proposé
 
-**18 cas** sur l'unique spécification réservation existante
-(`SPEC-RESERVATION-03`) : 4 scénarios nominaux (`400`–`403`), 4 compléments de
-portée (`404`–`407` : bascule bilingue FR/EN, grille tarifaire Dauphins,
-privatisation Grand Bleu, champs obligatoires du formulaire de contact) et
-10 cas limites de la table de la spec (`408`–`417`). Ensemble, ces 18 cas
-couvrent les 8 critères d'acceptation ; pris isolément, le bloc des 10 cas
-limites n'en couvre que 6 (`AC-2`, `AC-3`, `AC-4`, `AC-5`, `AC-6`, `AC-8`) —
-`AC-1` (bilinguisme) et `AC-7` (mention météo) ne sont couverts que par les
-scénarios nominaux et compléments de portée (`402`, `404`).
+**22 cas** sur l'unique spécification réservation existante
+(`SPEC-RESERVATION-03` v4) : 6 scénarios nominaux (`400`–`403`, `418`, `419`),
+4 compléments de portée (`404`–`407` : bascule bilingue FR/EN incluant la page de
+solde, grille tarifaire Dauphins, privatisation Grand Bleu, champs obligatoires
+du formulaire de contact) et 12 cas limites (`408`–`417`, `420`, `421` — couvrant
+l'ensemble des 13 cas limites de la spec, le cas limite 12 étant traité avec le
+nominal `419`).
+
+Ensemble, ces 22 cas couvrent l'intégralité des **11 critères d'acceptation**
+(`AC-1` à `AC-11`) et des **13 cas limites** de la spécification.
 
 ## Comment valider
 
