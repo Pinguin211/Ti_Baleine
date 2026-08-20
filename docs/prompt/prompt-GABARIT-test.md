@@ -19,6 +19,7 @@ CE QUE JE TE DONNE
 - Le cas de test : tests/cases/<domaine>/CASE-<DOM>-nnn.md
 - La spécification métier : specs/<domaine>.md, section SPEC-<DOM>-nn
 - Les exigences d'architecture : specs/architecture.md (règles SPEC-ARCH-01 et SPEC-ARCH-02)
+- Le modèle du domaine : docs/uml/domain.puml
 
 TA TÂCHE
 Écris UN test automatisé, et un seul, qui traduit CASE-<DOM>-nnn.
@@ -31,7 +32,10 @@ CONTRAINTES
 3. Déduis dans le test où sera le code cible sous src/ en t'appuyant strictement
    sur specs/architecture.md (SPEC-ARCH-01 pour les conventions de nommage,
    SPEC-ARCH-02 pour l'arborescence modulaire et le flux d'imports :
-   ex. src/services/server/, src/schemas/, src/utils/).
+   ex. src/services/server/, src/schemas/, src/utils/) et sur docs/uml/domain.puml
+   pour les noms de classes, d'attributs et de relations. N'invente aucune
+   entité absente du diagramme ; si le cas de test l'exige, arrête-toi et
+   dis-le-moi.
 4. Les valeurs sont celles de la section « Données ». N'en invente aucune.
 5. Les assertions correspondent exactement aux lignes « Alors » et « Et » du
    Gherkin : une assertion par ligne, aucune de plus.
@@ -46,7 +50,7 @@ RENDS
 - Le fichier de test.
 - La liste des fichiers créés ou modifiés.
 - La commande exacte pour lancer ce seul test.
-- L'emplacement et l'interface déduits pour le futur code sous src/ selon specs/architecture.md.
+- L'emplacement et l'interface déduits pour le futur code sous src/ selon specs/architecture.md et docs/uml/domain.puml.
 - Ce que tu as dû supposer et qui n'était pas dans ce que je t'ai donné.
 ```
 
@@ -62,6 +66,7 @@ RENDS
 | Cas de test | `tests/cases/<domaine>/CASE-<DOM>-nnn.md` |
 | Spécification métier | `specs/<domaine>.md`, la section citée dans le cas de test |
 | Exigences d'architecture | `specs/architecture.md` (règles `SPEC-ARCH-01` et `SPEC-ARCH-02`) |
+| Modèle du domaine | `docs/uml/domain.puml` (classes, attributs, relations validés en équipe) |
 | Fichier de test à créer | Chemin cible du test (nommé d'après le `CASE`) |
 
 ---
@@ -73,3 +78,6 @@ La phase d'écriture des tests ne doit en aucun cas pré-implémenter ou créer 
 
 **Déduction du code cible via `specs/architecture.md` :**  
 L'agent qui écrit le test doit déduire précisément où résidera la future fonction, le futur service ou le schéma sous `src/` (dans `src/services/server/`, `src/schemas/validation/`, `src/utils/`, etc.) en respectant l'arborescence, l'étanchéité serveur/client et les conventions de nommage imposées par `SPEC-ARCH-01` et `SPEC-ARCH-02`.
+
+**Ancrage sur `docs/uml/domain.puml` :**  
+Le diagramme de classes du domaine a été relu en équipe (voir `docs/uml/README.md`) : c'est lui qui fixe le vocabulaire, les entités et les relations validés, pas l'agent au moment du prompt. Le test doit nommer ses objets et champs d'après ce diagramme plutôt que d'en inventer de nouveaux, faute de quoi le code écrit en phase suivante (`prompt-gabarit-code.md`) hérite d'un vocabulaire qui diverge silencieusement du modèle censé le documenter.

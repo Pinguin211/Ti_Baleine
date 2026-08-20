@@ -26,6 +26,7 @@ CE QUE JE TE DONNE
 - Le cas de test : tests/cases/CASE-<DOM>-nn.md
 - La spécification : specs/<domaine>.md, section SPEC-<DOM>-nn
 - Les exigences d'architecture : specs/architecture.md
+- Le modèle du domaine : docs/uml/domain.puml
 - Les fichiers du domaine que tu peux modifier : src/<…>
 
 TA TÂCHE
@@ -42,17 +43,21 @@ CONTRAINTES
    calcul part du pourcentage écrit dans la spécification.
 4. La règle vit dans le domaine : <chemin>. Pas dans un contrôleur, pas dans un
    écran, pas dans une requête.
-5. N'implémente que ce que ce test exige. Ne traite pas les autres cas, ne
+5. Respecte le modèle du domaine documenté dans docs/uml/domain.puml : mêmes
+   classes, mêmes attributs, mêmes relations, même vocabulaire. N'invente
+   aucune entité ni relation absente du diagramme. Si le test l'exige, arrête-
+   toi et dis-le-moi plutôt que de t'en écarter.
+6. N'implémente que ce que ce test exige. Ne traite pas les autres cas, ne
    généralise pas, n'anticipe aucune évolution. Les autres tests rouges restent
    rouges.
-6. Respecte strictement les spécifications de specs/architecture.md :
+7. Respecte strictement les spécifications de specs/architecture.md :
    - Fichiers .ts/.js : max 30 lignes utiles par fonction (sauf dérogation TSDoc @need_more_lines - "motif").
    - Fichiers .tsx/.jsx : mono-composant strict (1 composant par fichier, aucun sous-composant local).
    - Plafond global : max 500 lignes par fichier.
    - Flux d'imports & étanchéité : respect de la matrice modulaire et interdiction des modules serveurs/secrets dans le client et les hooks.
    - Conventions de nommage : kebab-case pour fichiers/dossiers, camelCase pour fonctions/variables/hooks, PascalCase pour classes/types/composants.
-7. Ne modifie aucun fichier en dehors de : <liste explicite>.
-8. Aucune dépendance nouvelle.
+8. Ne modifie aucun fichier en dehors de : <liste explicite>.
+9. Aucune dépendance nouvelle.
 
 RENDS
 - Le diff.
@@ -76,9 +81,10 @@ RENDS
 | Cas de test | `tests/cases/CASE-<DOM>-nn.md` |
 | Spécification | `specs/<domaine>.md`, la section que le `CASE` cite |
 | Exigences d'architecture | `specs/architecture.md` (règles SPEC-ARCH-01 à 03) |
+| Modèle du domaine | `docs/uml/domain.puml` (classes, attributs, relations validés en équipe) |
 | Commande d'audit | `npm run arch:report` |
 | Fichiers modifiables | colonne *ce que l'agent reçoit* de votre plan de délégation |
-| Liste de la contrainte 7 | colonne *ce qu'il ne touche pas* de votre plan de délégation |
+| Liste de la contrainte 8 | colonne *ce qu'il ne touche pas* de votre plan de délégation |
 
 Les deux dernières lignes ne s'improvisent pas au moment de lancer l'agent : elles
 sont déjà écrites dans `docs/delegation-<SPEC>.md`. Si elles y sont vides, la tâche
@@ -120,7 +126,7 @@ main est : *on ne comprend plus ce que l'agent produit*.
 
 ## Pourquoi ces contraintes
 
-Quatre d'entre elles portent le reste.
+Cinq d'entre elles portent le reste.
 
 **1 et 2 — ne pas toucher au test, ne pas le contourner.** C'est le deuxième des
 trois signaux de reprise en main. Un test modifié pour passer est un échec, et il
@@ -131,9 +137,16 @@ se voit dans `git log`.
 supprimée du code » devient alors incochable, et la vérification en séance de J10 —
 casser une règle, lancer la suite — le montre.
 
-**5 — n'implémenter que ce que ce test exige.** Un agent laissé libre fait passer
+**5 — respecter `docs/uml/domain.puml`.** Le diagramme de classes du domaine a
+été relu en équipe (voir `docs/uml/README.md`) ; c'est lui qui fixe le
+vocabulaire, les entités et les relations validés — pas l'agent au moment du
+prompt. Sans cette contrainte, l'agent invente une classe ou un attribut ad hoc
+pour faire passer le test, et le domaine implémenté diverge silencieusement du
+diagramme censé le documenter.
+
+**6 — n'implémenter que ce que ce test exige.** Un agent laissé libre fait passer
 quatre tests d'un coup : le plan de délégation perd sa granularité et vous ne savez
 plus quelle tâche a produit quoi.
 
-**6 — respecter `specs/architecture.md` et auditer via `npm run arch:report`.**
+**7 — respecter `specs/architecture.md` et auditer via `npm run arch:report`.**
 Garantit que le code produit ne dérive ni en taille (fonctions $\le 30$ lignes, fichiers $\le 500$ lignes, 1 composant/fichier JSX), ni en structure (flux d'imports étanches sans fuite de secrets serveur). L'audit post-tâche bloque immédiatement toute régression technique.
