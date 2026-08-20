@@ -6,7 +6,7 @@ skinparam classAttributeIconSize 0
 skinparam shadowing false
 skinparam packageStyle rectangle
 
-title **Diagramme de Classes du Domaine Métier — Ti'Baleine**\n//Traçabilité avec les Spécifications (specs/reservation.md, specs/facturation.md, specs/admin.md)//
+title **Diagramme de Classes du Domaine Métier Mis à Jour — Ti'Baleine**\n//Traçabilité Spécifications v4 / CDC v5 (specs/reservation.md, specs/facturation.md, specs/admin.md)//
 
 ' ==========================================================
 ' 1. CONFIGURATIONS CONSTANTES (Fichiers en dur / Invariants)
@@ -51,14 +51,15 @@ package "Configurations Constantes (fichiers en dur)" as ConfigPkg #F8F9FA {
         +tarifBaseAdulte: Float
         +tarifBaseEnfant: Float
         +forfait: Float
+        +tauxAcompte: Float
         +necessiteNaturaliste: Boolean
     }
     note bottom of ConfigActivite
       **SPEC-RESERVATION-03, SPEC-ADMIN-07**
-      - Baleines : 65 € / 40 €, naturaliste obligatoire unique (R-15)
-      - Dauphins : 50 € / 30 €, sans naturaliste
-      - Privatisation Tikap : forfait 600 €
-      - Privatisation Grand Bleu : forfait 1 100 €
+      - Baleines : 65 € / 40 €, acompte 30 %, naturaliste unique
+      - Dauphins : 50 € / 30 €, acompte 30 %, sans naturaliste
+      - Privatisation Tikap : forfait 600 €, acompte 50 %
+      - Privatisation Grand Bleu : forfait 1 100 €, acompte 50 %
       - Référence : R-04, R-12, R-19, C-12, C-19
     end note
 }
@@ -84,12 +85,14 @@ package "Entités Persistées (état métier)" as PersistedPkg {
 
     class Alerte <<(E,#90CAF9) Persistée>> {
         +message: String
+        +dateEmission: DateTime
     }
     note right of Alerte
       **SPEC-ADMIN-06, SPEC-RESERVATION-03**
       - Émission groupée J-1 18h par l'admin sur 1..* créneaux (SPEC-ADMIN-06)
-      - Message bilingue combiné FR + EN (R-26, C-23)
-      - Active la mention d'avertissement sur le créneau en ligne (REQ-019, R-25)
+      - Message bilingue combiné FR + EN dans un champ unique (R-26, C-23)
+      - Une seule alerte autorisée par créneau (idempotence)
+      - Active 'sousPreAlerte = true' sur le créneau (REQ-019, R-25)
       - Ouvre droit au remboursement 100 % (R-27, R-28, C-36)
     end note
 
@@ -99,6 +102,7 @@ package "Entités Persistées (état métier)" as PersistedPkg {
         +port: Port
         +activite: Activite
         +estOuvert: Boolean
+        +sousPreAlerte: Boolean
         +calculerJauge(): Integer
         +calculerPlacesReservees(): Integer
         +placesRestantes(): Integer
@@ -111,20 +115,29 @@ package "Entités Persistées (état métier)" as PersistedPkg {
       - Fermeture annuelle : 25 déc & 1er janv (R-02, C-02)
       - Seuil de maintien : 6 passagers payants (R-09)
       - Exclusivité d'activité par créneau/navire (R-12, C-18)
+      - Affiche mention d'avertissement si sousPreAlerte = true
     end note
 
     class Reservation <<(E,#90CAF9) Persistée>> {
         +reference: String
         +statut: StatutReservation
+        +dateCreation: DateTime
         +calculerMontantTotal(): Float
+        +calculerMontantAcompte(): Float
+        +calculerMontantSolde(): Float
+        +soldeRestantDu(): Float
     }
     note right of Reservation
-      **SPEC-RESERVATION-03, SPEC-ADMIN-02, SPEC-ADMIN-03**
+      **SPEC-RESERVATION-03, SPEC-ADMIN-01, SPEC-ADMIN-02, SPEC-ADMIN-03, SPEC-ADMIN-08**
+      - Statut : EN_ATTENTE_PAIEMENT, PAYEE_PARTIELLEMENT, PAYEE_COMPLETEMENT, ANNULEE
+      - dateCreation : logique temporelle du cron SMS J-1
+        (si résa avant exécution cron → SMS envoyé ; si après → pas de SMS)
       - Réservation individuelle : regroupe 1..* billets (ADULTE / ENFANT)
       - Privatisation : regroupe 1 billet forfaitaire (PRIVATISATION)
       - Annulation admin : libération synchrone des places (SPEC-ADMIN-02)
       - Réduction passagers admin : sans ajout ni report (SPEC-ADMIN-03)
       - Conserve son enregistrement avec 0 billet actif si annulée
+      - Rattachée à 1 ou 2 paiements (acompte puis solde)
     end note
 
     class Billet <<(E,#90CAF9) Persistée>> {
@@ -140,6 +153,8 @@ package "Entités Persistées (état métier)" as PersistedPkg {
     end note
 
     class Paiement <<(E,#90CAF9) Persistée>> {
+        +typePaiement: TypePaiement
+        +canalPaiement: CanalPaiement
         +referenceTransaction: String
         +montant: Float
         +datePaiement: DateTime
@@ -148,17 +163,32 @@ package "Entités Persistées (état métier)" as PersistedPkg {
         +dateEmissionFacture: DateTime
     }
     note right of Paiement
-      **SPEC-RESERVATION-03, SPEC-FAC-02**
-      - Règlement 100 % par carte bancaire sécurisée (REQ-006, R-07)
+      **SPEC-RESERVATION-03, SPEC-FAC-02, SPEC-ADMIN-08**
+      - typePaiement : ACOMPTE ou SOLDE
+      - canalPaiement : EN_LIGNE ou SUR_PLACE_CB
       - Présent uniquement si validé avec succès
-      - Déclenche la génération à la volée d'une facture acquittée PDF
+      - Déclenche la génération à la volée de la facture PDF correspondante
         (non stockée sur disque) et son envoi immédiat par e-mail (SPEC-FAC-02)
-      - referenceFacture : identifiant unique de la facture (ex. "FACT-2026-00123")
+      - referenceFacture : FACT-AC-YYYY-XXXXX ou FACT-SO-YYYY-XXXXX
       - statutEmissionFacture / dateEmissionFacture : persistés pour tracer
         le succès ou l'échec d'envoi (AC-3) et garantir l'idempotence en cas
         de webhook de paiement dupliqué (cas limite 4, AC-7)
       - En cas d'échec SMTP, seul le statut passe à ECHEC_ENVOI ; un nouvel
         essai d'envoi à la volée reste possible (cas limite 1, AC-4)
+    end note
+
+    class TokenPaiementSolde <<(E,#90CAF9) Persistée>> {
+        +token: String
+        +dateCreation: DateTime
+        +dateExpiration: DateTime
+        +estUtilise: Boolean
+        +estValide(): Boolean
+    }
+    note right of TokenPaiementSolde
+      **SPEC-RESERVATION-03 (REQ-107)**
+      - URL sécurisée de paiement du solde envoyée par SMS à J-1
+      - Durée de validité technique : 1 heure (60 min)
+      - Non généré si réservation créée après exécution du cron J-1 (C-26)
     end note
 }
 
@@ -170,6 +200,8 @@ package "Entités Temporaires (en transit)" as TempPkg #FFFDE7 {
         +referenceFacture: String
         +referenceReservation: String
         +referenceTransaction: String
+        +typeFacture: TypeFacture
+        +mentionLegale: String
         +dateEmission: DateTime
         +destinataireEmail: String
         +nomClient: String
@@ -179,18 +211,22 @@ package "Entités Temporaires (en transit)" as TempPkg #FFFDE7 {
         +heurePrestation: Time
         +nombreAdultes: Integer [0..1]
         +nombreEnfants: Integer [0..1]
+        +supplementGeographiqueStLeu: Float [0..1]
         +forfaitPrivatisation: Float [0..1]
         +montantTotalTTC: Float
+        +montantAcompteRegle: Float
+        +montantSoldeRegle: Float [0..1]
+        +soldeRestantDu: Float [0..1]
         +estAcquittee: Boolean
     }
     note right of Facture
-      **SPEC-FAC-02 (Facturation dynamique)**
-      - Facture acquittée PDF générée à la volée en mémoire (non stockée sur disque)
-      - Transmise immédiatement par courriel transactionnel lors du paiement réussi
-      - Détail complet : références (facture, réservation, transaction), port,
-        prestation, ventilation passagers (adultes/enfants) ou forfait privatisation,
-        tarifs TTC et mention acquittée (AC-1, AC-2)
-      - Traçabilité persistée dans l'entité Paiement (succès/échec SMTP)
+      **SPEC-FAC-02 (Factures PDF distinctes à la volée)**
+      - Générée en mémoire vive (sans stockage disque)
+      - Acompte : mention « Acompte acquitté », affiche le solde dû
+      - Solde : mention « Acquittée », rappel acompte + solde soldé
+      - Date formatée strict JJ/MM/AAAA HhMM (ex: 18/08/2026 9h00)
+      - Détail complet : références, port, prestation, ventilation
+        passagers (adultes/enfants) ou forfait privatisation, tarifs TTC
     end note
 
     class NotificationSMS <<(T,#FFE082) Temporaire>> {
@@ -199,9 +235,10 @@ package "Entités Temporaires (en transit)" as TempPkg #FFFDE7 {
         +dateEnvoi: DateTime
     }
     note right of NotificationSMS
-      **SPEC-ADMIN-02, SPEC-ADMIN-03, SPEC-ADMIN-06**
-      - SMS d'information émis lors de l'annulation d'une réservation (avec motif)
-      - SMS d'alerte météo groupée diffusé la veille à 18h (message combiné FR + EN)
+      **SPEC-RESERVATION-03, SPEC-ADMIN-02, SPEC-ADMIN-06**
+      - Lien de paiement du solde à J-1 (avec token valide 1h)
+      - Annulation administrative (avec motif, sans calcul indicatif)
+      - Alerte météo groupée combinée FR + EN diffusée la veille à 18h
     end note
 
     class NotificationEmail <<(T,#FFE082) Temporaire>> {
@@ -212,8 +249,8 @@ package "Entités Temporaires (en transit)" as TempPkg #FFFDE7 {
     }
     note right of NotificationEmail
       **SPEC-FAC-02, SPEC-ADMIN-06**
-      - Courriel transactionnel de confirmation avec Facture PDF en pièce jointe
-      - Courriel d'alerte météo groupée diffusé la veille à 18h (message combiné FR + EN)
+      - Courriel transactionnel avec Facture PDF (acompte ou solde) jointe
+      - Courriel d'alerte météo groupée combinée FR + EN la veille à 18h
     end note
 }
 
@@ -261,8 +298,24 @@ package "Énumérations" as EnumPkg #ECEFF1 {
 
     enum StatutReservation {
         EN_ATTENTE_PAIEMENT
-        CONFIRMEE
+        PAYEE_PARTIELLEMENT
+        PAYEE_COMPLETEMENT
         ANNULEE
+    }
+
+    enum TypePaiement {
+        ACOMPTE
+        SOLDE
+    }
+
+    enum CanalPaiement {
+        EN_LIGNE
+        SUR_PLACE_CB
+    }
+
+    enum TypeFacture {
+        ACOMPTE
+        SOLDE
     }
 
     enum StatutEmissionFacture {
@@ -286,12 +339,13 @@ Alerte "0..1" -down-> "1..*" Creneau : cible > \n**SPEC-ADMIN-06, SPEC-RESERVATI
 Creneau "1" *-down-> "0..*" Reservation : regroupe > \n**SPEC-RESERVATION-03, SPEC-ADMIN-01**
 User "1" -down-> "0..*" Reservation : effectue / gère > \n**SPEC-RESERVATION-03, SPEC-ADMIN-04**
 Reservation "1" *-down-> "0..*" Billet : contient > \n**SPEC-RESERVATION-03, SPEC-ADMIN-02, SPEC-ADMIN-03**
-Reservation "1" -down-> "0..1" Paiement : est réglée par > \n**SPEC-RESERVATION-03, SPEC-FAC-02**
+Reservation "1" -down-> "0..2" Paiement : règle (acompte + solde) > \n**SPEC-RESERVATION-03, SPEC-FAC-02, SPEC-ADMIN-08**
+Reservation "1" -down-> "0..1" TokenPaiementSolde : génère pour SMS J-1 > \n**SPEC-RESERVATION-03**
 
 ' Flux de facturation à la volée et notifications
 Paiement "1" -down-> "1" Facture : génère à la volée > \n**SPEC-FAC-02**
 Facture "1" -down-> "1" NotificationEmail : est jointe à > \n**SPEC-FAC-02**
-Reservation "1" -down-> "0..*" NotificationSMS : déclenche (si annulation) > \n**SPEC-ADMIN-02, SPEC-ADMIN-03**
+Reservation "1" -down-> "0..*" NotificationSMS : déclenche (lien solde J-1 ou annulation) > \n**SPEC-RESERVATION-03, SPEC-ADMIN-02**
 Alerte "1" -down-> "0..*" NotificationSMS : diffuse par SMS > \n**SPEC-ADMIN-06**
 Alerte "1" -down-> "0..*" NotificationEmail : diffuse par Email > \n**SPEC-ADMIN-06**
 
@@ -337,10 +391,19 @@ Creneau -down-> Activite : propose >
 ' Typage du billet pour le calcul tarifaire : ADULTE (>=12 ans), ENFANT (4-11 ans) ou PRIVATISATION (forfait)
 Billet -down-> TypeBillet : catégorisé par >
 
-' Cycle de vie de la commande : EN_ATTENTE_PAIEMENT, CONFIRMEE, ANNULEE
+' Cycle de vie financier de la commande : EN_ATTENTE_PAIEMENT, PAYEE_PARTIELLEMENT, PAYEE_COMPLETEMENT, ANNULEE
 Reservation -down-> StatutReservation : statut >
+
+' Nature du paiement : ACOMPTE (30% ou 50%) ou SOLDE (70% ou 50%)
+Paiement -down-> TypePaiement : nature >
+
+' Canal de règlement : EN_LIGNE (CB sécurisée) ou SUR_PLACE_CB (embarcadère)
+Paiement -down-> CanalPaiement : via >
 
 ' Statut d'émission de la facture acquittée par e-mail
 Paiement -down-> StatutEmissionFacture : statut émission >
+
+' Type de facture : ACOMPTE (avec solde dû) ou SOLDE (acquittée intégralement)
+Facture -down-> TypeFacture : type >
 
 @enduml

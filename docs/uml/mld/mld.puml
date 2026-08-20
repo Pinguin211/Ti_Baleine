@@ -1,5 +1,5 @@
 @startuml mld
-title Modèle Logique de Données (MLD) — Ti'Baleine
+title Modèle Logique de Données (MLD) — Ti'Baleine\n//Harmonisation francophone & CDC v5 (paiement scindé, token solde, pré-alerte)//
 
 skinparam monochrome false
 skinparam roundcorner 8
@@ -7,84 +7,103 @@ skinparam linetype ortho
 skinparam defaultFontName Arial
 skinparam dpi 150
 
-entity "USERS\n(Utilisateurs)" as USERS {
+entity "UTILISATEURS\n(Clients & Administrateur)" as UTILISATEURS {
   * **id** : Identifiant unique [PK]
   --
   * **email** : Adresse e-mail [UNIQUE]
-  password_hash : Mot de passe chiffré (null = client invité)
-  * **first_name** : Prénom
-  * **last_name** : Nom de famille
-  phone : Numéro de téléphone mobile
+  mot_de_passe : Mot de passe chiffré (null = client invité)
+  * **nom** : Nom de famille
+  * **prenom** : Prénom
+  telephone : Numéro de téléphone mobile
   * **role** : Rôle (CLIENT, ADMIN)
-  * **created_at** : Date de création
-  * **updated_at** : Date de modification
 }
 
-entity "ALERTS\n(Alertes de pré-annulation)" as ALERTS {
+entity "ALERTES\n(Alertes de pré-annulation)" as ALERTES {
   * **id** : Identifiant unique [PK]
   --
   * **message** : Message bilingue combiné (FR + EN)
-  * **created_at** : Date d'émission (veille à 18h)
+  * **date_emission** : Date d'émission (veille à 18h)
 }
 
-entity "SLOTS\n(Créneaux)" as SLOTS {
+entity "CRENEAUX\n(Créneaux de sortie)" as CRENEAUX {
   * **id** : Identifiant unique [PK]
   --
-  * **slot_date** : Date de la sortie
-  * **departure_time** : Heure de départ (07:00, 09:00, 10:00, 14:00)
+  * **date** : Date de la sortie
+  * **heure_depart** : Heure de départ (07:00, 09:00, 10:00, 14:00)
   * **port** : Port d'embarquement (SAINT_GILLES, SAINT_LEU)
   * **activite** : Prestation (BALEINES, DAUPHINS, PRIVATISATION_TIKAP, PRIVATISATION_GRAND_BLEU)
-  * **is_open** : Ouvert à la vente (Oui / Non)
-  # alert_id : Alerte ciblant le créneau [FK, nullable]
+  * **est_ouvert** : Ouvert à la vente (Oui / Non)
+  * **sous_pre_alerte** : Sous pré-alerte météo (Oui / Non)
+  # alerte_id : Alerte ciblant le créneau [FK, nullable]
 }
 
-entity "BOOKINGS\n(Réservations)" as BOOKINGS {
+entity "RESERVATIONS\n(Dossiers de réservation)" as RESERVATIONS {
   * **id** : Identifiant unique [PK]
   --
-  * **booking_ref** : Référence de réservation [UNIQUE]
+  * **reference** : Référence de réservation [UNIQUE]
   * **# user_id** : Client / administrateur associé [FK]
-  * **# slot_id** : Créneau réservé [FK]
-  * **status** : Statut (EN_ATTENTE_PAIEMENT, CONFIRMEE, ANNULEE)
-  * **created_at** : Date de création
+  * **# creneau_id** : Créneau réservé [FK]
+  * **statut** : Statut (EN_ATTENTE_PAIEMENT, PAYEE_PARTIELLEMENT, PAYEE_COMPLETEMENT, ANNULEE)
+  * **date_creation** : Date de création (timing cron SMS J-1)
 }
 
-entity "BOOKING_ITEMS\n(Billets)" as BOOKING_ITEMS {
+entity "BILLETS\n(Titres de transport)" as BILLETS {
   * **id** : Identifiant unique [PK]
   --
-  * **# booking_id** : Réservation associée [FK]
+  * **# reservation_id** : Réservation associée [FK]
   * **type_billet** : Type de billet (ADULTE, ENFANT, PRIVATISATION)
 }
 
-entity "PAYMENTS\n(Paiements)" as PAYMENTS {
+entity "PAIEMENTS\n(Transactions bancaires)" as PAIEMENTS {
   * **id** : Identifiant unique [PK]
   --
-  * **# booking_id** : Réservation réglée [FK, UNIQUE]
-  * **transaction_ref** : Référence de transaction bancaire [UNIQUE]
-  * **amount_cents** : Montant encaissé (en centimes)
-  * **paid_at** : Date du paiement
-  invoice_ref : Référence de facture [UNIQUE] (ex. FACT-2026-00123)
-  * **invoice_emission_status** : Statut d'émission facture (EN_ATTENTE, ENVOYEE_SUCCES, ECHEC_ENVOI)
-  invoice_emitted_at : Date d'émission de la facture
+  * **# reservation_id** : Réservation réglée [FK]
+  * **type_paiement** : Nature du paiement (ACOMPTE, SOLDE)
+  * **canal_paiement** : Canal de règlement (EN_LIGNE, SUR_PLACE_CB)
+  * **reference_transaction** : Référence de transaction bancaire [UNIQUE]
+  * **montant** : Montant encaissé en euros (DECIMAL)
+  * **date_paiement** : Date du paiement
+  reference_facture : Référence de facture [UNIQUE] (ex. FACT-AC-2026-00123)
+  * **statut_emission_facture** : Statut d'émission facture (EN_ATTENTE, ENVOYEE_SUCCES, ECHEC_ENVOI)
+  date_emission_facture : Date d'émission de la facture
 }
 
-USERS "1" -- "0..*" BOOKINGS : effectue >
-SLOTS "1" -- "0..*" BOOKINGS : regroupe >
-ALERTS "0..1" -- "1..*" SLOTS : cible >
-BOOKINGS "1" -- "0..*" BOOKING_ITEMS : comprend >
-BOOKINGS "1" -- "0..1" PAYMENTS : est réglée par >
+entity "TOKENS_PAIEMENT_SOLDE\n(Tokens de paiement du solde)" as TOKENS_PAIEMENT_SOLDE {
+  * **id** : Identifiant unique [PK]
+  --
+  * **# reservation_id** : Réservation associée [FK, UNIQUE]
+  * **token** : Jeton sécurisé [UNIQUE]
+  * **date_creation** : Date de création du token
+  * **date_expiration** : Date d'expiration (création + 1h)
+  * **est_utilise** : Token déjà utilisé (Oui / Non)
+}
 
-note bottom of SLOTS
-  Unicité d'un créneau : (slot_date + departure_time + port + activite).
+UTILISATEURS "1" -- "0..*" RESERVATIONS : effectue >
+CRENEAUX "1" -- "0..*" RESERVATIONS : regroupe >
+ALERTES "0..1" -- "1..*" CRENEAUX : cible >
+RESERVATIONS "1" -- "0..*" BILLETS : comprend >
+RESERVATIONS "1" -- "0..2" PAIEMENTS : est réglée par (acompte + solde) >
+RESERVATIONS "1" -- "0..1" TOKENS_PAIEMENT_SOLDE : génère pour SMS J-1 >
+
+note bottom of CRENEAUX
+  Unicité d'un créneau : (date + heure_depart + port + activite).
   Jauge et places restantes non stockées → calculées à la volée
   (config navire/port + billets). Les configurations
   (ConfigPort/Bateau/Activite/Skipper) sont codées en dur : non persistées.
+  sous_pre_alerte activé par l'émission d'une alerte (SPEC-ADMIN-06).
 end note
 
-note bottom of PAYMENTS
-  Paiement présent uniquement si réglé avec succès.
+note bottom of PAIEMENTS
+  1 à 2 paiements par réservation (acompte 30%/50% puis solde 70%/50%).
   Entités « Temporaires » du domaine (Facture, NotificationSMS,
   NotificationEmail) non persistées : générées à la volée.
   Seule la traçabilité de la facture est conservée ici.
+end note
+
+note bottom of TOKENS_PAIEMENT_SOLDE
+  Token sécurisé envoyé par SMS à J-1 pour le paiement du solde.
+  Durée de validité technique : 1 heure (60 min).
+  Non généré si réservation créée après exécution du cron J-1.
 end note
 
 @enduml
