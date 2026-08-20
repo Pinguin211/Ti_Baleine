@@ -52,7 +52,7 @@ Et la jauge du créneau conserve ses 10 places libres disponibles
 
 **Nom attendu :**  
 `test_CASE_RES_416_echec_paiement_acompte_cb_aucune_reservation_jauge_intacte`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-416.test.ts`
 
 ## Revue du test automatisé
 

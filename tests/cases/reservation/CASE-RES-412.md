@@ -51,7 +51,7 @@ Et la privatisation du « Tikap » est indisponible pour le matin à Saint-Gille
 
 **Nom attendu :**  
 `test_CASE_RES_412_plafonnement_jauge_24_places_saint_gilles_mardi_jeudi_matin`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-412.test.ts`
 
 ## Revue du test automatisé
 

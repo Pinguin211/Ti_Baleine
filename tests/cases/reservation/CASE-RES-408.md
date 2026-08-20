@@ -52,7 +52,7 @@ Et aucune place n'est réservée
 
 **Nom attendu :**  
 `test_CASE_RES_408_cloture_automatique_reservation_moins_de_2_heures_du_depart`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-408.test.ts`
 
 ## Revue du test automatisé
 

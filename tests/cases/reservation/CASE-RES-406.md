@@ -57,7 +57,7 @@ Et la jauge du créneau est intégralement bloquée (capacité de 24 places rés
 
 **Nom attendu :**  
 `test_CASE_RES_406_reservation_privatisation_grand_bleu_saint_gilles_acompte_50_pourcent`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-406.test.ts`
 
 ## Revue du test automatisé
 

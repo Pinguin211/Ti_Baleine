@@ -51,7 +51,7 @@ Et la réservation reste maintenue à l'état « payée partiellement »
 
 **Nom attendu :**  
 `test_CASE_RES_420_acces_page_solde_token_expire_plus_de_1_heure_redirection_sur_place`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-420.test.ts`
 
 ## Revue du test automatisé
 

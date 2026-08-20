@@ -62,7 +62,7 @@ Et le créneau conserve sa mention d'avertissement affichée sur le site public
 
 **Nom attendu :**  
 `test_CASE_RES_402_reservation_creneau_sous_alerte_preannulation_meteo_mention_avertissement`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-402.test.ts`
 
 ## Revue du test automatisé
 

@@ -58,7 +58,7 @@ Et le statut de la réservation bascule à « payée complètement »
 
 **Nom attendu :**  
 `test_CASE_RES_418_envoi_sms_j_moins_1_paiement_solde_en_ligne_statut_payee_completement`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-418.test.ts`
 
 ## Revue du test automatisé
 

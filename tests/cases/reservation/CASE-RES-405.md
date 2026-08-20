@@ -63,7 +63,7 @@ Et la capacité du créneau est décrémentée de 2 places
 
 **Nom attendu :**  
 `test_CASE_RES_405_grille_tarifaire_dauphins_saint_gilles_acompte_30_pourcent`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-405.test.ts`
 
 ## Revue du test automatisé
 

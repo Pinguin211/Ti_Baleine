@@ -70,7 +70,7 @@ Et la capacité restante sur le créneau de Saint-Leu passe à 10 places libres
 
 **Nom attendu :**  
 `test_CASE_RES_401_reservation_individuelle_saint_leu_majoration_acompte_payee_partiellement`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-401.test.ts`
 
 ## Revue du test automatisé
 

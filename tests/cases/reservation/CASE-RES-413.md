@@ -50,7 +50,7 @@ Et la validation du formulaire est désactivée
 
 **Nom attendu :**  
 `test_CASE_RES_413_blocage_reservation_places_superieures_au_reliquat_disponible`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-413.test.ts`
 
 ## Revue du test automatisé
 

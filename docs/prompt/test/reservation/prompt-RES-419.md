@@ -8,6 +8,7 @@ CE QUE JE TE DONNE
 - Le cas de test : tests/cases/reservation/CASE-RES-419.md
 - La spécification métier : specs/reservation.md, section SPEC-RESERVATION-03
 - Les exigences d'architecture : specs/architecture.md (règles SPEC-ARCH-01 et SPEC-ARCH-02)
+- Le modèle du domaine : docs/uml/domain.puml
 
 TA TÂCHE
 Écris UN test automatisé, et un seul, qui traduit CASE-RES-419.
@@ -20,7 +21,10 @@ CONTRAINTES
 3. Déduis dans le test où sera le code cible sous src/ en t'appuyant strictement
    sur specs/architecture.md (SPEC-ARCH-01 pour les conventions de nommage,
    SPEC-ARCH-02 pour l'arborescence modulaire et le flux d'imports :
-   ex. src/services/server/, src/schemas/, src/utils/).
+   ex. src/services/server/, src/schemas/, src/utils/) et sur docs/uml/domain.puml
+   pour les noms de classes, d'attributs et de relations. N'invente aucune
+   entité absente du diagramme ; si le cas de test l'exige, arrête-toi et
+   dis-le-moi.
 4. Les valeurs sont celles de la section « Données ». N'en invente aucune.
 5. Les assertions correspondent exactement aux lignes « Alors » et « Et » du
    Gherkin : une assertion par ligne, aucune de plus.
@@ -35,5 +39,5 @@ RENDS
 - Le fichier de test.
 - La liste des fichiers créés ou modifiés.
 - La commande exacte pour lancer ce seul test.
-- L'emplacement et l'interface déduits pour le futur code sous src/ selon specs/architecture.md.
+- L'emplacement et l'interface déduits pour le futur code sous src/ selon specs/architecture.md et docs/uml/domain.puml.
 - Ce que tu as dû supposer et qui n'était pas dans ce que je t'ai donné.

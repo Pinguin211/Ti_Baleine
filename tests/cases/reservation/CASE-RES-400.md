@@ -75,7 +75,7 @@ Et le créneau de 10h00 affiche 34 places libres
 
 **Nom attendu :**  
 `test_CASE_RES_400_reservation_individuelle_saint_gilles_acompte_payee_partiellement`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-400.test.ts`
 
 ## Revue du test automatisé
 

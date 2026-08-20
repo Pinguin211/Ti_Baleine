@@ -49,7 +49,7 @@ Et le bouton de validation du panier reste désactivé tant qu'un participant in
 
 **Nom attendu :**  
 `test_CASE_RES_410_rejet_participant_moins_de_4_ans_securite_maritime`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-410.test.ts`
 
 ## Revue du test automatisé
 

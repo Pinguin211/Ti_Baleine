@@ -60,7 +60,7 @@ Et la jauge du créneau est intégralement bloquée (0 place restante, créneau 
 
 **Nom attendu :**  
 `test_CASE_RES_403_reservation_privatisation_tikap_saint_leu_acompte_50_pourcent_jauge_bloquee`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-403.test.ts`
 
 ## Revue du test automatisé
 

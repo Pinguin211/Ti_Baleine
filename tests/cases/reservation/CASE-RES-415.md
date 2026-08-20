@@ -53,7 +53,7 @@ Et aucun accès à la transaction de paiement CB n'est permis
 
 **Nom attendu :**  
 `test_CASE_RES_415_rejet_formulaire_coordonnees_mobile_manquant_ou_format_invalide`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-415.test.ts`
 
 ## Revue du test automatisé
 

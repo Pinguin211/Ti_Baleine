@@ -50,7 +50,7 @@ Et aucun créneau de départ n'est affiché ni sélectionnable
 
 **Nom attendu :**  
 `test_CASE_RES_409_fermeture_annuelle_25_decembre_et_1er_janvier_aucun_creneau`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/reservation/case-res-409.test.ts`
 
 ## Revue du test automatisé
 
