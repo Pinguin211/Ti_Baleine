@@ -1,11 +1,25 @@
 
-# Playwright
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Next.js & Build
+.next/
+out/
+
+# Dependencies
 node_modules/
+
+# Playwright
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Drizzle Kit meta
+drizzle/meta/
 
 # Uml
 docs/uml/**/*.svg
@@ -17,7 +31,4 @@ docs/uml/**/*.svg
 .DS_Store
 
 # Reports
-./report
-
-#out
-out
+reports
