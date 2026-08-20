@@ -44,7 +44,7 @@ Et aucun nouveau fichier PDF persistant n'est présent sur le système de fichie
 
 **Nom attendu :**
 `test_CASE_FAC_713_generation_facture_pdf_exclusivement_en_memoire_sans_persistance_disque`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-713.test.ts`
 
 ## Revue du test automatisé
 

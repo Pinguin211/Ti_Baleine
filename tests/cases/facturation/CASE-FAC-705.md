@@ -65,7 +65,7 @@ Et le montant total TTC de la commande affiché sur la facture est de 125 €, l
 
 **Nom attendu :**
 `test_CASE_FAC_705_majoration_saint_leu_sur_profil_enfant_facture_acompte`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-705.test.ts`
 
 ## Revue du test automatisé
 

@@ -62,7 +62,7 @@ Et la facture PDF détaille la ligne tarifaire 1 adulte à 65 € sans aucune ma
 
 **Nom attendu :**
 `test_CASE_FAC_702_facturation_acompte_reservation_standard_saint_gilles_sans_supplement`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-702.test.ts`
 
 ## Revue du test automatisé
 

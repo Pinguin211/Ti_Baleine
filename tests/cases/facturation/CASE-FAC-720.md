@@ -47,7 +47,7 @@ Et aucun statut d'émission de facture n'est créé en base de données pour cet
 
 **Nom attendu :**
 `test_CASE_FAC_720_non_declenchement_facturation_transaction_bancaire_rejetee_acompte_ou_solde`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-720.test.ts`
 
 ## Revue du test automatisé
 

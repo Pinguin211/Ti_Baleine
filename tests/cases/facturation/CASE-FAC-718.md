@@ -49,7 +49,7 @@ Et aucun fichier PDF physique n'est conservé sur le disque du serveur
 
 **Nom attendu :**
 `test_CASE_FAC_718_echec_envoi_smtp_passage_statut_echec_emission_acompte_ou_solde`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-718.test.ts`
 
 ## Revue du test automatisé
 

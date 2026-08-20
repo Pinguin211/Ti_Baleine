@@ -54,7 +54,7 @@ Et la facture de solde PDF affiche le rappel de l'acompte perçu (45,00 €) et 
 
 **Nom attendu :**
 `test_CASE_FAC_708_mentions_acompte_acquitte_et_acquittee_montants_ttc_sur_pdf`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-708.test.ts`
 
 ## Revue du test automatisé
 

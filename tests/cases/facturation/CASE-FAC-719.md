@@ -44,7 +44,7 @@ Et le système n'entre pas dans une boucle infinie de réexpéditions automatiqu
 
 **Nom attendu :**
 `test_CASE_FAC_719_rebond_email_boite_pleine_absence_boucle_rattrapage_automatique`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-719.test.ts`
 
 ## Revue du test automatisé
 

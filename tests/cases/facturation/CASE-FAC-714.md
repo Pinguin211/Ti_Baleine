@@ -49,7 +49,7 @@ Et le destinataire (« To: ») de ce second courriel est également exactement �
 
 **Nom attendu :**
 `test_CASE_FAC_714_expedition_immediate_courriel_transactionnel_adresse_client_acompte_et_solde`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-714.test.ts`
 
 ## Revue du test automatisé
 

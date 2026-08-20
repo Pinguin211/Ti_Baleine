@@ -47,7 +47,7 @@ Alors ce second document mentionne également la même date et le même horaire 
 
 **Nom attendu :**
 `test_CASE_FAC_709_presence_date_et_creneau_horaire_sur_factures_acompte_et_solde`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-709.test.ts`
 
 ## Revue du test automatisé
 

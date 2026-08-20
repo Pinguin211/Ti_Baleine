@@ -61,7 +61,7 @@ Et la facture PDF affiche le montant total TTC de la commande (170 €), l'acomp
 
 **Nom attendu :**
 `test_CASE_FAC_704_facturation_acompte_mixte_adultes_enfants_ventilation_detaillee_pdf`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-704.test.ts`
 
 ## Revue du test automatisé
 

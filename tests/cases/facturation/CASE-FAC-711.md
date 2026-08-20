@@ -46,7 +46,7 @@ Alors ce second document mentionne également et sans équivoque le même port d
 
 **Nom attendu :**
 `test_CASE_FAC_711_mention_explicite_port_embarquement_sur_factures_acompte_et_solde`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-711.test.ts`
 
 ## Revue du test automatisé
 

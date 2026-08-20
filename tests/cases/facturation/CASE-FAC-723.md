@@ -50,7 +50,7 @@ Alors le système déclenche normalement la génération et l'envoi de la factur
 
 **Nom attendu :**
 `test_CASE_FAC_723_traitement_idempotent_notification_paiement_double_acompte_et_solde_independants`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-723.test.ts`
 
 ## Revue du test automatisé
 

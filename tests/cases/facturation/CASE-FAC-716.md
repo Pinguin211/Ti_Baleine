@@ -51,7 +51,7 @@ Alors le récapitulatif de ce second courriel mentionne le rappel de l'acompte p
 
 **Nom attendu :**
 `test_CASE_FAC_716_inclusion_recapitulatif_reservation_corps_courriel`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-716.test.ts`
 
 ## Revue du test automatisé
 
