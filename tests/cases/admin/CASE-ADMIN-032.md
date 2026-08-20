@@ -45,7 +45,7 @@ Et l'opération financière reste soumise au traitement manuel externe
 
 **Nom attendu :**  
 `test_CASE_ADMIN_032_absence_remboursement_financier_automatique_reduction_partielle`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-032.test.ts
 
 ## Revue du test automatisé
 

@@ -46,7 +46,7 @@ Et le créneau passe au statut sous pré-alerte
 
 **Nom attendu :**  
 `test_CASE_ADMIN_061_traitement_echec_individuel_delivrance_alerte_groupee_log`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-061.test.ts
 
 ## Revue du test automatisé
 

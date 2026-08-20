@@ -46,7 +46,7 @@ Et la disponibilité restante indiquée est de 0 place
 
 **Nom attendu :**  
 `test_CASE_ADMIN_045_affichage_creneau_complet_taux_100_pourcent_badge_complet`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-045.test.ts
 
 ## Revue du test automatisé
 

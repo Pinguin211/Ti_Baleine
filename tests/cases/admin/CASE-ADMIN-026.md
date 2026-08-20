@@ -51,7 +51,7 @@ Et le SMS de notification d'annulation est envoyé au client sans aucune mention
 
 **Nom attendu :**  
 `test_CASE_ADMIN_026_reduction_a_0_billet_bascule_automatique_annulation_sms`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-026.test.ts
 
 ## Revue du test automatisé
 

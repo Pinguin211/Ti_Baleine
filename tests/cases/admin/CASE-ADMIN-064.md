@@ -43,7 +43,7 @@ Et la fiche du créneau reflète immédiatement cette affectation au planning
 
 **Nom attendu :**  
 `test_CASE_ADMIN_064_configuration_modification_affectation_activite_creneau`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-064.test.ts
 
 ## Revue du test automatisé
 

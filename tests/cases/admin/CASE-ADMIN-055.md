@@ -45,7 +45,7 @@ Et un seul et même message bilingue est expédié à tous les destinataires ind
 
 **Nom attendu :**  
 `test_CASE_ADMIN_055_presence_obligatoire_message_bilingue_combine_fr_en`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-055.test.ts
 
 ## Revue du test automatisé
 

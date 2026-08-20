@@ -43,7 +43,7 @@ Et le créneau redevient immédiatement visible et sélectionnable sur l'interfa
 
 **Nom attendu :**  
 `test_CASE_ADMIN_063_reouverture_manuelle_exceptionnelle_creneau_ferme`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-063.test.ts
 
 ## Revue du test automatisé
 

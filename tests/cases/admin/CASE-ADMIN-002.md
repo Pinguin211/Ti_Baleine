@@ -50,7 +50,7 @@ Et le détail du port d'embarquement « Saint-Gilles » est rappelé
 
 **Nom attendu :**  
 `test_CASE_ADMIN_002_consultation_detail_creneau_activite_navires_mobilises`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-002.test.ts
 
 ## Revue du test automatisé
 

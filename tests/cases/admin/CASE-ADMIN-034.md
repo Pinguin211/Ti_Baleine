@@ -43,7 +43,7 @@ Et la vue du planning s'affiche sans étape intermédiaire superflue
 
 **Nom attendu :**  
 `test_CASE_ADMIN_034_redirection_automatique_planning_apres_authentification`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-034.test.ts
 
 ## Revue du test automatisé
 

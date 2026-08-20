@@ -46,7 +46,7 @@ Et aucune action d'encaissement supplémentaire n'est réalisable
 
 **Nom attendu :**  
 `test_CASE_ADMIN_075_blocage_encaissement_solde_reservation_deja_payee_completement`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/admin/case-admin-075.test.ts`
 
 ## Revue du test automatisé
 

@@ -44,7 +44,7 @@ Et aucune réservation individuelle ne peut s'ajouter sur ce créneau (R-12)
 
 **Nom attendu :**  
 `test_CASE_ADMIN_047_affichage_specifique_creneau_privatise_blocage_jauge`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-047.test.ts
 
 ## Revue du test automatisé
 

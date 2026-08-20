@@ -46,7 +46,7 @@ Et exactement 1 place est immédiatement libérée et remise à disposition sur 
 
 **Nom attendu :**  
 `test_CASE_ADMIN_023_reduction_partielle_passagers_suppression_billet_adulte`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-023.test.ts
 
 ## Revue du test automatisé
 

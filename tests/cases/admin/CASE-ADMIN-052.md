@@ -43,7 +43,7 @@ Et le texte demeure entièrement éditable par l'administrateur
 
 **Nom attendu :**  
 `test_CASE_ADMIN_052_preremplissage_instantane_template_meteo_defavorable`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-052.test.ts
 
 ## Revue du test automatisé
 

@@ -47,7 +47,7 @@ Et la liste des réservations affiche pour RES-002 le badge « Payée partiellem
 
 **Nom attendu :**  
 `test_CASE_ADMIN_077_affichage_statuts_financiers_reservations_detail_creneau_jour_j`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-077.test.ts
 
 ## Revue du test automatisé
 

@@ -43,7 +43,7 @@ Et une indication visuelle invite l'administrateur à compléter l'affectation
 
 **Nom attendu :**  
 `test_CASE_ADMIN_005_affichage_distinctif_creneau_sans_navire_non_affecte`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-005.test.ts
 
 ## Revue du test automatisé
 

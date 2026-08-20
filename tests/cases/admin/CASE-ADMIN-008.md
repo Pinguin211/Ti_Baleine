@@ -44,7 +44,7 @@ Et un bouton d'action « Réessayer » est mis à disposition de l'administrateu
 
 **Nom attendu :**  
 `test_CASE_ADMIN_008_gestion_perte_reseau_chargement_planning_erreur_retry`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-008.test.ts
 
 ## Revue du test automatisé
 

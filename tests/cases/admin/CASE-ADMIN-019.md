@@ -46,7 +46,7 @@ Et un message d'alerte signale à l'administrateur que le SMS n'a pas pu être t
 
 **Nom attendu :**  
 `test_CASE_ADMIN_019_traitement_numero_mobile_invalide_annulation_log_echec`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-019.test.ts
 
 ## Revue du test automatisé
 

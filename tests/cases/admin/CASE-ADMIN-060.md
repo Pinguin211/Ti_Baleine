@@ -43,7 +43,7 @@ Et aucune notification n'est envoyée
 
 **Nom attendu :**  
 `test_CASE_ADMIN_060_blocage_envoi_alerte_corps_message_vide`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-060.test.ts
 
 ## Revue du test automatisé
 

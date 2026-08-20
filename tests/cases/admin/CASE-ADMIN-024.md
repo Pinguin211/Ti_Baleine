@@ -46,7 +46,7 @@ Et 1 place est synchroniquement libérée sur le créneau
 
 **Nom attendu :**  
 `test_CASE_ADMIN_024_reduction_partielle_passagers_suppression_billet_enfant`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-024.test.ts
 
 ## Revue du test automatisé
 

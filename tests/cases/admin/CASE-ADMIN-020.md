@@ -44,7 +44,7 @@ Et l'incident SMS est notifié dans l'interface de l'administrateur pour suivi m
 
 **Nom attendu :**  
 `test_CASE_ADMIN_020_gestion_echec_temporaire_passerelle_sms_annulation`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-020.test.ts
 
 ## Revue du test automatisé
 

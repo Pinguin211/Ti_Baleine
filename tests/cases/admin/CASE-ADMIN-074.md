@@ -50,7 +50,7 @@ Et la facture de solde distincte PDF est générée à la volée et envoyée par
 
 **Nom attendu :**  
 `test_CASE_ADMIN_074_encaissement_solde_cb_sur_place_bascule_payee_completement`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/admin/case-admin-074.test.ts`
 
 ## Revue du test automatisé
 

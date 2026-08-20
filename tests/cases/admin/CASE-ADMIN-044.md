@@ -44,7 +44,7 @@ Et la totalité des 36 places est indiquée comme disponible
 
 **Nom attendu :**  
 `test_CASE_ADMIN_044_affichage_creneau_0_billet_actif_taux_0_pourcent`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-044.test.ts
 
 ## Revue du test automatisé
 

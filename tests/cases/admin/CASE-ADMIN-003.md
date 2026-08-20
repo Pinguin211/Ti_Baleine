@@ -47,7 +47,7 @@ Et un style visuel spécifique (icône d'alerte / couleur dédiée) différencie
 
 **Nom attendu :**  
 `test_CASE_ADMIN_003_presence_indicateur_badge_sous_pre_alerte_sur_creneau`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-003.test.ts
 
 ## Revue du test automatisé
 

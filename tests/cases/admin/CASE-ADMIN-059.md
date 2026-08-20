@@ -44,7 +44,7 @@ Et la mention d'avertissement est activée pour les futures réservations
 
 **Nom attendu :**  
 `test_CASE_ADMIN_059_alerte_creneau_sans_reservation_statut_pre_alerte_sans_message`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-059.test.ts
 
 ## Revue du test automatisé
 

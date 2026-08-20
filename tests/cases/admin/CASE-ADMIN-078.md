@@ -49,7 +49,7 @@ Et aucune action de l'administrateur sur place n'est requise pour opérer cette 
 
 **Nom attendu :**  
 `test_CASE_ADMIN_078_bascule_payee_completement_webhook_bancaire_solde_en_ligne`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-078.test.ts
 
 ## Revue du test automatisé
 

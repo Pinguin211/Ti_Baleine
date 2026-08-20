@@ -48,7 +48,7 @@ Et les 3 créneaux basculent immédiatement à l'état « sous pré-alerte »
 
 **Nom attendu :**  
 `test_CASE_ADMIN_048_envoi_groupe_alerte_meteo_veille_18h_multi_creneaux`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-048.test.ts
 
 ## Revue du test automatisé
 

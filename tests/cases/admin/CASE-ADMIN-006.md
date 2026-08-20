@@ -43,7 +43,7 @@ Et la fiche du créneau reste consultable sans plantage
 
 **Nom attendu :**  
 `test_CASE_ADMIN_006_affichage_creneau_sans_activite_type_non_renseigne`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-006.test.ts
 
 ## Revue du test automatisé
 

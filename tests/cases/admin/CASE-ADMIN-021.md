@@ -46,7 +46,7 @@ Et la jauge du créneau reste strictement inchangée
 
 **Nom attendu :**  
 `test_CASE_ADMIN_021_coherence_transactionnelle_annulation_rollback_reseau`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-021.test.ts
 
 ## Revue du test automatisé
 

@@ -48,7 +48,7 @@ Et le créneau demeure stable à l'état « sous pré-alerte »
 
 **Nom attendu :**  
 `test_CASE_ADMIN_073_rejet_reemission_alerte_creneau_deja_sous_pre_alerte`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-073.test.ts
 
 ## Revue du test automatisé
 

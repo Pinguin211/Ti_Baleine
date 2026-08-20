@@ -43,7 +43,7 @@ Et un message informe l'administrateur que tout passager supplémentaire doit fa
 
 **Nom attendu :**  
 `test_CASE_ADMIN_027_rejet_strict_tentative_ajout_billet_reservation_existante`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-027.test.ts
 
 ## Revue du test automatisé
 

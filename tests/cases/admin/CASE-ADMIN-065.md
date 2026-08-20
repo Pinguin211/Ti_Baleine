@@ -43,7 +43,7 @@ Et la capacité maximale du créneau est ajustée en conséquence
 
 **Nom attendu :**  
 `test_CASE_ADMIN_065_configuration_affectation_navires_mobilises_creneau`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-065.test.ts
 
 ## Revue du test automatisé
 

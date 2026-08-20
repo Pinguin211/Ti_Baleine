@@ -49,7 +49,7 @@ Et la capacité restante affichée est de 9 places
 
 **Nom attendu :**  
 `test_CASE_ADMIN_041_calcul_taux_remplissage_creneau_standard_saint_gilles_jauge_36`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-041.test.ts
 
 ## Revue du test automatisé
 

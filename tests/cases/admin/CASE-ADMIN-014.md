@@ -46,7 +46,7 @@ Et le nombre de billets actifs rattachés est exactement de 0
 
 **Nom attendu :**  
 `test_CASE_ADMIN_014_conservation_fiche_reservation_bdd_historique_0_billet`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-014.test.ts
 
 ## Revue du test automatisé
 

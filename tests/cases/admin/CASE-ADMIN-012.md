@@ -53,7 +53,7 @@ Et le SMS de notification standard est envoyé au numéro du client sans aucune 
 
 **Nom attendu :**  
 `test_CASE_ADMIN_012_annulation_standard_hors_alerte_motif_sms_client`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-012.test.ts
 
 ## Revue du test automatisé
 

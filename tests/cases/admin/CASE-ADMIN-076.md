@@ -46,7 +46,7 @@ Et seul le bouton « Encaisser le solde (CB sur place) » est disponible
 
 **Nom attendu :**  
 `test_CASE_ADMIN_076_rejet_encaissement_especes_cheques_vacances_absent_interface`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/admin/case-admin-076.test.ts`
 
 ## Revue du test automatisé
 

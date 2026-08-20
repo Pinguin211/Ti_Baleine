@@ -47,7 +47,7 @@ Et une session sécurisée est initialisée
 
 **Nom attendu :**  
 `test_CASE_ADMIN_033_connexion_reussie_administrateur_identifiants_valides_desktop`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-033.test.ts
 
 ## Revue du test automatisé
 

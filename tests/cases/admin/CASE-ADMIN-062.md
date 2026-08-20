@@ -44,7 +44,7 @@ Et aucune réservation ne peut plus être effectuée sur ce créneau
 
 **Nom attendu :**  
 `test_CASE_ADMIN_062_fermeture_administrative_manuelle_creneau_sans_passager`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-062.test.ts
 
 ## Revue du test automatisé
 

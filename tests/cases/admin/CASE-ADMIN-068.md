@@ -43,7 +43,7 @@ Et aucune modification de créneau n'est opérée
 
 **Nom attendu :**  
 `test_CASE_ADMIN_068_cloisonnement_securite_interdiction_acces_configuration_creneaux_public`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-068.test.ts
 
 ## Revue du test automatisé
 

@@ -44,7 +44,7 @@ Et les créneaux ciblés passent à l'état sous pré-alerte
 
 **Nom attendu :**  
 `test_CASE_ADMIN_051_envoi_combine_simultane_alerte_sms_email`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-051.test.ts
 
 ## Revue du test automatisé
 

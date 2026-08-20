@@ -43,7 +43,7 @@ Et l'administrateur reste sur la page demandée sans être invité à ressaisir 
 
 **Nom attendu :**  
 `test_CASE_ADMIN_071_maintien_etat_authentifie_navigation_rafraichissement_f5`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-071.test.ts
 
 ## Revue du test automatisé
 

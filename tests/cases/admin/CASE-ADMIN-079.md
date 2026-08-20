@@ -50,7 +50,7 @@ Et le SMS informatif transmis au client ne mentionne aucun montant ni complémen
 
 **Nom attendu :**  
 `test_CASE_ADMIN_079_remboursement_indicatif_nul_montant_paye_insuffisant_penalite`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-079.test.ts
 
 ## Revue du test automatisé
 

@@ -52,7 +52,7 @@ Et un SMS explicite d'annulation administrative est transmis au client sans aucu
 
 **Nom attendu :**  
 `test_CASE_ADMIN_011_annulation_administrative_office_cause_meteo_technique`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-011.test.ts
 
 ## Revue du test automatisé
 

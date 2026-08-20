@@ -43,7 +43,7 @@ Et toute nouvelle tentative immédiate est rejetée sans interrogation de la bas
 
 **Nom attendu :**  
 `test_CASE_ADMIN_038_protection_anti_bruteforce_blocage_temporaire_tentatives_repetees`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-038.test.ts
 
 ## Revue du test automatisé
 

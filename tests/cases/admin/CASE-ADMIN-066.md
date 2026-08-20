@@ -45,7 +45,7 @@ Et affiche le message « Règle d'exclusivité : un navire ne peut accueillir qu
 
 **Nom attendu :**  
 `test_CASE_ADMIN_066_blocage_mixite_activites_meme_navire_creneau_exclusivite`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-066.test.ts
 
 ## Revue du test automatisé
 

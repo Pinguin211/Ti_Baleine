@@ -50,7 +50,7 @@ Et la capacité disponible affichée est de 3 places
 
 **Nom attendu :**  
 `test_CASE_ADMIN_043_calcul_taux_remplissage_mardi_jeudi_matin_saint_leu_jauge_12`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-043.test.ts
 
 ## Revue du test automatisé
 

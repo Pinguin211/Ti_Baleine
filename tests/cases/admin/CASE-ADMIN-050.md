@@ -43,7 +43,7 @@ Et aucun SMS n'est émis par la passerelle téléphonique
 
 **Nom attendu :**  
 `test_CASE_ADMIN_050_envoi_alerte_pre_annulation_canal_email_uniquement`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-050.test.ts
 
 ## Revue du test automatisé
 

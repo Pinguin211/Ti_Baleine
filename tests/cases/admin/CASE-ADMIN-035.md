@@ -44,7 +44,7 @@ Et redirige immédiatement le navigateur vers la page « /admin/login »
 
 **Nom attendu :**  
 `test_CASE_ADMIN_035_interception_acces_non_authentifie_redirection_login`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-035.test.ts
 
 ## Revue du test automatisé
 

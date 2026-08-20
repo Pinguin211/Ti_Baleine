@@ -45,7 +45,7 @@ Et toute tentative de retour arrière dans l'historique du navigateur ne permet 
 
 **Nom attendu :**  
 `test_CASE_ADMIN_070_deconnexion_manuelle_destruction_session_redirection_login`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-070.test.ts
 
 ## Revue du test automatisé
 
