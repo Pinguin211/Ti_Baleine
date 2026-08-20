@@ -64,7 +64,7 @@ Et l'état d'émission de la facture de solde est persisté en base de données 
 
 **Nom attendu :**
 `test_CASE_FAC_700_emission_facture_acompte_puis_solde_reservation_individuelle_saint_leu`  
-**Fichier :** à renseigner après automatisation (ancien test à réécrire : `tests/tests-unitaires/facturation/CASE-FAC-700.test.ts`)
+**Fichier :** `tests/tests-unitaires/facturation/CASE-FAC-700.test.ts`
 
 ## Revue du test automatisé
 
