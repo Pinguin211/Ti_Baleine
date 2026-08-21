@@ -30,6 +30,9 @@ docs/uml/**/*.svg
 # macOS
 .DS_Store
 
+# TypeScript incremental build cache
+tsconfig.tsbuildinfo
+
 # Reports
 ./report
 reports

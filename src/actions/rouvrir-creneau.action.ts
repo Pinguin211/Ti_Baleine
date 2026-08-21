@@ -1,8 +1,10 @@
-'use server';
-
 /**
  * Mutation de réouverture manuelle exceptionnelle d'un créneau fermé.
  * SPEC-ADMIN-07 | CASE-ADMIN-063
+ *
+ * Pas de directive `'use server'` ici : fonction pure et synchrone (contrat
+ * testé). La frontière Server Action vit dans
+ * `soumettre-configuration-creneau.action.ts`.
  */
 
 import type { Creneau } from '../schemas/types/slots.types';

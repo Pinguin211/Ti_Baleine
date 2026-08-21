@@ -6,16 +6,7 @@
  * de détail : activité programmée, navires mobilisés et port d'embarquement.
  */
 
-interface CreneauDetailPersiste {
-  id: string;
-  date: Date;
-  heureDepart: string;
-  port: string;
-  activite: string;
-  navires: string[];
-  estOuvert: boolean;
-  sousPreAlerte: boolean;
-}
+import type { CreneauDetailPersiste } from '../../../schemas/types/planning.types';
 
 interface CreneauDetailAffiche {
   activite: string;

@@ -12,37 +12,15 @@
  * renseigné (Cas limite #3).
  */
 
+import type {
+  CreneauAffiche,
+  CreneauPlanningPersiste,
+  GrillePlanningConsolidee,
+} from '../../../schemas/types/planning.types';
+
 const MESSAGE_ETAT_VIDE = 'Aucun créneau programmé pour cette journée';
 const LABEL_NAVIRE_NON_AFFECTE = 'non affecté';
 const LABEL_ACTIVITE_NON_RENSEIGNEE = 'type non renseigné';
-
-interface CreneauPlanningPersiste {
-  id: string;
-  date: Date;
-  heureDepart: string;
-  port: string;
-  activite: string | null;
-  navires?: string[];
-  estOuvert: boolean;
-  sousPreAlerte: boolean;
-}
-
-interface CreneauAffiche {
-  id: string;
-  port: string;
-  heureDepart: string;
-  etatOperationnel: string;
-  badgePreAlerte?: string;
-  styleAlerteApplique: boolean;
-  navireLabel: string;
-  invitationCompleterAffectation: boolean;
-  activiteLabel: string;
-}
-
-interface GrillePlanningConsolidee {
-  creneaux: CreneauAffiche[];
-  messageEtatVide?: string;
-}
 
 interface ParametresGrillePlanning {
   date: Date;

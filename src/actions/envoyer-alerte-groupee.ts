@@ -1,8 +1,10 @@
-'use server';
-
 /**
  * Mutation d'envoi groupé d'alertes météo bilingues par SMS et/ou E-mail la veille à 18h.
  * SPEC-ADMIN-06 | CASE-ADMIN-048 à CASE-ADMIN-061, CASE-ADMIN-073
+ *
+ * Pas de directive `'use server'` ici : cette fonction est pure et
+ * synchrone (contrat testé). La frontière Server Action réelle vit dans
+ * `envoyer-alerte-groupee.action.ts`.
  */
 
 import type {

@@ -1,8 +1,10 @@
-'use server';
-
 /**
  * Mutation de réduction sélective de passagers avec contrôle strict anti-ajout et validation des quantités.
  * SPEC-ADMIN-03 | CASE-ADMIN-027, CASE-ADMIN-028, CASE-ADMIN-029, CASE-ADMIN-069
+ *
+ * Pas de directive `'use server'` ici : `reduireBilletsReservationAction`
+ * est une fonction pure et synchrone (contrat testé). La frontière Server
+ * Action réelle vit dans `soumettre-reduction-billets.action.ts`.
  *
  * Rejette toute tentative d'ajout de billet (R-18), de modification de la
  * date ou du port du créneau, ou de réduction sur une réservation déjà à 0

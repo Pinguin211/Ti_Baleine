@@ -1,8 +1,10 @@
-'use server';
-
 /**
  * Mutation de configuration de l'activité sur un créneau avec détection des conflits naturaliste.
  * SPEC-ADMIN-07 | CASE-ADMIN-064, CASE-ADMIN-067
+ *
+ * Pas de directive `'use server'` ici : fonction pure et synchrone (contrat
+ * testé). La frontière Server Action vit dans
+ * `soumettre-configuration-creneau.action.ts`.
  */
 
 import type { Creneau, ActiviteCreneau } from '../schemas/types/slots.types';

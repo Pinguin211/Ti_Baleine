@@ -1,8 +1,10 @@
-'use server';
-
 /**
  * Mutation de déconnexion et révocation de session de l'administrateur unique.
  * SPEC-ADMIN-04 | CASE-ADMIN-070
+ *
+ * Pas de directive `'use server'` ici : cette fonction est pure et
+ * synchrone (contrat testé). La frontière Server Action réelle vit dans
+ * `deconnecter-administrateur.action.ts`.
  */
 
 import type { GestionnaireSession } from '../schemas/types/auth-ports.types';

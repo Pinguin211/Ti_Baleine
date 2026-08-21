@@ -1,8 +1,10 @@
-'use server';
-
 /**
  * Mutation d'affectation des navires mobilisés sur un créneau avec détection de mixité d'activités.
  * SPEC-ADMIN-07 | CASE-ADMIN-065, CASE-ADMIN-066
+ *
+ * Pas de directive `'use server'` ici : fonction pure et synchrone (contrat
+ * testé). La frontière Server Action vit dans
+ * `soumettre-configuration-creneau.action.ts`.
  */
 
 import type { Creneau } from '../schemas/types/slots.types';

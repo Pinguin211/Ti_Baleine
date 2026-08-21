@@ -1,8 +1,11 @@
-'use server';
-
 /**
  * Mutation de connexion et authentification de l'administrateur unique avec protection anti-bruteforce.
  * SPEC-ADMIN-04 | CASE-ADMIN-033, CASE-ADMIN-036, CASE-ADMIN-038
+ *
+ * Pas de directive `'use server'` ici : cette fonction est pure et
+ * synchrone (contrat testé). La frontière Server Action réelle, qui compose
+ * l'infrastructure et appelle cette fonction, vit dans
+ * `connecter-administrateur.action.ts`.
  */
 
 import type {
@@ -31,6 +34,8 @@ export interface PortsConnexionAdministrateur {
   horloge: Horloge;
   limiteurTentatives?: LimiteurTentatives;
 }
+
+export const NOM_COOKIE_SESSION_ADMIN = 'session_admin';
 
 export function connecterAdministrateur(
   commande: { identifiants: IdentifiantsConnexion },

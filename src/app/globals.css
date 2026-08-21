@@ -1,0 +1,85 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Marine — deep ocean navy, structural color (replaces slate) */
+  --color-marine-50: #f1f6fa;
+  --color-marine-100: #dfeaf3;
+  --color-marine-200: #bcd6e8;
+  --color-marine-300: #8fb9d6;
+  --color-marine-400: #5c95bd;
+  --color-marine-500: #3c76a1;
+  --color-marine-600: #2c5c84;
+  --color-marine-700: #244a6b;
+  --color-marine-800: #1d3c58;
+  --color-marine-900: #152c42;
+  --color-marine-950: #0b1a29;
+
+  /* Lagoon — teal accent, calls to action */
+  --color-lagoon-50: #edfcf9;
+  --color-lagoon-100: #d2f6ee;
+  --color-lagoon-200: #a6ecde;
+  --color-lagoon-300: #6fdac9;
+  --color-lagoon-400: #3cc2ae;
+  --color-lagoon-500: #21a494;
+  --color-lagoon-600: #17847a;
+  --color-lagoon-700: #166a64;
+  --color-lagoon-800: #145550;
+  --color-lagoon-900: #124743;
+
+  /* Sand — warm neutral, light surfaces & foam */
+  --color-sand-50: #fdfbf7;
+  --color-sand-100: #f8f2e6;
+  --color-sand-200: #f0e4cc;
+  --color-sand-300: #e3cea3;
+  --color-sand-400: #d1b177;
+  --color-sand-500: #bd9556;
+
+  /* Coral — warnings/danger with a reef-warm cast */
+  --color-coral-50: #fef3f1;
+  --color-coral-100: #fde3df;
+  --color-coral-200: #fbc9c1;
+  --color-coral-300: #f5a695;
+  --color-coral-400: #ec7d63;
+  --color-coral-500: #dd5b3d;
+  --color-coral-600: #c1432a;
+  --color-coral-700: #9e3521;
+
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-heading), ui-serif, Georgia, serif;
+
+  --shadow-marine-sm: 0 1px 2px 0 rgb(11 26 41 / 0.06), 0 1px 3px 0 rgb(11 26 41 / 0.08);
+  --shadow-marine-md: 0 4px 12px -2px rgb(11 26 41 / 0.12), 0 2px 6px -2px rgb(11 26 41 / 0.08);
+  --shadow-marine-lg: 0 12px 32px -8px rgb(11 26 41 / 0.22);
+}
+
+:root {
+  --color-background: var(--color-sand-50);
+  --color-foreground: var(--color-marine-950);
+}
+
+* {
+  border-color: var(--color-marine-100);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: var(--color-lagoon-200);
+  color: var(--color-marine-950);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-lagoon-400);
+  outline-offset: 2px;
+}
