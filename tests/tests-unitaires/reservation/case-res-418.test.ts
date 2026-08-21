@@ -32,6 +32,14 @@ const RESERVATION: Reservation = {
   billets: [{ typeBillet: 'ADULTE' }, { typeBillet: 'ENFANT' }],
   montantTotal: 105,
   montantAcompte: 31.5,
+  client: {
+    nom: 'Dupont',
+    prenom: 'Jean',
+    email: 'jean.dupont@example.com',
+    telephone: '+262692123456',
+    role: 'CLIENT',
+    motDePasse: null,
+  },
 };
 
 const EXECUTION_CRON = new Date(2026, 8, 15, 18, 0);
