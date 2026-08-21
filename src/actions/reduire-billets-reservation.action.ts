@@ -1,13 +1,37 @@
 'use server';
 
 /**
- * Mutation de réduction de billets sur une réservation avec validation stricte de l'opération.
+ * Mutation de réduction sélective de passagers avec contrôle strict anti-ajout et validation des quantités.
  * SPEC-ADMIN-03 | CASE-ADMIN-027, CASE-ADMIN-028, CASE-ADMIN-029, CASE-ADMIN-069
+ *
+ * Rejette toute tentative d'ajout de billet (R-18), de modification de la
+ * date ou du port du créneau, ou de réduction sur une réservation déjà à 0
+ * billet actif, ou excédentaire par rapport aux billets actifs — avant toute persistance —
+ * puis délègue au service du domaine.
  */
 
-import type { Billet } from '../schemas/types/cancellation.types';
+import { reduireBilletsReservation, type PortsReduction } from '../services/server/cancellation/reduire-billets-reservation.service';
 
-export interface RequeteReductionBillets {
+interface CreneauReference {
+  date: Date;
+  heureDepart: string;
+  port: string;
+}
+
+interface Billet {
+  typeBillet: 'ADULTE' | 'ENFANT' | 'PRIVATISATION';
+}
+
+interface ReservationPourReduction {
+  reference: string;
+  statut?: string;
+  creneau: CreneauReference;
+  billets: Billet[];
+  montantTotal?: number;
+  montantAcompteVerse?: number;
+}
+
+export interface RequeteReduction {
   reservationReference: string;
   operation: 'RETRAIT' | 'AJOUT' | string;
   adultesARetirer?: number;
@@ -18,23 +42,44 @@ export interface RequeteReductionBillets {
   portSouhaite?: string;
 }
 
-export interface DepotBilletsReduction {
-  supprimerBillets(reference: string, billets: Billet[]): void;
+export interface ResultatActionReduction {
+  succes: boolean;
+  code?: number;
+  message?: string;
+  billetsRetires?: number;
+  billetsSupprimes?: number;
+  type?: string;
+  calculRemboursementIndicatif?: unknown;
+  motifRequis?: boolean;
+}
+
+function estMemeDate(date: Date, dateSouhaitee: string): boolean {
+  const [annee, mois, jour] = dateSouhaitee.split('-').map(Number);
+  return (
+    date.getFullYear() === annee && date.getMonth() + 1 === mois && date.getDate() === jour
+  );
+}
+
+function creneauInchange(creneau: CreneauReference, requete: RequeteReduction): boolean {
+  const dateInchangee =
+    !requete.dateDepartSouhaitee || estMemeDate(creneau.date, requete.dateDepartSouhaitee);
+  const portInchange = !requete.portSouhaite || requete.portSouhaite === creneau.port;
+  return dateInchangee && portInchange;
 }
 
 function validerRequeteReduction(
-  reservation: { reference: string; billets: Billet[] },
-  requete: RequeteReductionBillets
-): { valide: boolean; code?: number; message?: string } {
-  if (requete.operation !== 'RETRAIT') {
+  reservation: ReservationPourReduction,
+  requete: RequeteReduction,
+): { valide: true } | { valide: false; code: number; message: string } {
+  if (requete.operation === 'AJOUT' || (requete.adultesAAjouter ?? 0) > 0 || (requete.enfantsAAjouter ?? 0) > 0) {
     return {
       valide: false,
       code: 400,
-      message: "L'ajout de billets sur une réservation existante est strictement interdit",
+      message: "Tout passager supplémentaire doit faire l'objet d'une nouvelle réservation.",
     };
   }
 
-  if (requete.dateDepartSouhaitee || requete.portSouhaite) {
+  if (!creneauInchange(reservation.creneau, requete)) {
     return {
       valide: false,
       code: 400,
@@ -63,14 +108,16 @@ function validerRequeteReduction(
   return { valide: true };
 }
 
+/**
+ * Applique une réduction de passagers après contrôles stricts anti-ajout, de
+ * verrouillage du créneau, de garde 0-billet et de vérification des quantités (SPEC-ADMIN-03, R-18).
+ */
 export function reduireBilletsReservationAction(
-  commande: {
-    reservation: { reference: string; billets: Billet[] };
-    requete: RequeteReductionBillets;
-  },
-  _ports: { depotBillets: DepotBilletsReduction }
-): { succes: boolean; code?: number; message?: string } {
-  const validation = validerRequeteReduction(commande.reservation, commande.requete);
+  parametres: { reservation: ReservationPourReduction; requete: RequeteReduction },
+  ports: PortsReduction,
+): ResultatActionReduction {
+  const { reservation, requete } = parametres;
+  const validation = validerRequeteReduction(reservation, requete);
   if (!validation.valide) {
     return {
       succes: false,
@@ -79,7 +126,14 @@ export function reduireBilletsReservationAction(
     };
   }
 
-  return {
-    succes: true,
-  };
+  const resultat = reduireBilletsReservation(
+    {
+      reservation,
+      adultesARetirer: requete.adultesARetirer ?? 0,
+      enfantsARetirer: requete.enfantsARetirer ?? 0,
+    },
+    ports,
+  );
+
+  return { ...resultat };
 }

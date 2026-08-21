@@ -1,62 +1,16 @@
 'use server';
 
 /**
- * Action d'annulation de réservation et prévisualisation du remboursement indicatif.
- * SPEC-ADMIN-02 | CASE-ADMIN-079
+ * Action d'annulation complète d'une réservation depuis le back-office.
+ * SPEC-ADMIN-02 | CASE-ADMIN-010, CASE-ADMIN-079
+ *
+ * Orchestration fine : délègue le calcul indicatif de remboursement et
+ * l'exécution de l'annulation aux services du domaine cancellation, sans
+ * porter elle-même de règle métier (SPEC-ARCH-02).
  */
 
-export interface PrevisualisationAnnulationInput {
-  reservation: {
-    montantTotal: number;
-    montantAcompte: number;
-  };
-  bareme?: { pourcentagePenalite: number };
-  regimeDerogatoireAlerte?: boolean;
-}
+import { calculerRemboursementIndicatif } from '../services/server/cancellation/calculer-remboursement-indicatif.service';
+import { annulerReservationService } from '../services/server/cancellation/annuler-reservation.service';
 
-export function previsualiserAnnulation(params: PrevisualisationAnnulationInput) {
-  const {
-    reservation,
-    bareme = { pourcentagePenalite: 50 },
-    regimeDerogatoireAlerte = false,
-  } = params;
-  const sommePayee = reservation.montantAcompte;
-  const pourcentage = regimeDerogatoireAlerte ? 0 : bareme.pourcentagePenalite;
-  const penaliteBareme = (reservation.montantTotal * pourcentage) / 100;
-  const remboursementIndicatif = Math.max(0, sommePayee - penaliteBareme);
-
-  return {
-    sommePayee,
-    penaliteBareme,
-    remboursementIndicatif,
-  };
-}
-
-export async function annulerReservation(
-  commande: {
-    reservation: { reference: string; telephoneMobileClient?: string; montantAcompte: number };
-    creneau: { reference: string; dateDepart?: Date; sousPreAlerte?: boolean };
-    motif: string;
-    bareme?: { pourcentagePenalite: number };
-    regimeDerogatoireAlerte?: boolean;
-  },
-  ports: {
-    depotReservation: { supprimerTousLesBillets(ref: string): number };
-    depotCreneau: { libererPlaces(ref: string, nombre: number): void };
-    passerelleSms: { envoyer(message: { destinataireTelephone: string; message: string }): void };
-  }
-) {
-  const nombreBillets = ports.depotReservation.supprimerTousLesBillets(
-    commande.reservation.reference
-  );
-  ports.depotCreneau.libererPlaces(commande.creneau.reference, nombreBillets);
-
-  if (commande.reservation.telephoneMobileClient) {
-    ports.passerelleSms.envoyer({
-      destinataireTelephone: commande.reservation.telephoneMobileClient,
-      message: 'Votre réservation a été annulée.',
-    });
-  }
-
-  return { succes: true };
-}
+export const previsualiserAnnulation = calculerRemboursementIndicatif;
+export const annulerReservation = annulerReservationService;
