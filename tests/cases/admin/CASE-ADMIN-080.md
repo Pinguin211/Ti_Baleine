@@ -48,7 +48,7 @@ Et aucune facture de solde n'est générée tant que la confirmation de la trans
 
 **Nom attendu :**  
 `test_CASE_ADMIN_080_perte_connexion_pointage_encaissement_solde_sur_place`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** `tests/tests-unitaires/admin/case-admin-080.test.ts`
 
 ## Revue du test automatisé
 

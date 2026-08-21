@@ -44,7 +44,7 @@ Et aucun billet n'est supprimé en base
 
 **Nom attendu :**  
 `test_CASE_ADMIN_018_rejet_strict_annulation_administrative_creneau_passe`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-018.test.ts
 
 ## Revue du test automatisé
 

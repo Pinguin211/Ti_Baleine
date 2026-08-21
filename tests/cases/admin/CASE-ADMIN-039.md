@@ -44,7 +44,7 @@ Et l'administrateur est automatiquement déconnecté et redirigé vers « /admin
 
 **Nom attendu :**  
 `test_CASE_ADMIN_039_expiration_session_inactivite_prolongee_deconnexion_auto`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-039.test.ts
 
 ## Revue du test automatisé
 

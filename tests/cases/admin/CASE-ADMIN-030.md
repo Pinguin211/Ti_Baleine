@@ -43,7 +43,7 @@ Et les billets restent enregistrés à leur état d'origine
 
 **Nom attendu :**  
 `test_CASE_ADMIN_030_rejet_strict_reduction_passagers_creneau_deja_passe`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-030.test.ts
 
 ## Revue du test automatisé
 

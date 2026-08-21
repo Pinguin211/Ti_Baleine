@@ -44,7 +44,7 @@ Et aucun champ « motif_annulation » n'est persisté sur la table BOOKINGS en b
 
 **Nom attendu :**  
 `test_CASE_ADMIN_013_non_persistance_motif_annulation_table_bookings`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-013.test.ts
 
 ## Revue du test automatisé
 

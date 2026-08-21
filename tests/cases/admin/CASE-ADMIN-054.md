@@ -42,7 +42,7 @@ Et c'est exactement la version personnalisée qui est transmise aux destinataire
 
 **Nom attendu :**  
 `test_CASE_ADMIN_054_personnalisation_ajustement_libre_texte_motif_avant_envoi`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-054.test.ts
 
 ## Revue du test automatisé
 

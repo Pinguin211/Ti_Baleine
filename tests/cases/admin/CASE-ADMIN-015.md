@@ -45,7 +45,7 @@ Et l'interface publique de réservation permet immédiatement de sélectionner j
 
 **Nom attendu :**  
 `test_CASE_ADMIN_015_remise_a_disposition_immediate_places_interface_publique`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-015.test.ts
 
 ## Revue du test automatisé
 

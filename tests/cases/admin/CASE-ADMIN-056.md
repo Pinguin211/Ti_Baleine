@@ -43,7 +43,7 @@ Et ce nouveau statut est répercuté immédiatement sur le planning et le site d
 
 **Nom attendu :**  
 `test_CASE_ADMIN_056_basculement_automatique_statut_creneau_sous_pre_alerte`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-056.test.ts
 
 ## Revue du test automatisé
 

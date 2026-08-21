@@ -56,7 +56,7 @@ Et un SMS transactionnel d'information est envoyé au numéro mobile du client s
 
 **Nom attendu :**  
 `test_CASE_ADMIN_010_annulation_complete_reservation_demande_client_suite_pre_alerte`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-010.test.ts
 
 ## Revue du test automatisé
 

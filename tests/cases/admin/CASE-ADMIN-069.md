@@ -45,7 +45,7 @@ Et le nombre de billets reste inchangé à 2
 
 **Nom attendu :**  
 `test_CASE_ADMIN_069_rejet_suppression_nombre_billets_superieur_solde_actif`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-069.test.ts
 
 ## Revue du test automatisé
 

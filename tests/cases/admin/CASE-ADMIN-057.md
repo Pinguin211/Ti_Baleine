@@ -43,7 +43,7 @@ Et le client est informé du risque avant toute nouvelle réservation
 
 **Nom attendu :**  
 `test_CASE_ADMIN_057_activation_mention_avertissement_site_public_creneau_pre_alerte`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-057.test.ts
 
 ## Revue du test automatisé
 

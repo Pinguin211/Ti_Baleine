@@ -45,7 +45,7 @@ Et aucune requête d'authentification n'est transmise inutilement au serveur
 
 **Nom attendu :**  
 `test_CASE_ADMIN_037_blocage_validation_formulaire_connexion_champs_vides`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-037.test.ts
 
 ## Revue du test automatisé
 

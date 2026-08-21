@@ -50,7 +50,7 @@ Et la capacité restante affichée est de 6 places
 
 **Nom attendu :**  
 `test_CASE_ADMIN_042_calcul_taux_remplissage_mardi_jeudi_matin_saint_gilles_jauge_24`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-042.test.ts
 
 ## Revue du test automatisé
 

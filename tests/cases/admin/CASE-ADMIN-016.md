@@ -44,7 +44,7 @@ Et les billets sont supprimés et le SMS envoyé
 
 **Nom attendu :**  
 `test_CASE_ADMIN_016_annulation_administrative_autorisee_jusqua_heure_depart_h0`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-016.test.ts
 
 ## Revue du test automatisé
 

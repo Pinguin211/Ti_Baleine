@@ -43,7 +43,7 @@ Et la réservation demeure rattachée à sa date et son port initiaux
 
 **Nom attendu :**  
 `test_CASE_ADMIN_028_rejet_strict_modification_date_port_lors_reduction`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-028.test.ts
 
 ## Revue du test automatisé
 

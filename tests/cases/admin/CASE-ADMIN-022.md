@@ -44,7 +44,7 @@ Et l'opération de remboursement effectif est laissée au traitement manuel de l
 
 **Nom attendu :**  
 `test_CASE_ADMIN_022_absence_flux_financier_sortant_automatique_annulation`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-022.test.ts
 
 ## Revue du test automatisé
 

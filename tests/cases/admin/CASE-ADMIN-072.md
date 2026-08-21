@@ -47,7 +47,7 @@ Et le taux de remplissage affiché est de 83,33 %
 
 **Nom attendu :**  
 `test_CASE_ADMIN_072_calcul_taux_remplissage_mardi_jeudi_apres_midi_saint_gilles_jauge_36`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-072.test.ts
 
 ## Revue du test automatisé
 

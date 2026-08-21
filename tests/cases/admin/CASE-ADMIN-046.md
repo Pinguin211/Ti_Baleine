@@ -46,7 +46,7 @@ Et le badge « Complet » disparaît pour laisser place à l'indication « 6 pla
 
 **Nom attendu :**  
 `test_CASE_ADMIN_046_recalcul_instantane_temps_reel_remplissage_apres_annulation`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-046.test.ts
 
 ## Revue du test automatisé
 

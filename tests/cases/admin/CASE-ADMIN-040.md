@@ -43,7 +43,7 @@ Et le système fonctionne exclusivement sur la base de l'administrateur unique d
 
 **Nom attendu :**  
 `test_CASE_ADMIN_040_respect_contrainte_administrateur_unique_sans_sous_comptes`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-040.test.ts
 
 ## Revue du test automatisé
 

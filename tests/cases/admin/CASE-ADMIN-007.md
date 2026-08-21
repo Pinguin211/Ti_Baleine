@@ -42,7 +42,7 @@ Alors l'ensemble des créneaux passés, présents et futurs de la période s'aff
 
 **Nom attendu :**  
 `test_CASE_ADMIN_007_consultation_planning_continu_24h_24_sans_restriction`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-007.test.ts
 
 ## Revue du test automatisé
 

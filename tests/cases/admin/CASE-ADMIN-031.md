@@ -45,7 +45,7 @@ Et la capacité du créneau n'est pas modifiée
 
 **Nom attendu :**  
 `test_CASE_ADMIN_031_coherence_transactionnelle_jauge_billets_reduction_partielle`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-031.test.ts
 
 ## Revue du test automatisé
 

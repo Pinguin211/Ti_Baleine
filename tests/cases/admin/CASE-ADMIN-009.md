@@ -45,7 +45,7 @@ Et le système ne déclenche aucune annulation automatique de la sortie ni des b
 
 **Nom attendu :**  
 `test_CASE_ADMIN_009_maintien_affichage_creneau_sous_seuil_6_passagers_sans_annulation_auto`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-009.test.ts
 
 ## Revue du test automatisé
 

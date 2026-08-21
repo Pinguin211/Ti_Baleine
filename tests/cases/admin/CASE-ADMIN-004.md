@@ -46,7 +46,7 @@ Et aucun écran figé, spinner infini ni erreur JavaScript n'apparaît
 
 **Nom attendu :**  
 `test_CASE_ADMIN_004_affichage_etat_vide_explicite_aucun_creneau_programme`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-004.test.ts
 
 ## Revue du test automatisé
 

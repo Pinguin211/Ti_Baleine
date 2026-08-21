@@ -44,7 +44,7 @@ Et indique que l'unique naturaliste est déjà mobilisé à Saint-Leu
 
 **Nom attendu :**  
 `test_CASE_ADMIN_067_blocage_conflit_naturaliste_unique_deux_sorties_baleines_simultanees`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-067.test.ts
 
 ## Revue du test automatisé
 

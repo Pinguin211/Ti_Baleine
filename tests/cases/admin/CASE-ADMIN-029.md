@@ -43,7 +43,7 @@ Et aucune modification n'est enregistrée
 
 **Nom attendu :**  
 `test_CASE_ADMIN_029_blocage_action_reduction_reservation_0_billet_actif`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-029.test.ts
 
 ## Revue du test automatisé
 

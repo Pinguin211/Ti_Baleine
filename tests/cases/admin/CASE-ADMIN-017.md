@@ -44,7 +44,7 @@ Et toute tentative d'appel direct à l'API d'annulation renvoie une erreur 400 B
 
 **Nom attendu :**  
 `test_CASE_ADMIN_017_blocage_desactivation_bouton_annulation_reservation_0_billet`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-017.test.ts
 
 ## Revue du test automatisé
 

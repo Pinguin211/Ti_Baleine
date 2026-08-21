@@ -43,7 +43,7 @@ Et aucun courriel électronique n'est émis sur le serveur SMTP
 
 **Nom attendu :**  
 `test_CASE_ADMIN_049_envoi_alerte_pre_annulation_canal_sms_uniquement`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-049.test.ts
 
 ## Revue du test automatisé
 

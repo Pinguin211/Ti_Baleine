@@ -42,7 +42,7 @@ Et l'administrateur peut adapter le texte avant diffusion
 
 **Nom attendu :**  
 `test_CASE_ADMIN_053_preremplissage_instantane_template_incident_technique`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-053.test.ts
 
 ## Revue du test automatisé
 

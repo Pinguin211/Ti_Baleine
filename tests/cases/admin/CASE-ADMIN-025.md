@@ -47,7 +47,7 @@ Et la traçabilité de la réduction (historique ou audit) est conservée
 
 **Nom attendu :**  
 `test_CASE_ADMIN_025_reduction_mixte_adultes_enfants_recalcul_audit`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-025.test.ts
 
 ## Revue du test automatisé
 

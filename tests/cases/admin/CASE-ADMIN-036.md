@@ -44,7 +44,7 @@ Et aucune indication ne précise si le compte existe en base
 
 **Nom attendu :**  
 `test_CASE_ADMIN_036_refus_connexion_identifiant_invalide_message_generique`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-036.test.ts
 
 ## Revue du test automatisé
 

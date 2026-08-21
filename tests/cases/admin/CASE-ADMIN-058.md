@@ -42,7 +42,7 @@ Et toute soumission est impossible tant qu'au moins un créneau n'est pas sélec
 
 **Nom attendu :**  
 `test_CASE_ADMIN_058_desactivation_bouton_envoi_aucun_creneau_selectionne`  
-**Fichier :** à renseigner après automatisation
+**Fichier :** tests/tests-unitaires/admin/case-admin-058.test.ts
 
 ## Revue du test automatisé
 
