@@ -26,13 +26,11 @@ export function emettreFactureSoldeApresPaiement(
     return null;
   }
   const factureSolde = genererFactureSoldePdf(reservation, acompteRegle, paiement.montantRegle, ports.horloge);
-  const recapitulatifReservation = `${reservation.prestation} - ${reservation.portEmbarquement} - Solde acquitté`;
   envoyerCourrielFacture(
     ports.envoiCourriel,
     reservation.emailClient,
     `${factureSolde.identifiantUnique}.pdf`,
     factureSolde.contenu,
-    recapitulatifReservation,
   );
   enregistrerStatutEmissionFacture(ports.depotEmission, reservation.id, 'solde', ports.horloge.maintenant());
   return factureSolde;

@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+
+/**
+ * Jetons de thème — palette maritime Ti'Baleine.
+ * SPEC-ARCH-01/02 : feuille de style globale, pas de règle métier ici.
+ */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
+
+  --color-ocean-50: #eff8fb;
+  --color-ocean-100: #d7edf3;
+  --color-ocean-200: #b3dce8;
+  --color-ocean-300: #80c3d7;
+  --color-ocean-400: #47a1bd;
+  --color-ocean-500: #2b839f;
+  --color-ocean-600: #226883;
+  --color-ocean-700: #1e546a;
+  --color-ocean-800: #1b4759;
+  --color-ocean-900: #123040;
+  --color-ocean-950: #0a1f2b;
+
+  --color-sand-50: #fdfaf3;
+  --color-sand-100: #f8f0dd;
+  --color-sand-200: #f0dfb4;
+  --color-sand-300: #e5c883;
+  --color-sand-400: #d9ac53;
+
+  --color-coral-500: #e0703f;
+  --color-coral-600: #c85a2e;
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--color-ocean-50);
+  color: var(--color-ocean-950);
+  font-family: var(--font-sans);
+}

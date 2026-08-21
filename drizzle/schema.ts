@@ -8,6 +8,7 @@ import {
   date,
   time,
   numeric,
+  integer,
   unique,
   index,
   pgEnum,
@@ -81,6 +82,11 @@ export const creneaux = pgTable(
     est_ouvert: boolean('est_ouvert').default(true).notNull(),
     sous_pre_alerte: boolean('sous_pre_alerte').default(false).notNull(),
     alerte_id: uuid('alerte_id').references(() => alertes.id, { onDelete: 'set null' }),
+    // Navires affectés et capacité maximale dérivée (SPEC-ADMIN-07) : ajoutés
+    // pour porter l'affectation manuelle des navires par créneau, absente du
+    // modèle initial.
+    navires: text('navires').array().default([]).notNull(),
+    capacite_maximale: integer('capacite_maximale'),
   },
   (table) => [
     unique('uq_creneau_port_date_heure_activite').on(
@@ -108,6 +114,12 @@ export const reservations = pgTable(
       .references(() => users.id, { onDelete: 'restrict' })
       .notNull(),
     date_creation: timestamp('date_creation', { withTimezone: true }).defaultNow().notNull(),
+    // Montants figés à la réservation (SPEC-RESERVATION-03) : conservés tels
+    // quels après toute réduction de billets, pour que le solde restant dû
+    // continue de se calculer contre le montant initialement contractualisé
+    // plutôt que de se réévaluer silencieusement sur les billets restants.
+    montant_total: numeric('montant_total', { precision: 10, scale: 2 }).notNull(),
+    montant_acompte: numeric('montant_acompte', { precision: 10, scale: 2 }).notNull(),
   },
   (table) => [
     index('idx_reservations_creneau_id').on(table.creneau_id),

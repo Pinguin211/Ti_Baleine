@@ -26,13 +26,11 @@ export function emettreFactureAcompteApresPaiement(
     return null;
   }
   const factureAcompte = genererFactureAcomptePdf(reservation, paiement.montantRegle, ports.horloge);
-  const recapitulatifReservation = `${reservation.prestation} - ${reservation.portEmbarquement} - ${reservation.nombreAdultes} adulte(s)`;
   envoyerCourrielFacture(
     ports.envoiCourriel,
     reservation.emailClient,
     `${factureAcompte.identifiantUnique}.pdf`,
     factureAcompte.contenu,
-    recapitulatifReservation,
   );
   enregistrerStatutEmissionFacture(ports.depotEmission, reservation.id, 'acompte', ports.horloge.maintenant());
   return factureAcompte;

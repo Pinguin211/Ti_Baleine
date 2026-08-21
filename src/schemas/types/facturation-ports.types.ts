@@ -22,7 +22,7 @@ export interface EnvoiCourriel {
 export type StatutEmissionFacture = {
   reservationId: string;
   typeFacture: TypeFacture;
-  statut: 'envoyée avec succès';
+  statut: 'envoyée avec succès' | "échec d'émission";
   horodatage: Date;
 };
 
